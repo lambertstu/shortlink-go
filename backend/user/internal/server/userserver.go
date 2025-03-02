@@ -52,3 +52,8 @@ func (s *UserServer) IsUserLogin(ctx context.Context, in *user.IsUserLoginReques
 	l := logic.NewIsUserLoginLogic(ctx, s.svcCtx)
 	return l.IsUserLogin(in)
 }
+
+func (s *UserServer) UpsertUserInfo(ctx context.Context, in *user.UpsertUserInfoRequest) (*user.UpsertUserInfoResponse, error) {
+	l := logic.NewUpsertUserInfoLogic(ctx, s.svcCtx)
+	return l.UpsertUserInfo(in)
+}

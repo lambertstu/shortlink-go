@@ -25,6 +25,7 @@ const (
 	User_GetUserByUsername_FullMethodName = "/user.User/GetUserByUsername"
 	User_IsExistUser_FullMethodName       = "/user.User/IsExistUser"
 	User_IsUserLogin_FullMethodName       = "/user.User/IsUserLogin"
+	User_UpsertUserInfo_FullMethodName    = "/user.User/UpsertUserInfo"
 )
 
 // UserClient is the client API for User service.
@@ -37,6 +38,7 @@ type UserClient interface {
 	GetUserByUsername(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	IsExistUser(ctx context.Context, in *IsExistUserRequest, opts ...grpc.CallOption) (*IsExistUserResponse, error)
 	IsUserLogin(ctx context.Context, in *IsUserLoginRequest, opts ...grpc.CallOption) (*IsUserLoginResponse, error)
+	UpsertUserInfo(ctx context.Context, in *UpsertUserInfoRequest, opts ...grpc.CallOption) (*UpsertUserInfoResponse, error)
 }
 
 type userClient struct {
@@ -107,6 +109,16 @@ func (c *userClient) IsUserLogin(ctx context.Context, in *IsUserLoginRequest, op
 	return out, nil
 }
 
+func (c *userClient) UpsertUserInfo(ctx context.Context, in *UpsertUserInfoRequest, opts ...grpc.CallOption) (*UpsertUserInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpsertUserInfoResponse)
+	err := c.cc.Invoke(ctx, User_UpsertUserInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility.
@@ -117,6 +129,7 @@ type UserServer interface {
 	GetUserByUsername(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	IsExistUser(context.Context, *IsExistUserRequest) (*IsExistUserResponse, error)
 	IsUserLogin(context.Context, *IsUserLoginRequest) (*IsUserLoginResponse, error)
+	UpsertUserInfo(context.Context, *UpsertUserInfoRequest) (*UpsertUserInfoResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -144,6 +157,9 @@ func (UnimplementedUserServer) IsExistUser(context.Context, *IsExistUserRequest)
 }
 func (UnimplementedUserServer) IsUserLogin(context.Context, *IsUserLoginRequest) (*IsUserLoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IsUserLogin not implemented")
+}
+func (UnimplementedUserServer) UpsertUserInfo(context.Context, *UpsertUserInfoRequest) (*UpsertUserInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertUserInfo not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 func (UnimplementedUserServer) testEmbeddedByValue()              {}
@@ -274,6 +290,24 @@ func _User_IsUserLogin_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UpsertUserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertUserInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UpsertUserInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UpsertUserInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UpsertUserInfo(ctx, req.(*UpsertUserInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +338,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "IsUserLogin",
 			Handler:    _User_IsUserLogin_Handler,
+		},
+		{
+			MethodName: "UpsertUserInfo",
+			Handler:    _User_UpsertUserInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

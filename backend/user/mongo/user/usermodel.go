@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/zeromicro/go-zero/core/stores/mon"
 	"go.mongodb.org/mongo-driver/bson"
+	"user/pkg/errorcode"
 )
 
 const (
@@ -21,12 +22,29 @@ type (
 		userModel
 		Register(ctx context.Context, data *User) error
 		UpdateUserInfo(ctx context.Context, data *User) error
+		GetUserByUserName(ctx context.Context, username string) (*User, error)
 	}
 
 	customUserModel struct {
 		*defaultUserModel
 	}
 )
+
+func (c *customUserModel) GetUserByUserName(ctx context.Context, username string) (*User, error) {
+	filter := bson.M{"username": username}
+
+	var user User
+
+	err := c.conn.FindOne(ctx, user, filter)
+	if err != nil {
+		if errors.Is(err, ErrNotFound) {
+			return nil, errors.New(errorcode.UserNotExist.Message())
+		}
+		return nil, err
+	}
+
+	return &user, nil
+}
 
 func (c *customUserModel) Register(ctx context.Context, data *User) error {
 	filter := bson.M{"username": data.Username}
@@ -37,7 +55,7 @@ func (c *customUserModel) Register(ctx context.Context, data *User) error {
 		return err
 	}
 	if count > 0 {
-		return errors.New("用户名已存在")
+		return errors.New(errorcode.UserNameExistError.Message())
 	}
 
 	_, err = c.conn.InsertOne(ctx, data)

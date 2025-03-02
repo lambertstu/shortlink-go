@@ -24,7 +24,14 @@ func NewGetUserByUsernameLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *GetUserByUsernameLogic) GetUserByUsername(in *user.GetUserRequest) (*user.GetUserResponse, error) {
-	// todo: add your logic here and delete this line
-
-	return &user.GetUserResponse{}, nil
+	userInfo, err := l.svcCtx.UserModel.GetUserByUserName(l.ctx, in.Username)
+	if err != nil {
+		return &user.GetUserResponse{}, err
+	}
+	return &user.GetUserResponse{
+		Username: userInfo.Username,
+		RealName: userInfo.RealName,
+		Phone:    userInfo.Phone,
+		Email:    userInfo.Mail,
+	}, nil
 }

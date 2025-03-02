@@ -14,18 +14,20 @@ import (
 )
 
 type (
-	GetUserRequest      = user.GetUserRequest
-	GetUserResponse     = user.GetUserResponse
-	IsExistUserRequest  = user.IsExistUserRequest
-	IsExistUserResponse = user.IsExistUserResponse
-	IsUserLoginRequest  = user.IsUserLoginRequest
-	IsUserLoginResponse = user.IsUserLoginResponse
-	LoginRequest        = user.LoginRequest
-	LoginResponse       = user.LoginResponse
-	LogoutRequest       = user.LogoutRequest
-	LogoutResponse      = user.LogoutResponse
-	RegisterRequest     = user.RegisterRequest
-	RegisterResponse    = user.RegisterResponse
+	GetUserRequest         = user.GetUserRequest
+	GetUserResponse        = user.GetUserResponse
+	IsExistUserRequest     = user.IsExistUserRequest
+	IsExistUserResponse    = user.IsExistUserResponse
+	IsUserLoginRequest     = user.IsUserLoginRequest
+	IsUserLoginResponse    = user.IsUserLoginResponse
+	LoginRequest           = user.LoginRequest
+	LoginResponse          = user.LoginResponse
+	LogoutRequest          = user.LogoutRequest
+	LogoutResponse         = user.LogoutResponse
+	RegisterRequest        = user.RegisterRequest
+	RegisterResponse       = user.RegisterResponse
+	UpsertUserInfoRequest  = user.UpsertUserInfoRequest
+	UpsertUserInfoResponse = user.UpsertUserInfoResponse
 
 	User interface {
 		Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
@@ -34,6 +36,7 @@ type (
 		GetUserByUsername(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 		IsExistUser(ctx context.Context, in *IsExistUserRequest, opts ...grpc.CallOption) (*IsExistUserResponse, error)
 		IsUserLogin(ctx context.Context, in *IsUserLoginRequest, opts ...grpc.CallOption) (*IsUserLoginResponse, error)
+		UpsertUserInfo(ctx context.Context, in *UpsertUserInfoRequest, opts ...grpc.CallOption) (*UpsertUserInfoResponse, error)
 	}
 
 	defaultUser struct {
@@ -75,4 +78,9 @@ func (m *defaultUser) IsExistUser(ctx context.Context, in *IsExistUserRequest, o
 func (m *defaultUser) IsUserLogin(ctx context.Context, in *IsUserLoginRequest, opts ...grpc.CallOption) (*IsUserLoginResponse, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.IsUserLogin(ctx, in, opts...)
+}
+
+func (m *defaultUser) UpsertUserInfo(ctx context.Context, in *UpsertUserInfoRequest, opts ...grpc.CallOption) (*UpsertUserInfoResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UpsertUserInfo(ctx, in, opts...)
 }

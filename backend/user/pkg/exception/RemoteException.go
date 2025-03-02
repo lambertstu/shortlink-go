@@ -1,6 +1,6 @@
 package exception
 
-import "backend/pkg/errorcode"
+import "user/pkg/errorcode"
 
 type RemoteException struct {
 	*AbstractException

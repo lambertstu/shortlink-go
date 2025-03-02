@@ -1,8 +1,6 @@
 package exception
 
-import (
-	"backend/pkg/errorcode"
-)
+import "user/pkg/errorcode"
 
 type AbstractException struct {
 	ErrorCode    string

@@ -11,22 +11,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type RegisterLogic struct {
+type UpsertUserInfoLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RegisterLogic {
-	return &RegisterLogic{
+func NewUpsertUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpsertUserInfoLogic {
+	return &UpsertUserInfoLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterResponse, error) {
-	err := l.svcCtx.UserModel.Register(l.ctx, &model.User{
+func (l *UpsertUserInfoLogic) UpsertUserInfo(in *user.UpsertUserInfoRequest) (*user.UpsertUserInfoResponse, error) {
+	err := l.svcCtx.UserModel.UpdateUserInfo(l.ctx, &model.User{
 		Username:   in.Username,
 		Password:   in.Password,
 		RealName:   in.RealName,
@@ -35,11 +35,11 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		DeleteFlag: constant.DELETE_FLAG,
 	})
 	if err != nil {
-		return &user.RegisterResponse{
+		return &user.UpsertUserInfoResponse{
 			Success: false,
 		}, err
 	}
-	return &user.RegisterResponse{
+	return &user.UpsertUserInfoResponse{
 		Success: true,
 	}, nil
 }

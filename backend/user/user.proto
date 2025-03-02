@@ -38,11 +38,10 @@ message GetUserRequest {
 }
 
 message GetUserResponse {
-  string id = 1;
-  string username = 2;
-  string realName = 3;
-  string phone = 4;
-  string email = 5;
+  string username = 1;
+  string realName = 2;
+  string phone = 3;
+  string email = 4;
 }
 
 message IsExistUserRequest{
@@ -61,6 +60,18 @@ message isUserLoginResponse{
   bool success = 1;
 }
 
+message UpsertUserInfoRequest{
+  string username = 1;
+  string password = 2;
+  string realName = 3;
+  string phone = 4;
+  string email = 5;
+}
+
+message UpsertUserInfoResponse{
+  bool success = 1;
+}
+
 
 service User {
   rpc Register(RegisterRequest) returns(RegisterResponse);
@@ -69,4 +80,5 @@ service User {
   rpc GetUserByUsername(GetUserRequest) returns(GetUserResponse);
   rpc IsExistUser(IsExistUserRequest) returns(IsExistUserResponse);
   rpc IsUserLogin(isUserLoginRequest) returns(isUserLoginResponse);
+  rpc UpsertUserInfo(UpsertUserInfoRequest) returns(UpsertUserInfoResponse);
 }
