@@ -5,6 +5,8 @@ import (
 	"errors"
 	"github.com/zeromicro/go-zero/core/stores/mon"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"time"
 	"user/pkg/errorcode"
 )
 
@@ -47,7 +49,16 @@ func (c *customUserModel) GetUserByUserName(ctx context.Context, username string
 }
 
 func (c *customUserModel) Register(ctx context.Context, data *User) error {
-	filter := bson.M{"username": data.Username}
+	if data.ID.IsZero() {
+		data.ID = primitive.NewObjectID()
+		data.CreateAt = time.Now()
+		data.UpdateAt = time.Now()
+	}
+
+	filter := bson.M{
+		"username":   data.Username,
+		"deleteFlag": bson.M{"$ne": 1},
+	}
 
 	// TODO 可以引入布隆过滤器优化
 	count, err := c.conn.CountDocuments(ctx, filter)
@@ -67,6 +78,8 @@ func (c *customUserModel) Register(ctx context.Context, data *User) error {
 }
 
 func (c *customUserModel) UpdateUserInfo(ctx context.Context, data *User) error {
+	data.UpdateAt = time.Now()
+
 	filter := bson.D{
 		{"username", data.Username},
 	}
