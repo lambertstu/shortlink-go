@@ -30,6 +30,7 @@ var (
 	UserNameExistError            = NewBaseErrorCode("A000111", "用户名已存在")
 	UserNameSensitiveError        = NewBaseErrorCode("A000112", "用户名包含敏感词")
 	UserNameSpecialCharacterError = NewBaseErrorCode("A000113", "用户名包含特殊字符")
+	UserNotExist                  = NewBaseErrorCode("A000114", "用户不存在")
 	PasswordVerifyError           = NewBaseErrorCode("A000120", "密码校验失败")
 	PasswordShortError            = NewBaseErrorCode("A000121", "密码长度不够")
 	PhoneVerifyError              = NewBaseErrorCode("A000151", "手机格式校验失败")
