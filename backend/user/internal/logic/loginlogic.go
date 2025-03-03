@@ -4,11 +4,10 @@ import (
 	"context"
 	"errors"
 	"github.com/google/uuid"
-	"user/pkg/constant"
-	"user/pkg/errorcode"
-
 	"user/internal/svc"
 	"user/pb/user"
+	"user/pkg/constant"
+	"user/pkg/errorcode"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -40,6 +39,7 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 	if len(hasLoginMap) > 0 {
 		expireErr := l.svcCtx.Redis.Expire(constant.USER_LOGIN_KEY+in.GetUsername(), constant.USER_LOGIN_EXPIRE_TIME)
 		if expireErr != nil {
+			logx.Errorf("设置 Redis 过期时间失败: %v", expireErr)
 			return &user.LoginResponse{}, expireErr
 		}
 		token := hasLoginMap["token"]
@@ -56,6 +56,7 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 
 	err = l.svcCtx.Redis.Expire(constant.USER_LOGIN_KEY+in.GetUsername(), constant.USER_LOGIN_EXPIRE_TIME)
 	if err != nil {
+		logx.Errorf("设置 Redis 过期时间失败: %v", err)
 		return &user.LoginResponse{}, err
 	}
 

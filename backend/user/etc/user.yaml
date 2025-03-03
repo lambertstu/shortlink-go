@@ -4,7 +4,7 @@ Etcd:
   Hosts:
     - 127.0.0.1:2379
   Key: user.rpc
-Redis:
-  Addr: 127.0.0.1:6379
-  Type: node
-  Tls: false
+
+# redis
+Key: user.redis
+Host: 127.0.0.1:6379

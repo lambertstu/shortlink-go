@@ -5,5 +5,5 @@ const (
 
 	USER_LOGIN_KEY = "user:login:"
 
-	USER_LOGIN_EXPIRE_TIME = 60 * 60 * 3 // 三小时
+	USER_LOGIN_EXPIRE_TIME = 60 * 60 * 3
 )

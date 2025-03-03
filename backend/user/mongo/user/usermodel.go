@@ -40,7 +40,8 @@ func (c *customUserModel) Login(ctx context.Context, username, password string) 
 		"deleteFlag": 0,
 	}
 
-	err := c.conn.FindOne(ctx, User{}, filter)
+	var user User
+	err := c.conn.FindOne(ctx, &user, filter)
 	if err != nil {
 		return false
 	}
