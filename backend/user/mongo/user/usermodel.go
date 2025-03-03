@@ -25,12 +25,23 @@ type (
 		Register(ctx context.Context, data *User) error
 		UpdateUserInfo(ctx context.Context, data *User) error
 		GetUserByUserName(ctx context.Context, username string) (*User, error)
+		Login(ctx context.Context, username, password string) bool
 	}
 
 	customUserModel struct {
 		*defaultUserModel
 	}
 )
+
+func (c *customUserModel) Login(ctx context.Context, username, password string) bool {
+	filter := bson.M{
+		"username":   username,
+		"password":   password,
+		""
+	}
+
+	err := c.conn.FindOne(ctx, User{}, filter)
+}
 
 func (c *customUserModel) GetUserByUserName(ctx context.Context, username string) (*User, error) {
 	filter := bson.M{"username": username}
