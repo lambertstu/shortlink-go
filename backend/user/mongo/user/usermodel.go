@@ -37,10 +37,14 @@ func (c *customUserModel) Login(ctx context.Context, username, password string) 
 	filter := bson.M{
 		"username":   username,
 		"password":   password,
-		""
+		"deleteFlag": 0,
 	}
 
 	err := c.conn.FindOne(ctx, User{}, filter)
+	if err != nil {
+		return false
+	}
+	return true
 }
 
 func (c *customUserModel) GetUserByUserName(ctx context.Context, username string) (*User, error) {
