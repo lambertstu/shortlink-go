@@ -2,9 +2,9 @@ package logic
 
 import (
 	"context"
-
 	"user/internal/svc"
 	"user/pb/user"
+	"user/pkg/constant"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +24,13 @@ func NewIsUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IsUse
 }
 
 func (l *IsUserLoginLogic) IsUserLogin(in *user.IsUserLoginRequest) (*user.IsUserLoginResponse, error) {
-	// todo: add your logic here and delete this line
-
-	return &user.IsUserLoginResponse{}, nil
+	hasLoginMap, _ := l.svcCtx.Redis.Hgetall(constant.USER_LOGIN_KEY + in.GetUsername())
+	if len(hasLoginMap) == 0 || hasLoginMap["token"] != in.Token {
+		return &user.IsUserLoginResponse{
+			Success: false,
+		}, nil
+	}
+	return &user.IsUserLoginResponse{
+		Success: true,
+	}, nil
 }
