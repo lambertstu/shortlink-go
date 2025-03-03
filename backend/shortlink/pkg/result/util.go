@@ -1,6 +1,6 @@
 package result
 
-import "backend/pkg/errorcode"
+import "shortlink/pkg/errorcode"
 
 func Success() *Result[any] {
 	return NewResult[any]().SetCode(SUCCESS_CODE)
