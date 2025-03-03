@@ -23,6 +23,7 @@ func NewIsExistUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IsExi
 	}
 }
 
+// TODO 布隆过滤器
 func (l *IsExistUserLogic) IsExistUser(in *user.IsExistUserRequest) (*user.IsExistUserResponse, error) {
 	// todo: add your logic here and delete this line
 
