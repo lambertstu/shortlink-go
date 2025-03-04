@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-
 	"user/internal/svc"
 	"user/pb/user"
 
@@ -23,9 +22,15 @@ func NewIsExistUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IsExi
 	}
 }
 
-// TODO 布隆过滤器
 func (l *IsExistUserLogic) IsExistUser(in *user.IsExistUserRequest) (*user.IsExistUserResponse, error) {
-	// todo: add your logic here and delete this line
+	exists, err := l.svcCtx.BloomFilter.Exists([]byte(in.GetUsername()))
+	if err != nil || !exists {
+		return &user.IsExistUserResponse{
+			Success: false,
+		}, err
+	}
 
-	return &user.IsExistUserResponse{}, nil
+	return &user.IsExistUserResponse{
+		Success: true,
+	}, nil
 }

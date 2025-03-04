@@ -2,11 +2,10 @@ package logic
 
 import (
 	"context"
-	model "user/mongo/user"
-	"user/pkg/constant"
-
 	"user/internal/svc"
+	model "user/mongo/user"
 	"user/pb/user"
+	"user/pkg/constant"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -26,6 +25,13 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterResponse, error) {
+	exists, _ := l.svcCtx.BloomFilter.Exists([]byte(in.Username))
+	if exists {
+		return &user.RegisterResponse{
+			Success: false,
+		}, nil
+	}
+
 	err := l.svcCtx.UserModel.Register(l.ctx, &model.User{
 		Username:   in.Username,
 		Password:   in.Password,
@@ -39,6 +45,14 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 			Success: false,
 		}, err
 	}
+
+	err = l.svcCtx.BloomFilter.Add([]byte(in.Username))
+	if err != nil {
+		return &user.RegisterResponse{
+			Success: false,
+		}, err
+	}
+
 	return &user.RegisterResponse{
 		Success: true,
 	}, nil

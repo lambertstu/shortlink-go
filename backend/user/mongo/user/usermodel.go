@@ -76,7 +76,6 @@ func (c *customUserModel) Register(ctx context.Context, data *User) error {
 		"deleteFlag": bson.M{"$ne": 1},
 	}
 
-	// TODO 可以引入布隆过滤器优化
 	count, err := c.conn.CountDocuments(ctx, filter)
 	if err != nil {
 		return err
