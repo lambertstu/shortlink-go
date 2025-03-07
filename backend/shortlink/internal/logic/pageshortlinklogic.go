@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/bson"
 
 	"shortlink/internal/svc"
 	"shortlink/pb/shortlink"
@@ -24,7 +25,14 @@ func NewPageShortLinkLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Pag
 }
 
 func (l *PageShortLinkLogic) PageShortLink(in *shortlink.ShortLinkPageRequest) (*shortlink.ShortLinkPageResponse, error) {
-	// todo: add your logic here and delete this line
+	var list []*shortlink.ShortLinkPageData
+	err := l.svcCtx.ShortlinkModel.Pagination(l.ctx, in.GetPage(), in.GetSize(), in.GetOrderTag(), bson.D{}, "full_short_url", list)
+	if err != nil {
+		return nil, err
+	}
 
-	return &shortlink.ShortLinkPageResponse{}, nil
+	return &shortlink.ShortLinkPageResponse{
+		List:  list,
+		Total: int32(len(list)),
+	}, nil
 }

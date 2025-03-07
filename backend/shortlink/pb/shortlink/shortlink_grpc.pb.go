@@ -19,9 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Shortlink_RestoreUrl_FullMethodName              = "/shortlink.Shortlink/RestoreUrl"
 	Shortlink_CreateShortLink_FullMethodName         = "/shortlink.Shortlink/CreateShortLink"
-	Shortlink_CreateShortLinkByLock_FullMethodName   = "/shortlink.Shortlink/CreateShortLinkByLock"
 	Shortlink_BatchCreateShortLink_FullMethodName    = "/shortlink.Shortlink/BatchCreateShortLink"
 	Shortlink_UpdateShortLink_FullMethodName         = "/shortlink.Shortlink/UpdateShortLink"
 	Shortlink_PageShortLink_FullMethodName           = "/shortlink.Shortlink/PageShortLink"
@@ -32,9 +30,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShortlinkClient interface {
-	RestoreUrl(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
 	CreateShortLink(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
-	CreateShortLinkByLock(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
 	BatchCreateShortLink(ctx context.Context, in *ShortLinkBatchCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
 	UpdateShortLink(ctx context.Context, in *ShortLinkUpdateRequest, opts ...grpc.CallOption) (*ShortLinkUpdateResponse, error)
 	PageShortLink(ctx context.Context, in *ShortLinkPageRequest, opts ...grpc.CallOption) (*ShortLinkPageResponse, error)
@@ -49,30 +45,10 @@ func NewShortlinkClient(cc grpc.ClientConnInterface) ShortlinkClient {
 	return &shortlinkClient{cc}
 }
 
-func (c *shortlinkClient) RestoreUrl(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ShortLinkCreateResponse)
-	err := c.cc.Invoke(ctx, Shortlink_RestoreUrl_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *shortlinkClient) CreateShortLink(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ShortLinkCreateResponse)
 	err := c.cc.Invoke(ctx, Shortlink_CreateShortLink_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shortlinkClient) CreateShortLinkByLock(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ShortLinkCreateResponse)
-	err := c.cc.Invoke(ctx, Shortlink_CreateShortLinkByLock_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -123,9 +99,7 @@ func (c *shortlinkClient) ListGroupShortLinkCount(ctx context.Context, in *ListG
 // All implementations must embed UnimplementedShortlinkServer
 // for forward compatibility.
 type ShortlinkServer interface {
-	RestoreUrl(context.Context, *ShortLinkCreateRequest) (*ShortLinkCreateResponse, error)
 	CreateShortLink(context.Context, *ShortLinkCreateRequest) (*ShortLinkCreateResponse, error)
-	CreateShortLinkByLock(context.Context, *ShortLinkCreateRequest) (*ShortLinkCreateResponse, error)
 	BatchCreateShortLink(context.Context, *ShortLinkBatchCreateRequest) (*ShortLinkCreateResponse, error)
 	UpdateShortLink(context.Context, *ShortLinkUpdateRequest) (*ShortLinkUpdateResponse, error)
 	PageShortLink(context.Context, *ShortLinkPageRequest) (*ShortLinkPageResponse, error)
@@ -140,14 +114,8 @@ type ShortlinkServer interface {
 // pointer dereference when methods are called.
 type UnimplementedShortlinkServer struct{}
 
-func (UnimplementedShortlinkServer) RestoreUrl(context.Context, *ShortLinkCreateRequest) (*ShortLinkCreateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RestoreUrl not implemented")
-}
 func (UnimplementedShortlinkServer) CreateShortLink(context.Context, *ShortLinkCreateRequest) (*ShortLinkCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateShortLink not implemented")
-}
-func (UnimplementedShortlinkServer) CreateShortLinkByLock(context.Context, *ShortLinkCreateRequest) (*ShortLinkCreateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateShortLinkByLock not implemented")
 }
 func (UnimplementedShortlinkServer) BatchCreateShortLink(context.Context, *ShortLinkBatchCreateRequest) (*ShortLinkCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchCreateShortLink not implemented")
@@ -182,24 +150,6 @@ func RegisterShortlinkServer(s grpc.ServiceRegistrar, srv ShortlinkServer) {
 	s.RegisterService(&Shortlink_ServiceDesc, srv)
 }
 
-func _Shortlink_RestoreUrl_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ShortLinkCreateRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShortlinkServer).RestoreUrl(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Shortlink_RestoreUrl_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShortlinkServer).RestoreUrl(ctx, req.(*ShortLinkCreateRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Shortlink_CreateShortLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ShortLinkCreateRequest)
 	if err := dec(in); err != nil {
@@ -214,24 +164,6 @@ func _Shortlink_CreateShortLink_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ShortlinkServer).CreateShortLink(ctx, req.(*ShortLinkCreateRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Shortlink_CreateShortLinkByLock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ShortLinkCreateRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShortlinkServer).CreateShortLinkByLock(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Shortlink_CreateShortLinkByLock_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShortlinkServer).CreateShortLinkByLock(ctx, req.(*ShortLinkCreateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -316,16 +248,8 @@ var Shortlink_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ShortlinkServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "RestoreUrl",
-			Handler:    _Shortlink_RestoreUrl_Handler,
-		},
-		{
 			MethodName: "CreateShortLink",
 			Handler:    _Shortlink_CreateShortLink_Handler,
-		},
-		{
-			MethodName: "CreateShortLinkByLock",
-			Handler:    _Shortlink_CreateShortLinkByLock_Handler,
 		},
 		{
 			MethodName: "BatchCreateShortLink",

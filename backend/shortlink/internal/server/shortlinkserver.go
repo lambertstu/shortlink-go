@@ -23,19 +23,9 @@ func NewShortlinkServer(svcCtx *svc.ServiceContext) *ShortlinkServer {
 	}
 }
 
-func (s *ShortlinkServer) RestoreUrl(ctx context.Context, in *shortlink.ShortLinkCreateRequest) (*shortlink.ShortLinkCreateResponse, error) {
-	l := logic.NewRestoreUrlLogic(ctx, s.svcCtx)
-	return l.RestoreUrl(in)
-}
-
 func (s *ShortlinkServer) CreateShortLink(ctx context.Context, in *shortlink.ShortLinkCreateRequest) (*shortlink.ShortLinkCreateResponse, error) {
 	l := logic.NewCreateShortLinkLogic(ctx, s.svcCtx)
 	return l.CreateShortLink(in)
-}
-
-func (s *ShortlinkServer) CreateShortLinkByLock(ctx context.Context, in *shortlink.ShortLinkCreateRequest) (*shortlink.ShortLinkCreateResponse, error) {
-	l := logic.NewCreateShortLinkByLockLogic(ctx, s.svcCtx)
-	return l.CreateShortLinkByLock(in)
 }
 
 func (s *ShortlinkServer) BatchCreateShortLink(ctx context.Context, in *shortlink.ShortLinkBatchCreateRequest) (*shortlink.ShortLinkCreateResponse, error) {

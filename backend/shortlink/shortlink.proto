@@ -34,11 +34,18 @@ message ShortLinkBatchCreateRequest {
 }
 
 message ShortLinkPageRequest {
-  string pid = 1;
-  string orderTag = 2;
+  string gid = 1;
+  int64 page = 2;
+  int64 size = 3;
+  int64 orderTag = 4;
 }
 
 message ShortLinkPageResponse {
+  repeated ShortLinkPageData list = 1; // 短链接分页数据列表
+  int32 total = 2;                     // 总条数
+}
+
+message ShortLinkPageData{
   string domain = 2;           // 域名
   string short_uri = 3;        // 短链接
   string full_short_url = 4;   // 完整短链接
@@ -66,9 +73,7 @@ message ListGroupShortLinkCountResponse{
 }
 
 service Shortlink {
-  rpc RestoreUrl(ShortLinkCreateRequest) returns(ShortLinkCreateResponse);
   rpc CreateShortLink(ShortLinkCreateRequest) returns(ShortLinkCreateResponse);
-  rpc CreateShortLinkByLock(ShortLinkCreateRequest) returns(ShortLinkCreateResponse);
   rpc BatchCreateShortLink(ShortLinkBatchCreateRequest) returns(ShortLinkCreateResponse);
   rpc UpdateShortLink(ShortLinkUpdateRequest) returns(ShortLinkUpdateResponse);
   rpc PageShortLink(ShortLinkPageRequest) returns(ShortLinkPageResponse);

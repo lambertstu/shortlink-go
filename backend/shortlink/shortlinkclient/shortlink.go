@@ -19,15 +19,14 @@ type (
 	ShortLinkBatchCreateRequest     = shortlink.ShortLinkBatchCreateRequest
 	ShortLinkCreateRequest          = shortlink.ShortLinkCreateRequest
 	ShortLinkCreateResponse         = shortlink.ShortLinkCreateResponse
+	ShortLinkPageData               = shortlink.ShortLinkPageData
 	ShortLinkPageRequest            = shortlink.ShortLinkPageRequest
 	ShortLinkPageResponse           = shortlink.ShortLinkPageResponse
 	ShortLinkUpdateRequest          = shortlink.ShortLinkUpdateRequest
 	ShortLinkUpdateResponse         = shortlink.ShortLinkUpdateResponse
 
 	Shortlink interface {
-		RestoreUrl(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
 		CreateShortLink(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
-		CreateShortLinkByLock(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
 		BatchCreateShortLink(ctx context.Context, in *ShortLinkBatchCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
 		UpdateShortLink(ctx context.Context, in *ShortLinkUpdateRequest, opts ...grpc.CallOption) (*ShortLinkUpdateResponse, error)
 		PageShortLink(ctx context.Context, in *ShortLinkPageRequest, opts ...grpc.CallOption) (*ShortLinkPageResponse, error)
@@ -45,19 +44,9 @@ func NewShortlink(cli zrpc.Client) Shortlink {
 	}
 }
 
-func (m *defaultShortlink) RestoreUrl(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error) {
-	client := shortlink.NewShortlinkClient(m.cli.Conn())
-	return client.RestoreUrl(ctx, in, opts...)
-}
-
 func (m *defaultShortlink) CreateShortLink(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error) {
 	client := shortlink.NewShortlinkClient(m.cli.Conn())
 	return client.CreateShortLink(ctx, in, opts...)
-}
-
-func (m *defaultShortlink) CreateShortLinkByLock(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error) {
-	client := shortlink.NewShortlinkClient(m.cli.Conn())
-	return client.CreateShortLinkByLock(ctx, in, opts...)
 }
 
 func (m *defaultShortlink) BatchCreateShortLink(ctx context.Context, in *ShortLinkBatchCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error) {

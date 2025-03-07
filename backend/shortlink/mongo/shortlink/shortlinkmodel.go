@@ -24,12 +24,37 @@ type (
 		FindOneByShortUrl(ctx context.Context, shortLink, gid string) (*Shortlink, error)
 		InsertOneShortlink(ctx context.Context, data *Shortlink) error
 		UpdateShortLinkInfo(ctx context.Context, data *Shortlink) error
+		Pagination(ctx context.Context, page, size, sortOrder int64, filter bson.D, sortField string, v any) error
 	}
 
 	customShortlinkModel struct {
 		*defaultShortlinkModel
 	}
 )
+
+func (c *customShortlinkModel) Pagination(ctx context.Context, page, size, sortOrder int64, filter bson.D, sortField string, v *[]Shortlink) error {
+	if page < 1 {
+		page = 1
+	}
+	if size < 1 {
+		size = 10 // 默认每页10条
+	} else if size > 100 {
+		size = 100 // 限制最大查询数
+	}
+
+	skip := (page - 1) * size
+
+	opts := options.Find().
+		SetSkip(skip).
+		SetLimit(size)
+
+	if sortField == "" {
+		sortField = "full_short_url"
+	}
+	opts.SetSort(bson.D{{sortField, sortOrder}})
+
+	return c.conn.Find(ctx, v, filter, opts)
+}
 
 func (c *customShortlinkModel) UpdateShortLinkInfo(ctx context.Context, data *Shortlink) error {
 	if data == nil {
