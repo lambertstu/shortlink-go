@@ -21,11 +21,11 @@ type ServiceContext struct {
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
-	redis, filter := getRedisInstance(c)
+	rds, filter := getRedisInstance(c)
 	return &ServiceContext{
 		Config:      c,
 		UserModel:   user.NewUserModel(mongoUrl, user.DB, user.Collection),
-		Redis:       redis,
+		Redis:       rds,
 		BloomFilter: filter,
 	}
 }

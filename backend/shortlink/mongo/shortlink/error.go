@@ -9,4 +9,5 @@ import (
 var (
 	ErrNotFound        = mon.ErrNotFound
 	ErrInvalidObjectId = errors.New("invalid objectId")
+	ErrShortUriExist   = errors.New("短链接重复")
 )

@@ -7,8 +7,6 @@ message ShortLinkCreateRequest {
   string domain = 1;           // 域名
   string origin_url = 2;       // 原始链接
   string gid = 3;              // 分组标识
-  int32 valid_date_type = 4;   // 有效期类型 0：永久有效 1：自定义
-  int64 valid_date = 5;        // 有效期（时间戳格式，单位：秒）
   string describe = 6;         // 描述
 }
 
@@ -26,8 +24,6 @@ message ShortLinkUpdateRequest {
   string domain = 1;           // 域名
   string origin_url = 2;       // 原始链接
   string gid = 3;              // 分组标识
-  int32 valid_date_type = 4;   // 有效期类型 0：永久有效 1：自定义
-  int64 valid_date = 5;        // 有效期（时间戳格式，单位：秒）
   string describe = 6;         // 描述
 }
 
@@ -35,8 +31,6 @@ message ShortLinkBatchCreateRequest {
   repeated string origin_urls = 1;  // 原始链接集合
   repeated string describes = 2;    // 描述集合
   string gid = 3;                   // 分组标识
-  int32 valid_date_type = 4;        // 有效期类型 0：永久有效 1：自定义
-  int64 valid_date = 5;             // 有效期（时间戳格式，单位：秒）
 }
 
 message ShortLinkPageRequest {
@@ -50,9 +44,7 @@ message ShortLinkPageResponse {
   string full_short_url = 4;   // 完整短链接
   string origin_url = 5;       // 原始链接
   string gid = 6;              // 分组标识
-  int32 valid_date_type = 7;   // 有效期类型 0：永久有效 1：自定义
   int32 enable_status = 8;     // 启用标识 0：启用 1：未启用
-  int64 valid_date = 9;        // 有效期（时间戳格式，单位：秒）
   int64 create_time = 10;      // 创建时间（时间戳格式，单位：秒）
   string describe = 11;        // 描述
   string favicon = 12;         // 网站标识

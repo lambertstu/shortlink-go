@@ -15,8 +15,7 @@ type Shortlink struct {
 	ClickNum      int                `bson:"click_num" json:"clickNum"`
 	Gid           string             `bson:"gid" json:"gid"`
 	EnableStatus  int                `bson:"enable_status" json:"enableStatus"`
-	CreatedType   int                `bson:"created_type" json:"createdType"`
-	ValidDateType int                `bson:"valid_date_type" json:"validDateType"`
+	ValidDateType int32              `bson:"valid_date_type" json:"validDateType"`
 	ValidDate     time.Time          `bson:"valid_date" json:"validDate"`
 	Describe      string             `bson:"describe" json:"describe"`
 	Favicon       string             `bson:"favicon" json:"favicon"`
