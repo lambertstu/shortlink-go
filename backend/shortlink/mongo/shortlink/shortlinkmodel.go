@@ -2,10 +2,10 @@ package model
 
 import (
 	"context"
-	"errors"
 	"github.com/zeromicro/go-zero/core/stores/mon"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 )
 
@@ -23,12 +23,38 @@ type (
 		shortlinkModel
 		FindOneByShortUrl(ctx context.Context, shortLink, gid string) (*Shortlink, error)
 		InsertOneShortlink(ctx context.Context, data *Shortlink) error
+		UpdateShortLinkInfo(ctx context.Context, data *Shortlink) error
 	}
 
 	customShortlinkModel struct {
 		*defaultShortlinkModel
 	}
 )
+
+func (c *customShortlinkModel) UpdateShortLinkInfo(ctx context.Context, data *Shortlink) error {
+	if data == nil {
+		return ErrInvalidRequest
+	}
+
+	filter := bson.M{
+		"full_short_url": data.FullShortUrl,
+		"deleteFlag":     0,
+	}
+
+	update := bson.M{"$set": data}
+	updateOptions := options.Update().SetUpsert(false)
+
+	result, err := c.conn.UpdateOne(ctx, filter, update, updateOptions)
+	if err != nil {
+		return err
+	}
+
+	if result.MatchedCount == 0 {
+		return ErrNotFound
+	}
+
+	return nil
+}
 
 func (c *customShortlinkModel) InsertOneShortlink(ctx context.Context, data *Shortlink) error {
 	if data.ID.IsZero() {
@@ -69,9 +95,6 @@ func (c *customShortlinkModel) FindOneByShortUrl(ctx context.Context, shortLink,
 
 	err := c.conn.FindOne(ctx, &shortlink, filter)
 	if err != nil {
-		if errors.Is(err, ErrNotFound) {
-			return nil, err
-		}
 		return nil, err
 	}
 

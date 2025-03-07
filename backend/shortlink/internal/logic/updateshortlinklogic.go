@@ -2,11 +2,10 @@ package logic
 
 import (
 	"context"
-
-	"shortlink/internal/svc"
-	"shortlink/pb/shortlink"
-
 	"github.com/zeromicro/go-zero/core/logx"
+	"shortlink/internal/svc"
+	model "shortlink/mongo/shortlink"
+	"shortlink/pb/shortlink"
 )
 
 type UpdateShortLinkLogic struct {
@@ -24,7 +23,19 @@ func NewUpdateShortLinkLogic(ctx context.Context, svcCtx *svc.ServiceContext) *U
 }
 
 func (l *UpdateShortLinkLogic) UpdateShortLink(in *shortlink.ShortLinkUpdateRequest) (*shortlink.ShortLinkUpdateResponse, error) {
-	// todo: add your logic here and delete this line
+	err := l.svcCtx.ShortlinkModel.UpdateShortLinkInfo(l.ctx, &model.Shortlink{
+		Domain:    in.GetDomain(),
+		OriginUrl: in.GetOriginUrl(),
+		Gid:       in.GetGid(),
+		Describe:  in.GetDescribe(),
+	})
+	if err != nil {
+		return &shortlink.ShortLinkUpdateResponse{
+			Success: false,
+		}, err
+	}
 
-	return &shortlink.ShortLinkUpdateResponse{}, nil
+	return &shortlink.ShortLinkUpdateResponse{
+		Success: true,
+	}, nil
 }
