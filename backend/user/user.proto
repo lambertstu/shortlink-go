@@ -73,6 +73,46 @@ message UpsertUserInfoResponse{
   bool success = 1;
 }
 
+message CreateGroupRequest{
+  string name = 1;
+  string username = 2;
+}
+
+message CreateGroupResponse{
+  string gid = 1;
+  string name = 2;
+  string username = 3;
+  bool success = 4;
+}
+
+message UpdateGroupRequest{
+  string gid = 1;
+  string name = 2;
+  string username = 3;
+}
+
+message UpdateGroupResponse{
+  bool success = 1;
+}
+
+message DeleteGroupRequest{
+  string gid = 1;
+  string username = 2;
+}
+
+message DeleteGroupResponse{
+  bool success = 1;
+}
+
+message GetGroupRequest{
+  string gid = 1;
+}
+
+message GetGroupResponse{
+  string gid = 1;
+  string name = 2;
+  string username = 3;
+}
 
 service User {
   rpc Register(RegisterRequest) returns(RegisterResponse);
@@ -82,4 +122,11 @@ service User {
   rpc IsExistUser(IsExistUserRequest) returns(IsExistUserResponse);
   rpc IsUserLogin(isUserLoginRequest) returns(isUserLoginResponse);
   rpc UpsertUserInfo(UpsertUserInfoRequest) returns(UpsertUserInfoResponse);
+}
+
+service Group{
+  rpc CreateGroup(CreateGroupRequest) returns(CreateGroupResponse);
+  rpc GetGroup(GetGroupRequest) returns(GetGroupResponse);
+  rpc UpdateGroup(UpdateGroupRequest) returns(UpdateGroupResponse);
+  rpc DeleteGroup(DeleteGroupRequest) returns(DeleteGroupResponse);
 }
