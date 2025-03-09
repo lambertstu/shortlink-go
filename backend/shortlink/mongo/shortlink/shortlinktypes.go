@@ -19,9 +19,9 @@ type Shortlink struct {
 	TotalPv      int                `bson:"total_pv" json:"totalPv"`
 	TotalUv      int                `bson:"total_uv" json:"totalUv"`
 	TotalUip     int                `bson:"total_uip" json:"totalUip"`
-	TodayPv      int                `bson:"-" json:"todayPv,omitempty"`
-	TodayUv      int                `bson:"-" json:"todayUv,omitempty"`
-	TodayUip     int                `bson:"-" json:"todayUip,omitempty"`
+	TodayPv      int                `bson:"today_pv" json:"todayPv,omitempty"`
+	TodayUv      int                `bson:"today_uv" json:"todayUv,omitempty"`
+	TodayUip     int                `bson:"today_uip" json:"todayUip,omitempty"`
 	DeleteFlag   int                `bson:"deleteFlag" json:"deleteFlag"`
 	UpdateAt     time.Time          `bson:"updateAt,omitempty" json:"updateAt,omitempty"`
 	CreateAt     time.Time          `bson:"createAt,omitempty" json:"createAt,omitempty"`

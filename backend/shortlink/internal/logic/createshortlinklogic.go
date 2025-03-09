@@ -12,8 +12,6 @@ import (
 	"shortlink/pkg/tool"
 )
 
-const createShortLinkDefaultDomain = "zeroLink:8001" // 短链接域名
-
 type CreateShortLinkLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
@@ -35,9 +33,9 @@ func (l *CreateShortLinkLogic) CreateShortLink(in *shortlink.ShortLinkCreateRequ
 		return nil, err
 	}
 
-	fullShortUrl := createShortLinkDefaultDomain + "/" + shortLinkSuffix
+	fullShortUrl := constant.CreateShortLinkDefaultDomain + "/" + shortLinkSuffix
 	err = l.svcCtx.ShortlinkModel.InsertOneShortlink(l.ctx, &model.Shortlink{
-		Domain:       createShortLinkDefaultDomain,
+		Domain:       constant.CreateShortLinkDefaultDomain,
 		OriginUrl:    in.GetOriginUrl(),
 		Gid:          in.GetGid(),
 		Describe:     in.GetDescribe(),
@@ -54,14 +52,12 @@ func (l *CreateShortLinkLogic) CreateShortLink(in *shortlink.ShortLinkCreateRequ
 
 		// TODO 日志
 		return &shortlink.ShortLinkCreateResponse{
-			Domain:    createShortLinkDefaultDomain,
 			OriginUrl: in.OriginUrl,
 			Success:   false,
 		}, nil
 	}
 
 	return &shortlink.ShortLinkCreateResponse{
-		Domain:    createShortLinkDefaultDomain,
 		OriginUrl: in.OriginUrl,
 		Success:   true,
 	}, nil
@@ -109,7 +105,7 @@ func (l *CreateShortLinkLogic) generateSuffixByLock(in *shortlink.ShortLinkCreat
 		originUrl += uuid.New().String()
 		shortUri = hashUtil.HashToBase62(originUrl)
 
-		_, err := l.svcCtx.ShortlinkModel.FindOneByShortUrl(l.ctx, shortUri, in.GetGid())
+		_, err := l.svcCtx.ShortlinkModel.FindOneByShortUrl(l.ctx, shortUri)
 		if errors.Is(err, model.ErrNotFound) {
 			break
 		}

@@ -21,7 +21,7 @@ type (
 	// and implement the added methods in customShortlinkModel.
 	ShortlinkModel interface {
 		shortlinkModel
-		FindOneByShortUrl(ctx context.Context, shortLink, gid string) (*Shortlink, error)
+		FindOneByShortUrl(ctx context.Context, shortLink string) (*Shortlink, error)
 		InsertOneShortlink(ctx context.Context, data *Shortlink) error
 		UpdateShortLinkInfo(ctx context.Context, data *Shortlink) error
 		Pagination(ctx context.Context, page, size, sortOrder int64, filter bson.D, sortField string, v any) error
@@ -62,8 +62,8 @@ func (c *customShortlinkModel) UpdateShortLinkInfo(ctx context.Context, data *Sh
 	}
 
 	filter := bson.M{
-		"full_short_url": data.FullShortUrl,
-		"deleteFlag":     0,
+		"origin_url": data.OriginUrl,
+		"deleteFlag": 0,
 	}
 
 	update := bson.M{"$set": data}
@@ -109,9 +109,8 @@ func (c *customShortlinkModel) InsertOneShortlink(ctx context.Context, data *Sho
 	return nil
 }
 
-func (c *customShortlinkModel) FindOneByShortUrl(ctx context.Context, shortLink, gid string) (*Shortlink, error) {
+func (c *customShortlinkModel) FindOneByShortUrl(ctx context.Context, shortLink string) (*Shortlink, error) {
 	filter := bson.M{
-		"gid":        gid,
 		"short_uri":  shortLink,
 		"deleteFlag": 0,
 	}

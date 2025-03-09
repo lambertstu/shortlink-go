@@ -6,6 +6,8 @@ import (
 	"shortlink/internal/svc"
 	model "shortlink/mongo/shortlink"
 	"shortlink/pb/shortlink"
+	"shortlink/pkg/constant"
+	"time"
 )
 
 type UpdateShortLinkLogic struct {
@@ -24,10 +26,18 @@ func NewUpdateShortLinkLogic(ctx context.Context, svcCtx *svc.ServiceContext) *U
 
 func (l *UpdateShortLinkLogic) UpdateShortLink(in *shortlink.ShortLinkUpdateRequest) (*shortlink.ShortLinkUpdateResponse, error) {
 	err := l.svcCtx.ShortlinkModel.UpdateShortLinkInfo(l.ctx, &model.Shortlink{
-		Domain:    in.GetDomain(),
-		OriginUrl: in.GetOriginUrl(),
-		Gid:       in.GetGid(),
-		Describe:  in.GetDescribe(),
+		Domain:   constant.CreateShortLinkDefaultDomain,
+		Gid:      in.GetGid(),
+		Describe: in.GetDescribe(),
+		Favicon:  in.GetFavicon(),
+		ClickNum: int(in.GetClickNum()),
+		TotalPv:  int(in.GetTotalPv()),
+		TotalUv:  int(in.GetTotalUv()),
+		TotalUip: int(in.GetTotalUip()),
+		TodayPv:  int(in.GetTodayPv()),
+		TodayUv:  int(in.GetTodayUv()),
+		TodayUip: int(in.GetTodayUip()),
+		UpdateAt: time.Now(),
 	})
 	if err != nil {
 		return &shortlink.ShortLinkUpdateResponse{

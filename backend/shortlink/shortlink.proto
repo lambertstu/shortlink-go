@@ -4,7 +4,6 @@ package shortlink;
 option go_package = "./shortlink";
 
 message ShortLinkCreateRequest {
-  string domain = 1;           // 域名
   string origin_url = 2;       // 原始链接
   string gid = 3;              // 分组标识
   string describe = 6;         // 描述
@@ -12,7 +11,6 @@ message ShortLinkCreateRequest {
 
 message ShortLinkCreateResponse {
   bool success = 1;
-  string domain = 2;           // 域名
   string origin_url = 3;       // 原始链接
 }
 
@@ -21,10 +19,16 @@ message ShortLinkUpdateResponse {
 }
 
 message ShortLinkUpdateRequest {
-  string domain = 1;           // 域名
-  string origin_url = 2;       // 原始链接
-  string gid = 3;              // 分组标识
-  string describe = 6;         // 描述
+  string gid = 1;              // 分组标识
+  string describe = 2;         // 描述
+  string favicon = 3;          // 网站图标
+  int64 clickNum = 4;          // 点击次数
+  int64 totalPv = 5;           // 总PV（Page Views）
+  int64 totalUv = 6;           // 总UV（Unique Visitors）
+  int64 totalUip = 7;          // 总独立IP
+  int64 todayPv = 8;           // 今日PV
+  int64 todayUv = 9;           // 今日UV
+  int64 todayUip = 10;         // 今日独立IP
 }
 
 message ShortLinkBatchCreateRequest {
@@ -46,7 +50,6 @@ message ShortLinkPageResponse {
 }
 
 message ShortLinkPageData{
-  string domain = 2;           // 域名
   string short_uri = 3;        // 短链接
   string full_short_url = 4;   // 完整短链接
   string origin_url = 5;       // 原始链接
@@ -74,7 +77,6 @@ message ListGroupShortLinkCountResponse{
 
 message ShortLinkDeleteRequest{
   string shortUri = 1;
-  string domain = 2;
   string origin_url = 3;
   string gid = 4;
 }
