@@ -28,11 +28,6 @@ func (s *GroupServer) CreateGroup(ctx context.Context, in *user.CreateGroupReque
 	return l.CreateGroup(in)
 }
 
-func (s *GroupServer) GetGroup(ctx context.Context, in *user.GetGroupRequest) (*user.GetGroupResponse, error) {
-	l := grouplogic.NewGetGroupLogic(ctx, s.svcCtx)
-	return l.GetGroup(in)
-}
-
 func (s *GroupServer) UpdateGroup(ctx context.Context, in *user.UpdateGroupRequest) (*user.UpdateGroupResponse, error) {
 	l := grouplogic.NewUpdateGroupLogic(ctx, s.svcCtx)
 	return l.UpdateGroup(in)
@@ -41,4 +36,9 @@ func (s *GroupServer) UpdateGroup(ctx context.Context, in *user.UpdateGroupReque
 func (s *GroupServer) DeleteGroup(ctx context.Context, in *user.DeleteGroupRequest) (*user.DeleteGroupResponse, error) {
 	l := grouplogic.NewDeleteGroupLogic(ctx, s.svcCtx)
 	return l.DeleteGroup(in)
+}
+
+func (s *GroupServer) GetGroupByGid(ctx context.Context, in *user.GetGroupRequest) (*user.GetGroupResponse, error) {
+	l := grouplogic.NewGetGroupByGidLogic(ctx, s.svcCtx)
+	return l.GetGroupByGid(in)
 }

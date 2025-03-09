@@ -104,27 +104,22 @@ message DeleteGroupResponse{
   bool success = 1;
 }
 
-message GetGroupRequest{
-  string gid = 1;
-}
-
-message GetGroupResponse{
-  string gid = 1;
-  repeated GroupData data = 2;
-}
-
-message GroupData{
-  string gid = 1;
-  string name = 2;
-  string username = 3;
-}
-
 message DeleteUserRequest{
   string username = 1;
 }
 
 message DeleteUserResponse{
   bool success = 1;
+}
+
+message GetGroupRequest{
+  string gid = 1;
+}
+
+message GetGroupResponse{
+  string gid = 1;
+  string name = 2;
+  string username = 3;
 }
 
 service User {
@@ -140,7 +135,7 @@ service User {
 
 service Group{
   rpc CreateGroup(CreateGroupRequest) returns(CreateGroupResponse);
-  rpc GetGroup(GetGroupRequest) returns(GetGroupResponse);
   rpc UpdateGroup(UpdateGroupRequest) returns(UpdateGroupResponse);
   rpc DeleteGroup(DeleteGroupRequest) returns(DeleteGroupResponse);
+  rpc GetGroupByGid(GetGroupRequest) returns(GetGroupResponse);
 }

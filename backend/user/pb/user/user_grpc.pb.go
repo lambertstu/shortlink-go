@@ -387,10 +387,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	Group_CreateGroup_FullMethodName = "/user.Group/CreateGroup"
-	Group_GetGroup_FullMethodName    = "/user.Group/GetGroup"
-	Group_UpdateGroup_FullMethodName = "/user.Group/UpdateGroup"
-	Group_DeleteGroup_FullMethodName = "/user.Group/DeleteGroup"
+	Group_CreateGroup_FullMethodName   = "/user.Group/CreateGroup"
+	Group_UpdateGroup_FullMethodName   = "/user.Group/UpdateGroup"
+	Group_DeleteGroup_FullMethodName   = "/user.Group/DeleteGroup"
+	Group_GetGroupByGid_FullMethodName = "/user.Group/GetGroupByGid"
 )
 
 // GroupClient is the client API for Group service.
@@ -398,9 +398,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GroupClient interface {
 	CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*CreateGroupResponse, error)
-	GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error)
 	UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*UpdateGroupResponse, error)
 	DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*DeleteGroupResponse, error)
+	GetGroupByGid(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error)
 }
 
 type groupClient struct {
@@ -415,16 +415,6 @@ func (c *groupClient) CreateGroup(ctx context.Context, in *CreateGroupRequest, o
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateGroupResponse)
 	err := c.cc.Invoke(ctx, Group_CreateGroup_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *groupClient) GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetGroupResponse)
-	err := c.cc.Invoke(ctx, Group_GetGroup_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -451,14 +441,24 @@ func (c *groupClient) DeleteGroup(ctx context.Context, in *DeleteGroupRequest, o
 	return out, nil
 }
 
+func (c *groupClient) GetGroupByGid(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetGroupResponse)
+	err := c.cc.Invoke(ctx, Group_GetGroupByGid_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GroupServer is the server API for Group service.
 // All implementations must embed UnimplementedGroupServer
 // for forward compatibility.
 type GroupServer interface {
 	CreateGroup(context.Context, *CreateGroupRequest) (*CreateGroupResponse, error)
-	GetGroup(context.Context, *GetGroupRequest) (*GetGroupResponse, error)
 	UpdateGroup(context.Context, *UpdateGroupRequest) (*UpdateGroupResponse, error)
 	DeleteGroup(context.Context, *DeleteGroupRequest) (*DeleteGroupResponse, error)
+	GetGroupByGid(context.Context, *GetGroupRequest) (*GetGroupResponse, error)
 	mustEmbedUnimplementedGroupServer()
 }
 
@@ -472,14 +472,14 @@ type UnimplementedGroupServer struct{}
 func (UnimplementedGroupServer) CreateGroup(context.Context, *CreateGroupRequest) (*CreateGroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateGroup not implemented")
 }
-func (UnimplementedGroupServer) GetGroup(context.Context, *GetGroupRequest) (*GetGroupResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetGroup not implemented")
-}
 func (UnimplementedGroupServer) UpdateGroup(context.Context, *UpdateGroupRequest) (*UpdateGroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateGroup not implemented")
 }
 func (UnimplementedGroupServer) DeleteGroup(context.Context, *DeleteGroupRequest) (*DeleteGroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteGroup not implemented")
+}
+func (UnimplementedGroupServer) GetGroupByGid(context.Context, *GetGroupRequest) (*GetGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetGroupByGid not implemented")
 }
 func (UnimplementedGroupServer) mustEmbedUnimplementedGroupServer() {}
 func (UnimplementedGroupServer) testEmbeddedByValue()               {}
@@ -520,24 +520,6 @@ func _Group_CreateGroup_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Group_GetGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetGroupRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GroupServer).GetGroup(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Group_GetGroup_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GroupServer).GetGroup(ctx, req.(*GetGroupRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Group_UpdateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateGroupRequest)
 	if err := dec(in); err != nil {
@@ -574,6 +556,24 @@ func _Group_DeleteGroup_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Group_GetGroupByGid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupServer).GetGroupByGid(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Group_GetGroupByGid_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupServer).GetGroupByGid(ctx, req.(*GetGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Group_ServiceDesc is the grpc.ServiceDesc for Group service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -586,16 +586,16 @@ var Group_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Group_CreateGroup_Handler,
 		},
 		{
-			MethodName: "GetGroup",
-			Handler:    _Group_GetGroup_Handler,
-		},
-		{
 			MethodName: "UpdateGroup",
 			Handler:    _Group_UpdateGroup_Handler,
 		},
 		{
 			MethodName: "DeleteGroup",
 			Handler:    _Group_DeleteGroup_Handler,
+		},
+		{
+			MethodName: "GetGroupByGid",
+			Handler:    _Group_GetGroupByGid_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

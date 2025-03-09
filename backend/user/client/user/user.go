@@ -24,7 +24,6 @@ type (
 	GetGroupResponse       = user.GetGroupResponse
 	GetUserRequest         = user.GetUserRequest
 	GetUserResponse        = user.GetUserResponse
-	GroupData              = user.GroupData
 	IsExistUserRequest     = user.IsExistUserRequest
 	IsExistUserResponse    = user.IsExistUserResponse
 	IsUserLoginRequest     = user.IsUserLoginRequest

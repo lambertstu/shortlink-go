@@ -22,7 +22,7 @@ type (
 	GroupModel interface {
 		groupModel
 		CreateGroup(ctx context.Context, gid string, in *user.CreateGroupRequest) error
-		GetGroup(ctx context.Context, in *user.GetGroupRequest, v any) error
+		GetGroupByGid(ctx context.Context, gid string) (*Group, error)
 		UpdateGroupName(ctx context.Context, in *user.UpdateGroupRequest) error
 		DeleteGroup(ctx context.Context, in *user.DeleteGroupRequest) error
 		HasGid(ctx context.Context, gid, username string) bool
@@ -77,15 +77,22 @@ func (c *customGroupModel) CreateGroup(ctx context.Context, gid string, in *user
 	return nil
 }
 
-func (c *customGroupModel) GetGroup(ctx context.Context, in *user.GetGroupRequest, v any) error {
-	filter := bson.M{"gid": in.GetGid()}
-
-	err := c.conn.Find(ctx, v, filter)
-	if err != nil {
-		return err
+func (c *customGroupModel) GetGroupByGid(ctx context.Context, gid string) (*Group, error) {
+	filter := bson.M{
+		"gid": gid,
 	}
 
-	return err
+	var group Group
+
+	err := c.conn.FindOne(ctx, &group, filter)
+	if err != nil {
+		if errors.Is(err, ErrNotFound) {
+			return nil, errors.New("分组名不存在")
+		}
+		return nil, err
+	}
+
+	return &group, nil
 }
 
 func (c *customGroupModel) UpdateGroupName(ctx context.Context, in *user.UpdateGroupRequest) error {

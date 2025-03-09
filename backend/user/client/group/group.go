@@ -24,7 +24,6 @@ type (
 	GetGroupResponse       = user.GetGroupResponse
 	GetUserRequest         = user.GetUserRequest
 	GetUserResponse        = user.GetUserResponse
-	GroupData              = user.GroupData
 	IsExistUserRequest     = user.IsExistUserRequest
 	IsExistUserResponse    = user.IsExistUserResponse
 	IsUserLoginRequest     = user.IsUserLoginRequest
@@ -42,9 +41,9 @@ type (
 
 	Group interface {
 		CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...grpc.CallOption) (*CreateGroupResponse, error)
-		GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error)
 		UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*UpdateGroupResponse, error)
 		DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*DeleteGroupResponse, error)
+		GetGroupByGid(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error)
 	}
 
 	defaultGroup struct {
@@ -63,11 +62,6 @@ func (m *defaultGroup) CreateGroup(ctx context.Context, in *CreateGroupRequest, 
 	return client.CreateGroup(ctx, in, opts...)
 }
 
-func (m *defaultGroup) GetGroup(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error) {
-	client := user.NewGroupClient(m.cli.Conn())
-	return client.GetGroup(ctx, in, opts...)
-}
-
 func (m *defaultGroup) UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*UpdateGroupResponse, error) {
 	client := user.NewGroupClient(m.cli.Conn())
 	return client.UpdateGroup(ctx, in, opts...)
@@ -76,4 +70,9 @@ func (m *defaultGroup) UpdateGroup(ctx context.Context, in *UpdateGroupRequest, 
 func (m *defaultGroup) DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*DeleteGroupResponse, error) {
 	client := user.NewGroupClient(m.cli.Conn())
 	return client.DeleteGroup(ctx, in, opts...)
+}
+
+func (m *defaultGroup) GetGroupByGid(ctx context.Context, in *GetGroupRequest, opts ...grpc.CallOption) (*GetGroupResponse, error) {
+	client := user.NewGroupClient(m.cli.Conn())
+	return client.GetGroupByGid(ctx, in, opts...)
 }
