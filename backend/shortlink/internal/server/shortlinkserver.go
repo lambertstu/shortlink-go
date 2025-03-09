@@ -28,11 +28,6 @@ func (s *ShortlinkServer) CreateShortLink(ctx context.Context, in *shortlink.Sho
 	return l.CreateShortLink(in)
 }
 
-func (s *ShortlinkServer) BatchCreateShortLink(ctx context.Context, in *shortlink.ShortLinkBatchCreateRequest) (*shortlink.ShortLinkCreateResponse, error) {
-	l := logic.NewBatchCreateShortLinkLogic(ctx, s.svcCtx)
-	return l.BatchCreateShortLink(in)
-}
-
 func (s *ShortlinkServer) UpdateShortLink(ctx context.Context, in *shortlink.ShortLinkUpdateRequest) (*shortlink.ShortLinkUpdateResponse, error) {
 	l := logic.NewUpdateShortLinkLogic(ctx, s.svcCtx)
 	return l.UpdateShortLink(in)
@@ -41,6 +36,11 @@ func (s *ShortlinkServer) UpdateShortLink(ctx context.Context, in *shortlink.Sho
 func (s *ShortlinkServer) PageShortLink(ctx context.Context, in *shortlink.ShortLinkPageRequest) (*shortlink.ShortLinkPageResponse, error) {
 	l := logic.NewPageShortLinkLogic(ctx, s.svcCtx)
 	return l.PageShortLink(in)
+}
+
+func (s *ShortlinkServer) DeleteShortLink(ctx context.Context, in *shortlink.ShortLinkDeleteRequest) (*shortlink.ShortLinkDeleteResponse, error) {
+	l := logic.NewDeleteShortLinkLogic(ctx, s.svcCtx)
+	return l.DeleteShortLink(in)
 }
 
 func (s *ShortlinkServer) ListGroupShortLinkCount(ctx context.Context, in *shortlink.ListGroupShortLinkCountRequest) (*shortlink.ListGroupShortLinkCountResponse, error) {

@@ -38,11 +38,11 @@ func (l *CreateShortLinkLogic) CreateShortLink(in *shortlink.ShortLinkCreateRequ
 	fullShortUrl := createShortLinkDefaultDomain + "/" + shortLinkSuffix
 	err = l.svcCtx.ShortlinkModel.InsertOneShortlink(l.ctx, &model.Shortlink{
 		Domain:       createShortLinkDefaultDomain,
-		ShortUri:     shortLinkSuffix,
-		FullShortUrl: fullShortUrl,
 		OriginUrl:    in.OriginUrl,
 		Gid:          in.Gid,
 		Describe:     in.Describe,
+		FullShortUrl: fullShortUrl,
+		ShortUri:     shortLinkSuffix,
 	})
 
 	if errors.Is(err, model.ErrShortUriExist) {

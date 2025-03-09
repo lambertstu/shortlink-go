@@ -19,6 +19,8 @@ type (
 	ShortLinkBatchCreateRequest     = shortlink.ShortLinkBatchCreateRequest
 	ShortLinkCreateRequest          = shortlink.ShortLinkCreateRequest
 	ShortLinkCreateResponse         = shortlink.ShortLinkCreateResponse
+	ShortLinkDeleteRequest          = shortlink.ShortLinkDeleteRequest
+	ShortLinkDeleteResponse         = shortlink.ShortLinkDeleteResponse
 	ShortLinkPageData               = shortlink.ShortLinkPageData
 	ShortLinkPageRequest            = shortlink.ShortLinkPageRequest
 	ShortLinkPageResponse           = shortlink.ShortLinkPageResponse
@@ -27,9 +29,9 @@ type (
 
 	Shortlink interface {
 		CreateShortLink(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
-		BatchCreateShortLink(ctx context.Context, in *ShortLinkBatchCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
 		UpdateShortLink(ctx context.Context, in *ShortLinkUpdateRequest, opts ...grpc.CallOption) (*ShortLinkUpdateResponse, error)
 		PageShortLink(ctx context.Context, in *ShortLinkPageRequest, opts ...grpc.CallOption) (*ShortLinkPageResponse, error)
+		DeleteShortLink(ctx context.Context, in *ShortLinkDeleteRequest, opts ...grpc.CallOption) (*ShortLinkDeleteResponse, error)
 		ListGroupShortLinkCount(ctx context.Context, in *ListGroupShortLinkCountRequest, opts ...grpc.CallOption) (*ListGroupShortLinkCountResponse, error)
 	}
 
@@ -49,11 +51,6 @@ func (m *defaultShortlink) CreateShortLink(ctx context.Context, in *ShortLinkCre
 	return client.CreateShortLink(ctx, in, opts...)
 }
 
-func (m *defaultShortlink) BatchCreateShortLink(ctx context.Context, in *ShortLinkBatchCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error) {
-	client := shortlink.NewShortlinkClient(m.cli.Conn())
-	return client.BatchCreateShortLink(ctx, in, opts...)
-}
-
 func (m *defaultShortlink) UpdateShortLink(ctx context.Context, in *ShortLinkUpdateRequest, opts ...grpc.CallOption) (*ShortLinkUpdateResponse, error) {
 	client := shortlink.NewShortlinkClient(m.cli.Conn())
 	return client.UpdateShortLink(ctx, in, opts...)
@@ -62,6 +59,11 @@ func (m *defaultShortlink) UpdateShortLink(ctx context.Context, in *ShortLinkUpd
 func (m *defaultShortlink) PageShortLink(ctx context.Context, in *ShortLinkPageRequest, opts ...grpc.CallOption) (*ShortLinkPageResponse, error) {
 	client := shortlink.NewShortlinkClient(m.cli.Conn())
 	return client.PageShortLink(ctx, in, opts...)
+}
+
+func (m *defaultShortlink) DeleteShortLink(ctx context.Context, in *ShortLinkDeleteRequest, opts ...grpc.CallOption) (*ShortLinkDeleteResponse, error) {
+	client := shortlink.NewShortlinkClient(m.cli.Conn())
+	return client.DeleteShortLink(ctx, in, opts...)
 }
 
 func (m *defaultShortlink) ListGroupShortLinkCount(ctx context.Context, in *ListGroupShortLinkCountRequest, opts ...grpc.CallOption) (*ListGroupShortLinkCountResponse, error) {

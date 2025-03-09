@@ -1,7 +1,8 @@
 package constant
 
 const (
-	DELETE_FLAG = 0
+	ENABLE_FLAG = 0
+	DELETE_FLAG = 1
 
 	USER_LOGIN_KEY = "user:login:"
 

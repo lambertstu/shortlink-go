@@ -20,9 +20,9 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	Shortlink_CreateShortLink_FullMethodName         = "/shortlink.Shortlink/CreateShortLink"
-	Shortlink_BatchCreateShortLink_FullMethodName    = "/shortlink.Shortlink/BatchCreateShortLink"
 	Shortlink_UpdateShortLink_FullMethodName         = "/shortlink.Shortlink/UpdateShortLink"
 	Shortlink_PageShortLink_FullMethodName           = "/shortlink.Shortlink/PageShortLink"
+	Shortlink_DeleteShortLink_FullMethodName         = "/shortlink.Shortlink/DeleteShortLink"
 	Shortlink_ListGroupShortLinkCount_FullMethodName = "/shortlink.Shortlink/ListGroupShortLinkCount"
 )
 
@@ -31,9 +31,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ShortlinkClient interface {
 	CreateShortLink(ctx context.Context, in *ShortLinkCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
-	BatchCreateShortLink(ctx context.Context, in *ShortLinkBatchCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error)
 	UpdateShortLink(ctx context.Context, in *ShortLinkUpdateRequest, opts ...grpc.CallOption) (*ShortLinkUpdateResponse, error)
 	PageShortLink(ctx context.Context, in *ShortLinkPageRequest, opts ...grpc.CallOption) (*ShortLinkPageResponse, error)
+	DeleteShortLink(ctx context.Context, in *ShortLinkDeleteRequest, opts ...grpc.CallOption) (*ShortLinkDeleteResponse, error)
 	ListGroupShortLinkCount(ctx context.Context, in *ListGroupShortLinkCountRequest, opts ...grpc.CallOption) (*ListGroupShortLinkCountResponse, error)
 }
 
@@ -49,16 +49,6 @@ func (c *shortlinkClient) CreateShortLink(ctx context.Context, in *ShortLinkCrea
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ShortLinkCreateResponse)
 	err := c.cc.Invoke(ctx, Shortlink_CreateShortLink_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *shortlinkClient) BatchCreateShortLink(ctx context.Context, in *ShortLinkBatchCreateRequest, opts ...grpc.CallOption) (*ShortLinkCreateResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ShortLinkCreateResponse)
-	err := c.cc.Invoke(ctx, Shortlink_BatchCreateShortLink_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -85,6 +75,16 @@ func (c *shortlinkClient) PageShortLink(ctx context.Context, in *ShortLinkPageRe
 	return out, nil
 }
 
+func (c *shortlinkClient) DeleteShortLink(ctx context.Context, in *ShortLinkDeleteRequest, opts ...grpc.CallOption) (*ShortLinkDeleteResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ShortLinkDeleteResponse)
+	err := c.cc.Invoke(ctx, Shortlink_DeleteShortLink_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *shortlinkClient) ListGroupShortLinkCount(ctx context.Context, in *ListGroupShortLinkCountRequest, opts ...grpc.CallOption) (*ListGroupShortLinkCountResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListGroupShortLinkCountResponse)
@@ -100,9 +100,9 @@ func (c *shortlinkClient) ListGroupShortLinkCount(ctx context.Context, in *ListG
 // for forward compatibility.
 type ShortlinkServer interface {
 	CreateShortLink(context.Context, *ShortLinkCreateRequest) (*ShortLinkCreateResponse, error)
-	BatchCreateShortLink(context.Context, *ShortLinkBatchCreateRequest) (*ShortLinkCreateResponse, error)
 	UpdateShortLink(context.Context, *ShortLinkUpdateRequest) (*ShortLinkUpdateResponse, error)
 	PageShortLink(context.Context, *ShortLinkPageRequest) (*ShortLinkPageResponse, error)
+	DeleteShortLink(context.Context, *ShortLinkDeleteRequest) (*ShortLinkDeleteResponse, error)
 	ListGroupShortLinkCount(context.Context, *ListGroupShortLinkCountRequest) (*ListGroupShortLinkCountResponse, error)
 	mustEmbedUnimplementedShortlinkServer()
 }
@@ -117,14 +117,14 @@ type UnimplementedShortlinkServer struct{}
 func (UnimplementedShortlinkServer) CreateShortLink(context.Context, *ShortLinkCreateRequest) (*ShortLinkCreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateShortLink not implemented")
 }
-func (UnimplementedShortlinkServer) BatchCreateShortLink(context.Context, *ShortLinkBatchCreateRequest) (*ShortLinkCreateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method BatchCreateShortLink not implemented")
-}
 func (UnimplementedShortlinkServer) UpdateShortLink(context.Context, *ShortLinkUpdateRequest) (*ShortLinkUpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateShortLink not implemented")
 }
 func (UnimplementedShortlinkServer) PageShortLink(context.Context, *ShortLinkPageRequest) (*ShortLinkPageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PageShortLink not implemented")
+}
+func (UnimplementedShortlinkServer) DeleteShortLink(context.Context, *ShortLinkDeleteRequest) (*ShortLinkDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteShortLink not implemented")
 }
 func (UnimplementedShortlinkServer) ListGroupShortLinkCount(context.Context, *ListGroupShortLinkCountRequest) (*ListGroupShortLinkCountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListGroupShortLinkCount not implemented")
@@ -168,24 +168,6 @@ func _Shortlink_CreateShortLink_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Shortlink_BatchCreateShortLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ShortLinkBatchCreateRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShortlinkServer).BatchCreateShortLink(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Shortlink_BatchCreateShortLink_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShortlinkServer).BatchCreateShortLink(ctx, req.(*ShortLinkBatchCreateRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Shortlink_UpdateShortLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ShortLinkUpdateRequest)
 	if err := dec(in); err != nil {
@@ -222,6 +204,24 @@ func _Shortlink_PageShortLink_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Shortlink_DeleteShortLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShortLinkDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShortlinkServer).DeleteShortLink(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Shortlink_DeleteShortLink_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShortlinkServer).DeleteShortLink(ctx, req.(*ShortLinkDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Shortlink_ListGroupShortLinkCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListGroupShortLinkCountRequest)
 	if err := dec(in); err != nil {
@@ -252,16 +252,16 @@ var Shortlink_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Shortlink_CreateShortLink_Handler,
 		},
 		{
-			MethodName: "BatchCreateShortLink",
-			Handler:    _Shortlink_BatchCreateShortLink_Handler,
-		},
-		{
 			MethodName: "UpdateShortLink",
 			Handler:    _Shortlink_UpdateShortLink_Handler,
 		},
 		{
 			MethodName: "PageShortLink",
 			Handler:    _Shortlink_PageShortLink_Handler,
+		},
+		{
+			MethodName: "DeleteShortLink",
+			Handler:    _Shortlink_DeleteShortLink_Handler,
 		},
 		{
 			MethodName: "ListGroupShortLinkCount",
