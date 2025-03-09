@@ -4,7 +4,8 @@ import (
 	"github.com/zeromicro/go-zero/core/bloom"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"user/internal/config"
-	user "user/mongo/user"
+	groupModel "user/mongo/group"
+	userModel "user/mongo/user"
 )
 
 const (
@@ -15,18 +16,20 @@ const (
 
 type ServiceContext struct {
 	Config      config.Config
-	UserModel   user.UserModel
 	Redis       *redis.Redis
 	BloomFilter *bloom.Filter
+	UserModel   userModel.UserModel
+	GroupModel  groupModel.GroupModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	rds, filter := getRedisInstance(c)
 	return &ServiceContext{
 		Config:      c,
-		UserModel:   user.NewUserModel(mongoUrl, user.DB, user.Collection),
+		UserModel:   userModel.NewUserModel(mongoUrl, userModel.DB, userModel.Collection),
 		Redis:       rds,
 		BloomFilter: filter,
+		GroupModel:  groupModel.NewGroupModel(mongoUrl, groupModel.DB, groupModel.Collection),
 	}
 }
 

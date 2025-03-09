@@ -2,7 +2,7 @@
 // goctl 1.7.3
 // Source: user.proto
 
-package userclient
+package user
 
 import (
 	"context"
@@ -14,6 +14,12 @@ import (
 )
 
 type (
+	CreateGroupRequest     = user.CreateGroupRequest
+	CreateGroupResponse    = user.CreateGroupResponse
+	DeleteGroupRequest     = user.DeleteGroupRequest
+	DeleteGroupResponse    = user.DeleteGroupResponse
+	GetGroupRequest        = user.GetGroupRequest
+	GetGroupResponse       = user.GetGroupResponse
 	GetUserRequest         = user.GetUserRequest
 	GetUserResponse        = user.GetUserResponse
 	IsExistUserRequest     = user.IsExistUserRequest
@@ -26,6 +32,8 @@ type (
 	LogoutResponse         = user.LogoutResponse
 	RegisterRequest        = user.RegisterRequest
 	RegisterResponse       = user.RegisterResponse
+	UpdateGroupRequest     = user.UpdateGroupRequest
+	UpdateGroupResponse    = user.UpdateGroupResponse
 	UpsertUserInfoRequest  = user.UpsertUserInfoRequest
 	UpsertUserInfoResponse = user.UpsertUserInfoResponse
 

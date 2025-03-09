@@ -1,10 +1,11 @@
-package logic
+package userlogic
 
 import (
 	"context"
+	"user/pkg/constant"
+
 	"user/internal/svc"
 	"user/pb/user"
-	"user/pkg/constant"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

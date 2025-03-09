@@ -1,13 +1,14 @@
-package logic
+package userlogic
 
 import (
 	"context"
 	"errors"
 	"github.com/google/uuid"
-	"user/internal/svc"
-	"user/pb/user"
 	"user/pkg/constant"
 	"user/pkg/errorcode"
+
+	"user/internal/svc"
+	"user/pb/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

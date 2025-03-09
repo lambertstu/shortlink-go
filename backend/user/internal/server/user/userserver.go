@@ -7,7 +7,7 @@ package server
 import (
 	"context"
 
-	"user/internal/logic"
+	"user/internal/logic/user"
 	"user/internal/svc"
 	"user/pb/user"
 )
@@ -24,36 +24,36 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 }
 
 func (s *UserServer) Register(ctx context.Context, in *user.RegisterRequest) (*user.RegisterResponse, error) {
-	l := logic.NewRegisterLogic(ctx, s.svcCtx)
+	l := userlogic.NewRegisterLogic(ctx, s.svcCtx)
 	return l.Register(in)
 }
 
 func (s *UserServer) Login(ctx context.Context, in *user.LoginRequest) (*user.LoginResponse, error) {
-	l := logic.NewLoginLogic(ctx, s.svcCtx)
+	l := userlogic.NewLoginLogic(ctx, s.svcCtx)
 	return l.Login(in)
 }
 
 func (s *UserServer) Logout(ctx context.Context, in *user.LogoutRequest) (*user.LogoutResponse, error) {
-	l := logic.NewLogoutLogic(ctx, s.svcCtx)
+	l := userlogic.NewLogoutLogic(ctx, s.svcCtx)
 	return l.Logout(in)
 }
 
 func (s *UserServer) GetUserByUsername(ctx context.Context, in *user.GetUserRequest) (*user.GetUserResponse, error) {
-	l := logic.NewGetUserByUsernameLogic(ctx, s.svcCtx)
+	l := userlogic.NewGetUserByUsernameLogic(ctx, s.svcCtx)
 	return l.GetUserByUsername(in)
 }
 
 func (s *UserServer) IsExistUser(ctx context.Context, in *user.IsExistUserRequest) (*user.IsExistUserResponse, error) {
-	l := logic.NewIsExistUserLogic(ctx, s.svcCtx)
+	l := userlogic.NewIsExistUserLogic(ctx, s.svcCtx)
 	return l.IsExistUser(in)
 }
 
 func (s *UserServer) IsUserLogin(ctx context.Context, in *user.IsUserLoginRequest) (*user.IsUserLoginResponse, error) {
-	l := logic.NewIsUserLoginLogic(ctx, s.svcCtx)
+	l := userlogic.NewIsUserLoginLogic(ctx, s.svcCtx)
 	return l.IsUserLogin(in)
 }
 
 func (s *UserServer) UpsertUserInfo(ctx context.Context, in *user.UpsertUserInfoRequest) (*user.UpsertUserInfoResponse, error) {
-	l := logic.NewUpsertUserInfoLogic(ctx, s.svcCtx)
+	l := userlogic.NewUpsertUserInfoLogic(ctx, s.svcCtx)
 	return l.UpsertUserInfo(in)
 }
