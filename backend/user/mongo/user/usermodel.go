@@ -6,7 +6,9 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/mon"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"time"
+	constant "user/pkg/constant"
 	"user/pkg/errorcode"
 )
 
@@ -23,7 +25,7 @@ type (
 	UserModel interface {
 		userModel
 		Register(ctx context.Context, data *User) error
-		UpdateUserInfo(ctx context.Context, data *User) error
+		UpdateUserInfo(ctx context.Context, data *User) (*mongo.UpdateResult, error)
 		GetUserByUserName(ctx context.Context, username string) (*User, error)
 		Login(ctx context.Context, username, password string) bool
 	}
@@ -37,7 +39,7 @@ func (c *customUserModel) Login(ctx context.Context, username, password string) 
 	filter := bson.M{
 		"username":   username,
 		"password":   password,
-		"deleteFlag": 0,
+		"deleteFlag": constant.ENABLE_FLAG,
 	}
 
 	var user User
@@ -49,11 +51,14 @@ func (c *customUserModel) Login(ctx context.Context, username, password string) 
 }
 
 func (c *customUserModel) GetUserByUserName(ctx context.Context, username string) (*User, error) {
-	filter := bson.M{"username": username}
+	filter := bson.M{
+		"username":   username,
+		"deleteFlag": constant.ENABLE_FLAG,
+	}
 
 	var user User
 
-	err := c.conn.FindOne(ctx, user, filter)
+	err := c.conn.FindOne(ctx, &user, filter)
 	if err != nil {
 		if errors.Is(err, ErrNotFound) {
 			return nil, errors.New(errorcode.UserNotExist.Message())
@@ -73,7 +78,7 @@ func (c *customUserModel) Register(ctx context.Context, data *User) error {
 
 	filter := bson.M{
 		"username":   data.Username,
-		"deleteFlag": bson.M{"$ne": 1},
+		"deleteFlag": constant.ENABLE_FLAG,
 	}
 
 	count, err := c.conn.CountDocuments(ctx, filter)
@@ -92,17 +97,17 @@ func (c *customUserModel) Register(ctx context.Context, data *User) error {
 	return nil
 }
 
-func (c *customUserModel) UpdateUserInfo(ctx context.Context, data *User) error {
+func (c *customUserModel) UpdateUserInfo(ctx context.Context, data *User) (*mongo.UpdateResult, error) {
 	data.UpdateAt = time.Now()
 
-	filter := bson.D{
-		{"username", data.Username},
+	filter := bson.M{
+		"username":   data.Username,
+		"deleteFlag": constant.ENABLE_FLAG,
 	}
 	update := bson.D{
 		{"$set", data},
 	}
-	_, err := c.conn.UpdateOne(ctx, filter, update)
-	return err
+	return c.conn.UpdateOne(ctx, filter, update)
 }
 
 // NewUserModel returns a model for the mongo.

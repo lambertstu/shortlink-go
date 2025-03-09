@@ -119,6 +119,14 @@ message GroupData{
   string username = 3;
 }
 
+message DeleteUserRequest{
+  string username = 1;
+}
+
+message DeleteUserResponse{
+  bool success = 1;
+}
+
 service User {
   rpc Register(RegisterRequest) returns(RegisterResponse);
   rpc Login(LoginRequest) returns(LoginResponse);
@@ -127,6 +135,7 @@ service User {
   rpc IsExistUser(IsExistUserRequest) returns(IsExistUserResponse);
   rpc IsUserLogin(isUserLoginRequest) returns(isUserLoginResponse);
   rpc UpsertUserInfo(UpsertUserInfoRequest) returns(UpsertUserInfoResponse);
+  rpc DeleteUser(DeleteUserRequest) returns(DeleteUserResponse);
 }
 
 service Group{

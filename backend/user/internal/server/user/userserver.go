@@ -57,3 +57,8 @@ func (s *UserServer) UpsertUserInfo(ctx context.Context, in *user.UpsertUserInfo
 	l := userlogic.NewUpsertUserInfoLogic(ctx, s.svcCtx)
 	return l.UpsertUserInfo(in)
 }
+
+func (s *UserServer) DeleteUser(ctx context.Context, in *user.DeleteUserRequest) (*user.DeleteUserResponse, error) {
+	l := userlogic.NewDeleteUserLogic(ctx, s.svcCtx)
+	return l.DeleteUser(in)
+}

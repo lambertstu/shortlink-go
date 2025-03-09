@@ -18,6 +18,8 @@ type (
 	CreateGroupResponse    = user.CreateGroupResponse
 	DeleteGroupRequest     = user.DeleteGroupRequest
 	DeleteGroupResponse    = user.DeleteGroupResponse
+	DeleteUserRequest      = user.DeleteUserRequest
+	DeleteUserResponse     = user.DeleteUserResponse
 	GetGroupRequest        = user.GetGroupRequest
 	GetGroupResponse       = user.GetGroupResponse
 	GetUserRequest         = user.GetUserRequest
@@ -46,6 +48,7 @@ type (
 		IsExistUser(ctx context.Context, in *IsExistUserRequest, opts ...grpc.CallOption) (*IsExistUserResponse, error)
 		IsUserLogin(ctx context.Context, in *IsUserLoginRequest, opts ...grpc.CallOption) (*IsUserLoginResponse, error)
 		UpsertUserInfo(ctx context.Context, in *UpsertUserInfoRequest, opts ...grpc.CallOption) (*UpsertUserInfoResponse, error)
+		DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	}
 
 	defaultUser struct {
@@ -92,4 +95,9 @@ func (m *defaultUser) IsUserLogin(ctx context.Context, in *IsUserLoginRequest, o
 func (m *defaultUser) UpsertUserInfo(ctx context.Context, in *UpsertUserInfoRequest, opts ...grpc.CallOption) (*UpsertUserInfoResponse, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.UpsertUserInfo(ctx, in, opts...)
+}
+
+func (m *defaultUser) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.DeleteUser(ctx, in, opts...)
 }

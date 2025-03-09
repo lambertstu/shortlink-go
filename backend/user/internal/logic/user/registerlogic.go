@@ -39,7 +39,7 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 		RealName:   in.RealName,
 		Phone:      in.Phone,
 		Mail:       in.Email,
-		DeleteFlag: constant.DELETE_FLAG,
+		DeleteFlag: constant.ENABLE_FLAG,
 	})
 	if err != nil {
 		return &user.RegisterResponse{

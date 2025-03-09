@@ -18,6 +18,8 @@ type (
 	CreateGroupResponse    = user.CreateGroupResponse
 	DeleteGroupRequest     = user.DeleteGroupRequest
 	DeleteGroupResponse    = user.DeleteGroupResponse
+	DeleteUserRequest      = user.DeleteUserRequest
+	DeleteUserResponse     = user.DeleteUserResponse
 	GetGroupRequest        = user.GetGroupRequest
 	GetGroupResponse       = user.GetGroupResponse
 	GetUserRequest         = user.GetUserRequest

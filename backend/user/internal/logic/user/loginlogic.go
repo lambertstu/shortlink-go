@@ -4,11 +4,9 @@ import (
 	"context"
 	"errors"
 	"github.com/google/uuid"
-	"user/pkg/constant"
-	"user/pkg/errorcode"
-
 	"user/internal/svc"
 	"user/pb/user"
+	"user/pkg/constant"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -30,7 +28,7 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 	loginSuccess := l.svcCtx.UserModel.Login(l.ctx, in.Username, in.Password)
 	if !loginSuccess {
-		return &user.LoginResponse{}, errors.New(errorcode.UserNotExist.Message())
+		return &user.LoginResponse{}, errors.New("用户名或密码错误")
 	}
 	hasLoginMap, err := l.svcCtx.Redis.Hgetall(constant.USER_LOGIN_KEY + in.GetUsername())
 	if err != nil {
