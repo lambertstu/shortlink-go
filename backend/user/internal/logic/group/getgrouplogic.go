@@ -24,7 +24,14 @@ func NewGetGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetGroup
 }
 
 func (l *GetGroupLogic) GetGroup(in *user.GetGroupRequest) (*user.GetGroupResponse, error) {
-	// todo: add your logic here and delete this line
+	var groupList []*user.GroupData
+	err := l.svcCtx.GroupModel.GetGroup(l.ctx, in, groupList)
+	if err != nil {
+		return nil, err
+	}
 
-	return &user.GetGroupResponse{}, nil
+	return &user.GetGroupResponse{
+		Gid:  in.GetGid(),
+		Data: groupList,
+	}, nil
 }

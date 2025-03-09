@@ -24,7 +24,15 @@ func NewUpdateGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Updat
 }
 
 func (l *UpdateGroupLogic) UpdateGroup(in *user.UpdateGroupRequest) (*user.UpdateGroupResponse, error) {
-	// todo: add your logic here and delete this line
+	err := l.svcCtx.GroupModel.UpdateGroupName(l.ctx, in)
 
-	return &user.UpdateGroupResponse{}, nil
+	if err != nil {
+		return &user.UpdateGroupResponse{
+			Success: false,
+		}, err
+	}
+
+	return &user.UpdateGroupResponse{
+		Success: true,
+	}, nil
 }

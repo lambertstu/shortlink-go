@@ -110,6 +110,11 @@ message GetGroupRequest{
 
 message GetGroupResponse{
   string gid = 1;
+  repeated GroupData data = 2;
+}
+
+message GroupData{
+  string gid = 1;
   string name = 2;
   string username = 3;
 }

@@ -24,13 +24,32 @@ func NewCreateGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Creat
 }
 
 func (l *CreateGroupLogic) CreateGroup(in *user.CreateGroupRequest) (*user.CreateGroupResponse, error) {
+	var (
+		gid string
+		err error
+	)
+
 	for {
-		gid, err := tool.GenerateRandomSequence()
+		gid, err = tool.GenerateRandomSequence()
 		if err != nil {
 			return nil, err
 		}
 
+		hasGid := l.svcCtx.GroupModel.HasGid(l.ctx, gid, in.GetUsername())
+		if hasGid {
+			break
+		}
 	}
 
-	return &user.CreateGroupResponse{}, nil
+	err = l.svcCtx.GroupModel.CreateGroup(l.ctx, gid, in)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user.CreateGroupResponse{
+		Gid:      gid,
+		Name:     in.GetName(),
+		Username: in.GetUsername(),
+		Success:  true,
+	}, nil
 }

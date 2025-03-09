@@ -3,7 +3,13 @@ package model
 import (
 	"context"
 	"github.com/zeromicro/go-zero/core/stores/mon"
+	"go.mongodb.org/mongo-driver/bson"
 	"user/pb/user"
+)
+
+const (
+	DB         = "shortlink"
+	Collection = "group"
 )
 
 var _ GroupModel = (*customGroupModel)(nil)
@@ -14,15 +20,32 @@ type (
 	GroupModel interface {
 		groupModel
 		CreateGroup(ctx context.Context, gid string, in *user.CreateGroupRequest) error
-		GetGroup(ctx context.Context, in *user.GetGroupRequest) (*user.GetGroupResponse, error)
-		UpdateGroup(ctx context.Context, in *user.UpdateGroupRequest) error
+		GetGroup(ctx context.Context, in *user.GetGroupRequest, v any) error
+		UpdateGroupName(ctx context.Context, in *user.UpdateGroupRequest) error
 		DeleteGroup(ctx context.Context, in *user.DeleteGroupRequest) error
+		HasGid(ctx context.Context, gid, username string) bool
 	}
 
 	customGroupModel struct {
 		*defaultGroupModel
 	}
 )
+
+func (c *customGroupModel) HasGid(ctx context.Context, gid, username string) bool {
+	filter := bson.M{
+		"gid":      gid,
+		"username": username,
+	}
+
+	var group Group
+
+	err := c.conn.FindOne(ctx, &group, filter)
+	if err != nil {
+		return false
+	}
+
+	return true
+}
 
 func (c *customGroupModel) CreateGroup(ctx context.Context, gid string, in *user.CreateGroupRequest) error {
 	groupData := map[string]interface{}{
@@ -38,19 +61,36 @@ func (c *customGroupModel) CreateGroup(ctx context.Context, gid string, in *user
 	return nil
 }
 
-func (c *customGroupModel) GetGroup(ctx context.Context, in *user.GetGroupRequest) (*user.GetGroupResponse, error) {
-	//TODO implement me
-	panic("implement me")
+func (c *customGroupModel) GetGroup(ctx context.Context, in *user.GetGroupRequest, v any) error {
+	filter := bson.M{"gid": in.GetGid()}
+
+	err := c.conn.Find(ctx, v, filter)
+	if err != nil {
+		return err
+	}
+
+	return err
 }
 
-func (c *customGroupModel) UpdateGroup(ctx context.Context, in *user.UpdateGroupRequest) error {
-	//TODO implement me
-	panic("implement me")
+func (c *customGroupModel) UpdateGroupName(ctx context.Context, in *user.UpdateGroupRequest) error {
+	filter := bson.M{"gid": in.Gid}
+	update := bson.M{"$set": bson.M{"name": in.GetName()}}
+
+	_, err := c.conn.UpdateOne(ctx, filter, update)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *customGroupModel) DeleteGroup(ctx context.Context, in *user.DeleteGroupRequest) error {
-	//TODO implement me
-	panic("implement me")
+	filter := bson.M{"gid": in.Gid}
+
+	_, err := c.conn.DeleteOne(ctx, filter)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // NewGroupModel returns a model for the mongo.

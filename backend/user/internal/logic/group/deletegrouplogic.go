@@ -24,7 +24,13 @@ func NewDeleteGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 }
 
 func (l *DeleteGroupLogic) DeleteGroup(in *user.DeleteGroupRequest) (*user.DeleteGroupResponse, error) {
-	// todo: add your logic here and delete this line
-
-	return &user.DeleteGroupResponse{}, nil
+	err := l.svcCtx.GroupModel.DeleteGroup(l.ctx, in)
+	if err != nil {
+		return &user.DeleteGroupResponse{
+			Success: false,
+		}, err
+	}
+	return &user.DeleteGroupResponse{
+		Success: true,
+	}, nil
 }

@@ -32,7 +32,7 @@ type (
 	}
 )
 
-func (c *customShortlinkModel) Pagination(ctx context.Context, page, size, sortOrder int64, filter bson.D, sortField string, v *[]Shortlink) error {
+func (c *customShortlinkModel) Pagination(ctx context.Context, page, size, sortOrder int64, filter bson.D, sortField string, v any) error {
 	if page < 1 {
 		page = 1
 	}
