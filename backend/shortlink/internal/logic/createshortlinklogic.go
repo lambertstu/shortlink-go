@@ -4,15 +4,15 @@ import (
 	"context"
 	"errors"
 	"github.com/google/uuid"
+	"github.com/zeromicro/go-zero/core/logx"
 	"shortlink/internal/svc"
 	model "shortlink/mongo/shortlink"
 	"shortlink/pb/shortlink"
+	constant "shortlink/pkg/constant"
 	"shortlink/pkg/tool"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
-const createShortLinkDefaultDomain = "zero"
+const createShortLinkDefaultDomain = "zeroLink:8001" // 短链接域名
 
 type CreateShortLinkLogic struct {
 	ctx    context.Context
@@ -38,11 +38,12 @@ func (l *CreateShortLinkLogic) CreateShortLink(in *shortlink.ShortLinkCreateRequ
 	fullShortUrl := createShortLinkDefaultDomain + "/" + shortLinkSuffix
 	err = l.svcCtx.ShortlinkModel.InsertOneShortlink(l.ctx, &model.Shortlink{
 		Domain:       createShortLinkDefaultDomain,
-		OriginUrl:    in.OriginUrl,
-		Gid:          in.Gid,
-		Describe:     in.Describe,
+		OriginUrl:    in.GetOriginUrl(),
+		Gid:          in.GetGid(),
+		Describe:     in.GetDescribe(),
 		FullShortUrl: fullShortUrl,
 		ShortUri:     shortLinkSuffix,
+		DeleteFlag:   constant.ENABLE_FLAG,
 	})
 
 	if errors.Is(err, model.ErrShortUriExist) {
