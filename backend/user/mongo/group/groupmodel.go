@@ -2,8 +2,10 @@ package model
 
 import (
 	"context"
+	"errors"
 	"github.com/zeromicro/go-zero/core/stores/mon"
 	"go.mongodb.org/mongo-driver/bson"
+	"time"
 	"user/pb/user"
 )
 
@@ -48,13 +50,27 @@ func (c *customGroupModel) HasGid(ctx context.Context, gid, username string) boo
 }
 
 func (c *customGroupModel) CreateGroup(ctx context.Context, gid string, in *user.CreateGroupRequest) error {
+	filter := bson.M{
+		"name": in.GetName(),
+	}
+
+	count, err := c.conn.CountDocuments(ctx, filter)
+	if err != nil {
+		return err
+	}
+	if count > 0 {
+		return errors.New("分组名已存在")
+	}
+
 	groupData := map[string]interface{}{
 		"name":     in.Name,
 		"username": in.Username,
 		"gid":      gid,
+		"createAt": time.Now(),
+		"updateAt": time.Now(),
 	}
 
-	_, err := c.conn.InsertOne(ctx, groupData)
+	_, err = c.conn.InsertOne(ctx, groupData)
 	if err != nil {
 		return err
 	}

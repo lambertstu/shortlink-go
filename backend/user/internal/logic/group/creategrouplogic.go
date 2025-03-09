@@ -36,7 +36,7 @@ func (l *CreateGroupLogic) CreateGroup(in *user.CreateGroupRequest) (*user.Creat
 		}
 
 		hasGid := l.svcCtx.GroupModel.HasGid(l.ctx, gid, in.GetUsername())
-		if hasGid {
+		if !hasGid {
 			break
 		}
 	}
