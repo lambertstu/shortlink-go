@@ -66,7 +66,23 @@ func (c *customShortlinkModel) UpdateShortLinkInfo(ctx context.Context, data *Sh
 		"deleteFlag": 0,
 	}
 
-	update := bson.M{"$set": data}
+	// 动态构造 `$set` 只更新非零字段
+	updateFields := bson.M{}
+	dataBytes, _ := bson.Marshal(data)
+	err := bson.Unmarshal(dataBytes, &updateFields)
+	if err != nil {
+		return err
+	}
+
+	delete(updateFields, "origin_url")
+	delete(updateFields, "full_short_url")
+	delete(updateFields, "short_uri")
+
+	if len(updateFields) == 0 {
+		return nil
+	}
+
+	update := bson.M{"$set": updateFields}
 	updateOptions := options.Update().SetUpsert(false)
 
 	result, err := c.conn.UpdateOne(ctx, filter, update, updateOptions)
