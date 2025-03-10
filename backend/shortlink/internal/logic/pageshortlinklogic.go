@@ -3,6 +3,8 @@ package logic
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	model "shortlink/mongo/shortlink"
+	"shortlink/pkg/constant"
 
 	"shortlink/internal/svc"
 	"shortlink/pb/shortlink"
@@ -25,14 +27,39 @@ func NewPageShortLinkLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Pag
 }
 
 func (l *PageShortLinkLogic) PageShortLink(in *shortlink.ShortLinkPageRequest) (*shortlink.ShortLinkPageResponse, error) {
-	var list []*shortlink.ShortLinkPageData
-	err := l.svcCtx.ShortlinkModel.Pagination(l.ctx, in.GetPage(), in.GetSize(), in.GetOrderTag(), bson.D{}, "full_short_url", list)
+	var list []model.Shortlink
+	filter := bson.M{
+		"gid":        in.GetGid(),
+		"deleteFlag": constant.ENABLE_FLAG,
+	}
+	total, err := l.svcCtx.ShortlinkModel.Pagination(l.ctx, in.GetPage(), in.GetSize(), in.GetOrderTag(), filter, "full_short_url", &list)
 	if err != nil {
 		return nil, err
 	}
 
+	var responseList []*shortlink.ShortLinkPageData
+	for _, item := range list {
+		responseList = append(responseList, &shortlink.ShortLinkPageData{
+			ShortUri:     item.ShortUri,
+			FullShortUrl: item.FullShortUrl,
+			OriginUrl:    item.OriginUrl,
+			Gid:          item.Gid,
+			Describe:     item.Describe,
+			Favicon:      item.Favicon,
+			TotalPv:      int32(item.TotalPv),
+			TodayPv:      int32(item.TodayPv),
+			TotalUv:      int32(item.TotalUv),
+			TodayUv:      int32(item.TodayUv),
+			TotalUip:     int32(item.TotalUip),
+			TodayUip:     int32(item.TodayUip),
+			CreateTime:   item.CreateAt.Unix(),
+		})
+	}
+
 	return &shortlink.ShortLinkPageResponse{
-		List:  list,
-		Total: int32(len(list)),
+		List:    responseList,
+		Page:    in.GetPage(),
+		MaxPage: (total + in.GetSize() - 1) / in.GetSize(),
+		Total:   total,
 	}, nil
 }

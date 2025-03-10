@@ -24,7 +24,7 @@ type (
 		FindOneByShortUrl(ctx context.Context, shortLink string) (*Shortlink, error)
 		InsertOneShortlink(ctx context.Context, data *Shortlink) error
 		UpdateShortLinkInfo(ctx context.Context, data *Shortlink) error
-		Pagination(ctx context.Context, page, size, sortOrder int64, filter bson.D, sortField string, v any) error
+		Pagination(ctx context.Context, page, size, sortOrder int64, filter bson.M, sortField string, v any) (int64, error)
 	}
 
 	customShortlinkModel struct {
@@ -32,7 +32,7 @@ type (
 	}
 )
 
-func (c *customShortlinkModel) Pagination(ctx context.Context, page, size, sortOrder int64, filter bson.D, sortField string, v any) error {
+func (c *customShortlinkModel) Pagination(ctx context.Context, page, size, sortOrder int64, filter bson.M, sortField string, v any) (int64, error) {
 	if page < 1 {
 		page = 1
 	}
@@ -53,7 +53,17 @@ func (c *customShortlinkModel) Pagination(ctx context.Context, page, size, sortO
 	}
 	opts.SetSort(bson.D{{sortField, sortOrder}})
 
-	return c.conn.Find(ctx, v, filter, opts)
+	err := c.conn.Find(ctx, v, filter, opts)
+	if err != nil {
+		return -1, err
+	}
+
+	sum, err := c.conn.CountDocuments(ctx, filter)
+	if err != nil {
+		return -1, err
+	}
+
+	return sum, nil
 }
 
 func (c *customShortlinkModel) UpdateShortLinkInfo(ctx context.Context, data *Shortlink) error {

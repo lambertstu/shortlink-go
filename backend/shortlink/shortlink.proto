@@ -47,7 +47,9 @@ message ShortLinkPageRequest {
 
 message ShortLinkPageResponse {
   repeated ShortLinkPageData list = 1; // 短链接分页数据列表
-  int32 total = 2;                     // 总条数
+  int64 page = 2;
+  int64 maxPage = 3;
+  int64 total = 4;                     // 总条数
 }
 
 message ShortLinkPageData{
@@ -91,5 +93,4 @@ service Shortlink {
   rpc UpdateShortLink(ShortLinkUpdateRequest) returns(ShortLinkUpdateResponse);
   rpc PageShortLink(ShortLinkPageRequest) returns(ShortLinkPageResponse);
   rpc DeleteShortLink(ShortLinkDeleteRequest) returns(ShortLinkDeleteResponse);
-  rpc ListGroupShortLinkCount(ListGroupShortLinkCountRequest) returns(ListGroupShortLinkCountResponse);
 }

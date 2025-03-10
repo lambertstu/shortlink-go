@@ -19,11 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Shortlink_CreateShortLink_FullMethodName         = "/shortlink.Shortlink/CreateShortLink"
-	Shortlink_UpdateShortLink_FullMethodName         = "/shortlink.Shortlink/UpdateShortLink"
-	Shortlink_PageShortLink_FullMethodName           = "/shortlink.Shortlink/PageShortLink"
-	Shortlink_DeleteShortLink_FullMethodName         = "/shortlink.Shortlink/DeleteShortLink"
-	Shortlink_ListGroupShortLinkCount_FullMethodName = "/shortlink.Shortlink/ListGroupShortLinkCount"
+	Shortlink_CreateShortLink_FullMethodName = "/shortlink.Shortlink/CreateShortLink"
+	Shortlink_UpdateShortLink_FullMethodName = "/shortlink.Shortlink/UpdateShortLink"
+	Shortlink_PageShortLink_FullMethodName   = "/shortlink.Shortlink/PageShortLink"
+	Shortlink_DeleteShortLink_FullMethodName = "/shortlink.Shortlink/DeleteShortLink"
 )
 
 // ShortlinkClient is the client API for Shortlink service.
@@ -34,7 +33,6 @@ type ShortlinkClient interface {
 	UpdateShortLink(ctx context.Context, in *ShortLinkUpdateRequest, opts ...grpc.CallOption) (*ShortLinkUpdateResponse, error)
 	PageShortLink(ctx context.Context, in *ShortLinkPageRequest, opts ...grpc.CallOption) (*ShortLinkPageResponse, error)
 	DeleteShortLink(ctx context.Context, in *ShortLinkDeleteRequest, opts ...grpc.CallOption) (*ShortLinkDeleteResponse, error)
-	ListGroupShortLinkCount(ctx context.Context, in *ListGroupShortLinkCountRequest, opts ...grpc.CallOption) (*ListGroupShortLinkCountResponse, error)
 }
 
 type shortlinkClient struct {
@@ -85,16 +83,6 @@ func (c *shortlinkClient) DeleteShortLink(ctx context.Context, in *ShortLinkDele
 	return out, nil
 }
 
-func (c *shortlinkClient) ListGroupShortLinkCount(ctx context.Context, in *ListGroupShortLinkCountRequest, opts ...grpc.CallOption) (*ListGroupShortLinkCountResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListGroupShortLinkCountResponse)
-	err := c.cc.Invoke(ctx, Shortlink_ListGroupShortLinkCount_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // ShortlinkServer is the server API for Shortlink service.
 // All implementations must embed UnimplementedShortlinkServer
 // for forward compatibility.
@@ -103,7 +91,6 @@ type ShortlinkServer interface {
 	UpdateShortLink(context.Context, *ShortLinkUpdateRequest) (*ShortLinkUpdateResponse, error)
 	PageShortLink(context.Context, *ShortLinkPageRequest) (*ShortLinkPageResponse, error)
 	DeleteShortLink(context.Context, *ShortLinkDeleteRequest) (*ShortLinkDeleteResponse, error)
-	ListGroupShortLinkCount(context.Context, *ListGroupShortLinkCountRequest) (*ListGroupShortLinkCountResponse, error)
 	mustEmbedUnimplementedShortlinkServer()
 }
 
@@ -125,9 +112,6 @@ func (UnimplementedShortlinkServer) PageShortLink(context.Context, *ShortLinkPag
 }
 func (UnimplementedShortlinkServer) DeleteShortLink(context.Context, *ShortLinkDeleteRequest) (*ShortLinkDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteShortLink not implemented")
-}
-func (UnimplementedShortlinkServer) ListGroupShortLinkCount(context.Context, *ListGroupShortLinkCountRequest) (*ListGroupShortLinkCountResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListGroupShortLinkCount not implemented")
 }
 func (UnimplementedShortlinkServer) mustEmbedUnimplementedShortlinkServer() {}
 func (UnimplementedShortlinkServer) testEmbeddedByValue()                   {}
@@ -222,24 +206,6 @@ func _Shortlink_DeleteShortLink_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Shortlink_ListGroupShortLinkCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListGroupShortLinkCountRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ShortlinkServer).ListGroupShortLinkCount(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Shortlink_ListGroupShortLinkCount_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ShortlinkServer).ListGroupShortLinkCount(ctx, req.(*ListGroupShortLinkCountRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Shortlink_ServiceDesc is the grpc.ServiceDesc for Shortlink service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -262,10 +228,6 @@ var Shortlink_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteShortLink",
 			Handler:    _Shortlink_DeleteShortLink_Handler,
-		},
-		{
-			MethodName: "ListGroupShortLinkCount",
-			Handler:    _Shortlink_ListGroupShortLinkCount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

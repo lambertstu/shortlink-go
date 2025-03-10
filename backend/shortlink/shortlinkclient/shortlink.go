@@ -32,7 +32,6 @@ type (
 		UpdateShortLink(ctx context.Context, in *ShortLinkUpdateRequest, opts ...grpc.CallOption) (*ShortLinkUpdateResponse, error)
 		PageShortLink(ctx context.Context, in *ShortLinkPageRequest, opts ...grpc.CallOption) (*ShortLinkPageResponse, error)
 		DeleteShortLink(ctx context.Context, in *ShortLinkDeleteRequest, opts ...grpc.CallOption) (*ShortLinkDeleteResponse, error)
-		ListGroupShortLinkCount(ctx context.Context, in *ListGroupShortLinkCountRequest, opts ...grpc.CallOption) (*ListGroupShortLinkCountResponse, error)
 	}
 
 	defaultShortlink struct {
@@ -64,9 +63,4 @@ func (m *defaultShortlink) PageShortLink(ctx context.Context, in *ShortLinkPageR
 func (m *defaultShortlink) DeleteShortLink(ctx context.Context, in *ShortLinkDeleteRequest, opts ...grpc.CallOption) (*ShortLinkDeleteResponse, error) {
 	client := shortlink.NewShortlinkClient(m.cli.Conn())
 	return client.DeleteShortLink(ctx, in, opts...)
-}
-
-func (m *defaultShortlink) ListGroupShortLinkCount(ctx context.Context, in *ListGroupShortLinkCountRequest, opts ...grpc.CallOption) (*ListGroupShortLinkCountResponse, error) {
-	client := shortlink.NewShortlinkClient(m.cli.Conn())
-	return client.ListGroupShortLinkCount(ctx, in, opts...)
 }

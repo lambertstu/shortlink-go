@@ -42,8 +42,3 @@ func (s *ShortlinkServer) DeleteShortLink(ctx context.Context, in *shortlink.Sho
 	l := logic.NewDeleteShortLinkLogic(ctx, s.svcCtx)
 	return l.DeleteShortLink(in)
 }
-
-func (s *ShortlinkServer) ListGroupShortLinkCount(ctx context.Context, in *shortlink.ListGroupShortLinkCountRequest) (*shortlink.ListGroupShortLinkCountResponse, error) {
-	l := logic.NewListGroupShortLinkCountLogic(ctx, s.svcCtx)
-	return l.ListGroupShortLinkCount(in)
-}
