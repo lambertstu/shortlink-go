@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"shortlink/pkg/constant"
 	"time"
 )
 
@@ -73,10 +74,9 @@ func (c *customShortlinkModel) UpdateShortLinkInfo(ctx context.Context, data *Sh
 
 	filter := bson.M{
 		"origin_url": data.OriginUrl,
-		"deleteFlag": 0,
+		"deleteFlag": constant.ENABLE_FLAG,
 	}
 
-	// 动态构造 `$set` 只更新非零字段
 	updateFields := bson.M{}
 	dataBytes, _ := bson.Marshal(data)
 	err := bson.Unmarshal(dataBytes, &updateFields)
@@ -116,7 +116,7 @@ func (c *customShortlinkModel) InsertOneShortlink(ctx context.Context, data *Sho
 
 	filter := bson.M{
 		"short_uri":  data.ShortUri,
-		"deleteFlag": bson.M{"$ne": 1},
+		"deleteFlag": constant.ENABLE_FLAG,
 	}
 
 	count, err := c.conn.CountDocuments(ctx, filter)
@@ -138,7 +138,7 @@ func (c *customShortlinkModel) InsertOneShortlink(ctx context.Context, data *Sho
 func (c *customShortlinkModel) FindOneByShortUrl(ctx context.Context, shortLink string) (*Shortlink, error) {
 	filter := bson.M{
 		"short_uri":  shortLink,
-		"deleteFlag": 0,
+		"deleteFlag": constant.ENABLE_FLAG,
 	}
 
 	var shortlink Shortlink
