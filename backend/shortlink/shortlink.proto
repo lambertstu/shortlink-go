@@ -80,8 +80,7 @@ message ListGroupShortLinkCountResponse{
 
 message ShortLinkDeleteRequest{
   string shortUri = 1;
-  string origin_url = 3;
-  string gid = 4;
+  string origin_url = 2;
 }
 
 message ShortLinkDeleteResponse{

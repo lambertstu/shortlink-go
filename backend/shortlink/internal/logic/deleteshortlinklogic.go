@@ -29,7 +29,7 @@ func NewDeleteShortLinkLogic(ctx context.Context, svcCtx *svc.ServiceContext) *D
 func (l *DeleteShortLinkLogic) DeleteShortLink(in *shortlink.ShortLinkDeleteRequest) (*shortlink.ShortLinkDeleteResponse, error) {
 	err := l.svcCtx.ShortlinkModel.UpdateShortLinkInfo(l.ctx, &model.Shortlink{
 		OriginUrl:  in.GetOriginUrl(),
-		Gid:        in.GetGid(),
+		ShortUri:   in.GetShortUri(),
 		DeleteFlag: constant.DELETE_FLAG,
 		UpdateAt:   time.Now(),
 	})
