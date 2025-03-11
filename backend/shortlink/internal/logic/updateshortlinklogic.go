@@ -29,6 +29,7 @@ func (l *UpdateShortLinkLogic) UpdateShortLink(in *shortlink.ShortLinkUpdateRequ
 		Domain:    constant.CreateShortLinkDefaultDomain,
 		Gid:       in.GetGid(),
 		OriginUrl: in.GetOriginUrl(),
+		ShortUri:  in.GetShortUri(),
 		Describe:  in.GetDescribe(),
 		Favicon:   in.GetFavicon(),
 		ClickNum:  int(in.GetClickNum()),

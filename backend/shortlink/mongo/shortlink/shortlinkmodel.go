@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"github.com/zeromicro/go-zero/core/stores/mon"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -102,7 +103,7 @@ func (c *customShortlinkModel) UpdateShortLinkInfo(ctx context.Context, data *Sh
 	}
 
 	if result.MatchedCount == 0 {
-		return ErrNotFound
+		return errors.New("短链接不存在")
 	}
 
 	return nil

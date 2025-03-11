@@ -20,17 +20,19 @@ message ShortLinkUpdateResponse {
 
 message ShortLinkUpdateRequest {
   string gid = 1;              // 分组标识
-  string origin_url = 2;
-  string describe = 3;         // 描述
-  string favicon = 4;          // 网站图标
-  int64 clickNum = 5;          // 点击次数
-  int64 totalPv = 6;           // 总PV（Page Views）
-  int64 totalUv = 7;           // 总UV（Unique Visitors）
-  int64 totalUip = 8;          // 总独立IP
-  int64 todayPv = 9;           // 今日PV
-  int64 todayUv = 10;           // 今日UV
-  int64 todayUip = 11;         // 今日独立IP
+  string origin_url = 2;       // 原始链接
+  string short_uri = 3;        // 短链接
+  string describe = 4;         // 描述
+  string favicon = 5;          // 网站图标
+  int64 clickNum = 6;          // 点击次数
+  int64 totalPv = 7;           // 总PV（Page Views）
+  int64 totalUv = 8;           // 总UV（Unique Visitors）
+  int64 totalUip = 9;          // 总独立IP
+  int64 todayPv = 10;          // 今日PV
+  int64 todayUv = 11;          // 今日UV
+  int64 todayUip = 12;         // 今日独立IP
 }
+
 
 message ShortLinkBatchCreateRequest {
   repeated string origin_urls = 1;  // 原始链接集合
