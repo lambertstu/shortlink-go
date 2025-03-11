@@ -74,6 +74,7 @@ func (c *customShortlinkModel) UpdateShortLinkInfo(ctx context.Context, data *Sh
 
 	filter := bson.M{
 		"origin_url": data.OriginUrl,
+		"gid":        data.Gid,
 		"deleteFlag": constant.ENABLE_FLAG,
 	}
 
