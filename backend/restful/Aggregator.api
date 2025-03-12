@@ -1,0 +1,224 @@
+syntax = "v1"
+
+type (
+	// User 服务相关请求和响应类型
+	RegisterRequest {
+		Username string `json:"username"`
+		Password string `json:"password"`
+		RealName string `json:"realName"`
+		Phone    string `json:"phone"`
+		Email    string `json:"email"`
+	}
+	RegisterResponse {
+		Success bool `json:"success"`
+	}
+	LoginRequest {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+	LoginResponse {
+		Token string `json:"token"`
+	}
+	LogoutRequest {
+		Token    string `json:"token"`
+		Username string `json:"username"`
+	}
+	LogoutResponse {
+		Success bool `json:"success"`
+	}
+	GetUserRequest {
+		Username string `json:"username"`
+	}
+	GetUserResponse {
+		Username string `json:"username"`
+		RealName string `json:"realName"`
+		Phone    string `json:"phone"`
+		Email    string `json:"email"`
+	}
+	IsExistUserRequest {
+		Username string `json:"username"`
+	}
+	IsExistUserResponse {
+		Success bool `json:"success"`
+	}
+	IsUserLoginRequest {
+		Token    string `json:"token"`
+		Username string `json:"username"`
+	}
+	IsUserLoginResponse {
+		Success bool `json:"success"`
+	}
+	UpsertUserInfoRequest {
+		Username string `json:"username"`
+		Password string `json:"password"`
+		RealName string `json:"realName"`
+		Phone    string `json:"phone"`
+		Email    string `json:"email"`
+	}
+	UpsertUserInfoResponse {
+		Success bool `json:"success"`
+	}
+	DeleteUserRequest {
+		Username string `json:"username"`
+	}
+	DeleteUserResponse {
+		Success bool `json:"success"`
+	}
+	// Group 服务相关请求和响应类型
+	CreateGroupRequest {
+		Name     string `json:"name"`
+		Username string `json:"username"`
+	}
+	CreateGroupResponse {
+		Gid      string `json:"gid"`
+		Name     string `json:"name"`
+		Username string `json:"username"`
+		Success  bool   `json:"success"`
+	}
+	UpdateGroupRequest {
+		Gid      string `json:"gid"`
+		Name     string `json:"name"`
+		Username string `json:"username"`
+	}
+	UpdateGroupResponse {
+		Success bool `json:"success"`
+	}
+	DeleteGroupRequest {
+		Gid      string `json:"gid"`
+		Username string `json:"username"`
+	}
+	DeleteGroupResponse {
+		Success bool `json:"success"`
+	}
+	GetGroupRequest {
+		Gid string `json:"gid"`
+	}
+	GetGroupResponse {
+		Gid      string `json:"gid"`
+		Name     string `json:"name"`
+		Username string `json:"username"`
+	}
+	// Shortlink 服务相关请求和响应类型
+	ShortLinkCreateRequest {
+		OriginUrl string `json:"origin_url"`
+		Gid       string `json:"gid"`
+		Describe  string `json:"describe"`
+	}
+	ShortLinkCreateResponse {
+		Success   bool   `json:"success"`
+		OriginUrl string `json:"origin_url"`
+	}
+	ShortLinkUpdateRequest {
+		Gid       string `json:"gid"`
+		OriginUrl string `json:"origin_url"`
+		ShortUri  string `json:"short_uri"`
+		Describe  string `json:"describe"`
+		Favicon   string `json:"favicon"`
+		ClickNum  int64  `json:"clickNum"`
+		TotalPv   int64  `json:"totalPv"`
+		TotalUv   int64  `json:"totalUv"`
+		TotalUip  int64  `json:"totalUip"`
+		TodayPv   int64  `json:"todayPv"`
+		TodayUv   int64  `json:"todayUv"`
+		TodayUip  int64  `json:"todayUip"`
+	}
+	ShortLinkUpdateResponse {
+		Success bool `json:"success"`
+	}
+	ShortLinkPageRequest {
+		Gid      string `json:"gid"`
+		Page     int64  `json:"page"`
+		Size     int64  `json:"size"`
+		OrderTag int64  `json:"orderTag"`
+	}
+	ShortLinkPageResponse {
+		List    []ShortLinkPageData `json:"list"`
+		Page    int64               `json:"page"`
+		MaxPage int64               `json:"maxPage"`
+		Total   int64               `json:"total"`
+	}
+	ShortLinkPageData {
+		ShortUri     string `json:"short_uri"`
+		FullShortUrl string `json:"full_short_url"`
+		OriginUrl    string `json:"origin_url"`
+		Gid          string `json:"gid"`
+		EnableStatus int32  `json:"enable_status"`
+		CreateTime   int64  `json:"create_time"`
+		Describe     string `json:"describe"`
+		Favicon      string `json:"favicon"`
+		TotalPv      int32  `json:"total_pv"`
+		TodayPv      int32  `json:"today_pv"`
+		TotalUv      int32  `json:"total_uv"`
+		TodayUv      int32  `json:"today_uv"`
+		TotalUip     int32  `json:"total_uip"`
+		TodayUip     int32  `json:"today_uip"`
+	}
+	ShortLinkDeleteRequest {
+		ShortUri  string `json:"shortUri"`
+		OriginUrl string `json:"origin_url"`
+	}
+	ShortLinkDeleteResponse {
+		Success bool `json:"success"`
+	}
+)
+
+@server (
+	prefix: /v1
+	group:  user
+)
+service shortlink-api {
+	@handler Register
+	post /user/register (RegisterRequest) returns (RegisterResponse)
+
+	@handler Login
+	post /user/login (LoginRequest) returns (LoginResponse)
+
+	@handler Logout
+	post /user/logout (LogoutRequest) returns (LogoutResponse)
+
+	@handler GetUserByUsername
+	get /user/info (GetUserRequest) returns (GetUserResponse)
+
+	@handler IsExistUser
+	get /user/exist (IsExistUserRequest) returns (IsExistUserResponse)
+
+	@handler IsUserLogin
+	get /user/login-status (IsUserLoginRequest) returns (IsUserLoginResponse)
+
+	@handler UpsertUserInfo
+	post /user/upsert (UpsertUserInfoRequest) returns (UpsertUserInfoResponse)
+
+	@handler DeleteUser
+	post /user/delete (DeleteUserRequest) returns (DeleteUserResponse)
+
+	@handler CreateGroup
+	post /group/create (CreateGroupRequest) returns (CreateGroupResponse)
+
+	@handler UpdateGroup
+	post /group/update (UpdateGroupRequest) returns (UpdateGroupResponse)
+
+	@handler DeleteGroup
+	post /group/delete (DeleteGroupRequest) returns (DeleteGroupResponse)
+
+	@handler GetGroupByGid
+	get /group/info (GetGroupRequest) returns (GetGroupResponse)
+}
+
+@server (
+	prefix: /v1
+	group:  shortlink
+)
+service shortlink-api {
+	@handler CreateShortLink
+	post /shortlink/create (ShortLinkCreateRequest) returns (ShortLinkCreateResponse)
+
+	@handler UpdateShortLink
+	post /shortlink/update (ShortLinkUpdateRequest) returns (ShortLinkUpdateResponse)
+
+	@handler PageShortLink
+	get /shortlink/page (ShortLinkPageRequest) returns (ShortLinkPageResponse)
+
+	@handler DeleteShortLink
+	post /shortlink/delete (ShortLinkDeleteRequest) returns (ShortLinkDeleteResponse)
+}
+
