@@ -6,9 +6,9 @@ package handler
 import (
 	"net/http"
 
-	shortlink "restful/internal/handler/shortlink"
-	user "restful/internal/handler/user"
-	"restful/internal/svc"
+	shortlink "github.com/lambertstu/shortlink-go/restful/internal/handler/shortlink"
+	user "github.com/lambertstu/shortlink-go/restful/internal/handler/user"
+	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

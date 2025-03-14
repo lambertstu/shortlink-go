@@ -1,11 +1,11 @@
 package user
 
 import (
+	"github.com/lambertstu/shortlink-go/restful/internal/logic/user"
+	"github.com/lambertstu/shortlink-go/restful/internal/svc"
+	"github.com/lambertstu/shortlink-go/restful/internal/types"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
-	"restful/internal/logic/user"
-	"restful/internal/svc"
-	"restful/internal/types"
 )
 
 func CreateGroupHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {

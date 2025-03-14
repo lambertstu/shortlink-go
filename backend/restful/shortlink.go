@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 
-	"restful/internal/config"
-	"restful/internal/handler"
-	"restful/internal/svc"
+	"github.com/lambertstu/shortlink-go/restful/internal/config"
+	"github.com/lambertstu/shortlink-go/restful/internal/handler"
+	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

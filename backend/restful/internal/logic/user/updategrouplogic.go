@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 
-	"restful/internal/svc"
-	"restful/internal/types"
+	"github.com/lambertstu/shortlink-go/restful/internal/svc"
+	"github.com/lambertstu/shortlink-go/restful/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

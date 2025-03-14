@@ -1,11 +1,11 @@
 package shortlink
 
 import (
+	"github.com/lambertstu/shortlink-go/restful/internal/logic/shortlink"
+	"github.com/lambertstu/shortlink-go/restful/internal/svc"
+	"github.com/lambertstu/shortlink-go/restful/internal/types"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
-	"restful/internal/logic/shortlink"
-	"restful/internal/svc"
-	"restful/internal/types"
 )
 
 func CreateShortLinkHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
