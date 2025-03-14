@@ -1,3 +1,19 @@
 Name: shortlink-api
 Host: 0.0.0.0
 Port: 8888
+
+UserRpcConf:
+  Target: 127.0.0.1:8080
+  Timeout: 60000
+  Middlewares:
+    Breaker: false
+GroupRpcConf:
+  Target: 127.0.0.1:8080
+  Timeout: 60000
+  Middlewares:
+    Breaker: false
+CoreRpcConf:
+  Target: 127.0.0.1:8081
+  Timeout: 60000
+  Middlewares:
+    Breaker: false
