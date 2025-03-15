@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"errors"
+	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
@@ -24,7 +26,11 @@ func NewIsExistUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IsExi
 }
 
 func (l *IsExistUserLogic) IsExistUser(req *types.IsExistUserRequest) (resp *types.NilResponse, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	rpcResp, _ := l.svcCtx.UserRpcService.IsExistUser(l.ctx, &user.IsExistUserRequest{
+		Username: req.Username,
+	})
+	if !rpcResp.Success {
+		return nil, errors.New("查询用户是否存在失败")
+	}
+	return nil, nil
 }

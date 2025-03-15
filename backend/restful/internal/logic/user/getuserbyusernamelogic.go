@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
@@ -30,7 +31,8 @@ func (l *GetUserByUsernameLogic) GetUserByUsername(req *types.GetUserRequest) (r
 	})
 
 	if err != nil {
-		return nil, err
+		l.Logger.Error(err)
+		return nil, errors.New("获取用户信息失败")
 	}
 
 	return &types.GetUserResponse{

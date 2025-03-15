@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"errors"
+	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
@@ -24,7 +26,15 @@ func NewUpsertUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Up
 }
 
 func (l *UpsertUserInfoLogic) UpsertUserInfo(req *types.UpsertUserInfoRequest) (resp *types.NilResponse, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	rpcResp, _ := l.svcCtx.UserRpcService.UpsertUserInfo(l.ctx, &user.UpsertUserInfoRequest{
+		Username: req.Username,
+		Password: req.Password,
+		Phone:    req.Phone,
+		RealName: req.RealName,
+		Email:    req.Email,
+	})
+	if !rpcResp.Success {
+		return nil, errors.New("用户信息更新失败")
+	}
+	return nil, nil
 }

@@ -2,9 +2,10 @@ package user
 
 import (
 	"context"
-
+	"errors"
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
+	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +25,13 @@ func NewUpdateGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Updat
 }
 
 func (l *UpdateGroupLogic) UpdateGroup(req *types.UpdateGroupRequest) (resp *types.NilResponse, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	rpcResp, _ := l.svcCtx.GroupRpcService.UpdateGroup(l.ctx, &user.UpdateGroupRequest{
+		Gid:      req.Gid,
+		Name:     req.Name,
+		Username: req.Username,
+	})
+	if !rpcResp.Success {
+		return nil, errors.New("更新分组信息失败")
+	}
+	return nil, nil
 }

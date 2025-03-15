@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"errors"
+	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
@@ -24,7 +26,17 @@ func NewGetGroupByGidLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Get
 }
 
 func (l *GetGroupByGidLogic) GetGroupByGid(req *types.GetGroupRequest) (resp *types.GetGroupResponse, err error) {
-	// todo: add your logic here and delete this line
+	userInfo, err := l.svcCtx.GroupRpcService.GetGroupByGid(l.ctx, &user.GetGroupRequest{
+		Gid: req.Gid,
+	})
 
-	return
+	if err != nil {
+		l.Logger.Error(err)
+		return nil, errors.New("获取分组信息失败")
+	}
+	return &types.GetGroupResponse{
+		Gid:      userInfo.Gid,
+		Name:     userInfo.Name,
+		Username: userInfo.Username,
+	}, nil
 }

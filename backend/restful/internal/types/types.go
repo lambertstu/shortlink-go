@@ -4,8 +4,8 @@
 package types
 
 type CreateGroupRequest struct {
-	Name     string `json:"name"`
-	Username string `json:"username"`
+	Name     string `form:"name"`
+	Username string `form:"username"`
 }
 
 type CreateGroupResponse struct {
@@ -15,16 +15,16 @@ type CreateGroupResponse struct {
 }
 
 type DeleteGroupRequest struct {
-	Gid      string `json:"gid"`
-	Username string `json:"username"`
+	Gid      string `form:"gid"`
+	Username string `form:"username"`
 }
 
 type DeleteUserRequest struct {
-	Username string `json:"username"`
+	Username string `form:"username"`
 }
 
 type GetGroupRequest struct {
-	Gid string `json:"gid"`
+	Gid string `form:"gid"`
 }
 
 type GetGroupResponse struct {
@@ -45,17 +45,17 @@ type GetUserResponse struct {
 }
 
 type IsExistUserRequest struct {
-	Username string `json:"username"`
+	Username string `form:"username"`
 }
 
 type IsUserLoginRequest struct {
-	Token    string `json:"token"`
-	Username string `json:"username"`
+	Token    string `form:"token"`
+	Username string `form:"username"`
 }
 
 type LoginRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `form:"username"`
+	Password string `form:"password"`
 }
 
 type LoginResponse struct {
@@ -63,8 +63,8 @@ type LoginResponse struct {
 }
 
 type LogoutRequest struct {
-	Token    string `json:"token"`
-	Username string `json:"username"`
+	Token    string `form:"token"`
+	Username string `form:"username"`
 }
 
 type NilResponse struct {
@@ -72,11 +72,11 @@ type NilResponse struct {
 }
 
 type RegisterRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	RealName string `json:"realName"`
-	Phone    string `json:"phone"`
-	Email    string `json:"email"`
+	Username string `form:"username"`
+	Password string `form:"password"`
+	RealName string `form:"realName"`
+	Phone    string `form:"phone"`
+	Email    string `form:"email"`
 }
 
 type Response struct {
@@ -85,9 +85,9 @@ type Response struct {
 }
 
 type ShortLinkCreateRequest struct {
-	OriginUrl string `json:"origin_url"`
-	Gid       string `json:"gid"`
-	Describe  string `json:"describe"`
+	OriginUrl string `form:"origin_url"`
+	Gid       string `form:"gid"`
+	Describe  string `form:"describe"`
 }
 
 type ShortLinkCreateResponse struct {
@@ -95,8 +95,8 @@ type ShortLinkCreateResponse struct {
 }
 
 type ShortLinkDeleteRequest struct {
-	ShortUri  string `json:"shortUri"`
-	OriginUrl string `json:"origin_url"`
+	ShortUri  string `form:"shortUri"`
+	OriginUrl string `form:"origin_url"`
 }
 
 type ShortLinkPageData struct {
@@ -117,10 +117,10 @@ type ShortLinkPageData struct {
 }
 
 type ShortLinkPageRequest struct {
-	Gid      string `json:"gid"`
-	Page     int64  `json:"page"`
-	Size     int64  `json:"size"`
-	OrderTag int64  `json:"orderTag"`
+	Gid      string `form:"gid"`
+	Page     int64  `form:"page"`
+	Size     int64  `form:"size"`
+	OrderTag int64  `form:"orderTag"`
 }
 
 type ShortLinkPageResponse struct {
@@ -131,30 +131,30 @@ type ShortLinkPageResponse struct {
 }
 
 type ShortLinkUpdateRequest struct {
-	Gid       string `json:"gid"`
-	OriginUrl string `json:"origin_url"`
-	ShortUri  string `json:"short_uri"`
-	Describe  string `json:"describe"`
-	Favicon   string `json:"favicon"`
-	ClickNum  int64  `json:"clickNum"`
-	TotalPv   int64  `json:"totalPv"`
-	TotalUv   int64  `json:"totalUv"`
-	TotalUip  int64  `json:"totalUip"`
-	TodayPv   int64  `json:"todayPv"`
-	TodayUv   int64  `json:"todayUv"`
-	TodayUip  int64  `json:"todayUip"`
+	Gid       string `form:"gid"`
+	OriginUrl string `form:"origin_url"`
+	ShortUri  string `form:"short_uri"`
+	Describe  string `form:"describe"`
+	Favicon   string `form:"favicon"`
+	ClickNum  int64  `form:"clickNum"`
+	TotalPv   int64  `form:"totalPv"`
+	TotalUv   int64  `form:"totalUv"`
+	TotalUip  int64  `form:"totalUip"`
+	TodayPv   int64  `form:"todayPv"`
+	TodayUv   int64  `form:"todayUv"`
+	TodayUip  int64  `form:"todayUip"`
 }
 
 type UpdateGroupRequest struct {
-	Gid      string `json:"gid"`
-	Name     string `json:"name"`
-	Username string `json:"username"`
+	Gid      string `form:"gid"`
+	Name     string `form:"name"`
+	Username string `form:"username"`
 }
 
 type UpsertUserInfoRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	RealName string `json:"realName"`
-	Phone    string `json:"phone"`
-	Email    string `json:"email"`
+	Username string `form:"username"`
+	Password string `form:"password"`
+	RealName string `form:"realName"`
+	Phone    string `form:"phone"`
+	Email    string `form:"email"`
 }

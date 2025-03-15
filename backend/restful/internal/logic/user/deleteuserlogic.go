@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"errors"
+	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
@@ -24,7 +26,11 @@ func NewDeleteUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 }
 
 func (l *DeleteUserLogic) DeleteUser(req *types.DeleteUserRequest) (resp *types.NilResponse, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	rpcResp, _ := l.svcCtx.UserRpcService.DeleteUser(l.ctx, &user.DeleteUserRequest{
+		Username: req.Username,
+	})
+	if !rpcResp.Success {
+		return nil, errors.New("删除用户失败")
+	}
+	return nil, nil
 }

@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"errors"
+	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
@@ -24,7 +26,12 @@ func NewIsUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IsUse
 }
 
 func (l *IsUserLoginLogic) IsUserLogin(req *types.IsUserLoginRequest) (resp *types.NilResponse, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	rpcResp, _ := l.svcCtx.UserRpcService.IsUserLogin(l.ctx, &user.IsUserLoginRequest{
+		Token:    req.Token,
+		Username: req.Username,
+	})
+	if !rpcResp.Success {
+		return nil, errors.New("查询用户登录情况失败")
+	}
+	return nil, nil
 }

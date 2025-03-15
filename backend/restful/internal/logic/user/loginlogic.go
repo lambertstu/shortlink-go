@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
@@ -24,7 +25,14 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.LoginResponse, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	rpcResp, rpcErr := l.svcCtx.UserRpcService.Login(l.ctx, &user.LoginRequest{
+		Username: req.Username,
+		Password: req.Password,
+	})
+	if rpcErr != nil {
+		return nil, rpcErr
+	}
+	return &types.LoginResponse{
+		Token: rpcResp.Token,
+	}, nil
 }

@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"errors"
+	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
@@ -24,7 +26,12 @@ func NewDeleteGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 }
 
 func (l *DeleteGroupLogic) DeleteGroup(req *types.DeleteGroupRequest) (resp *types.NilResponse, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	rpcResp, _ := l.svcCtx.GroupRpcService.DeleteGroup(l.ctx, &user.DeleteGroupRequest{
+		Gid:      req.Gid,
+		Username: req.Username,
+	})
+	if !rpcResp.Success {
+		return nil, errors.New("删除分组失败")
+	}
+	return nil, nil
 }
