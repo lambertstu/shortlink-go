@@ -23,7 +23,7 @@ func NewUpdateShortLinkLogic(ctx context.Context, svcCtx *svc.ServiceContext) *U
 	}
 }
 
-func (l *UpdateShortLinkLogic) UpdateShortLink(req *types.ShortLinkUpdateRequest) (resp *types.ShortLinkUpdateResponse, err error) {
+func (l *UpdateShortLinkLogic) UpdateShortLink(req *types.ShortLinkUpdateRequest) (resp *types.NilResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

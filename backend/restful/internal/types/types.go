@@ -12,7 +12,6 @@ type CreateGroupResponse struct {
 	Gid      string `json:"gid"`
 	Name     string `json:"name"`
 	Username string `json:"username"`
-	Success  bool   `json:"success"`
 }
 
 type DeleteGroupRequest struct {
@@ -20,16 +19,8 @@ type DeleteGroupRequest struct {
 	Username string `json:"username"`
 }
 
-type DeleteGroupResponse struct {
-	Success bool `json:"success"`
-}
-
 type DeleteUserRequest struct {
 	Username string `json:"username"`
-}
-
-type DeleteUserResponse struct {
-	Success bool `json:"success"`
 }
 
 type GetGroupRequest struct {
@@ -43,7 +34,7 @@ type GetGroupResponse struct {
 }
 
 type GetUserRequest struct {
-	Username string `json:"username"`
+	Username string `form:"username"`
 }
 
 type GetUserResponse struct {
@@ -57,17 +48,9 @@ type IsExistUserRequest struct {
 	Username string `json:"username"`
 }
 
-type IsExistUserResponse struct {
-	Success bool `json:"success"`
-}
-
 type IsUserLoginRequest struct {
 	Token    string `json:"token"`
 	Username string `json:"username"`
-}
-
-type IsUserLoginResponse struct {
-	Success bool `json:"success"`
 }
 
 type LoginRequest struct {
@@ -84,8 +67,8 @@ type LogoutRequest struct {
 	Username string `json:"username"`
 }
 
-type LogoutResponse struct {
-	Success bool `json:"success"`
+type NilResponse struct {
+	Nil string `json:"code"`
 }
 
 type RegisterRequest struct {
@@ -96,8 +79,9 @@ type RegisterRequest struct {
 	Email    string `json:"email"`
 }
 
-type RegisterResponse struct {
-	Success bool `json:"success"`
+type Response struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
 }
 
 type ShortLinkCreateRequest struct {
@@ -107,17 +91,12 @@ type ShortLinkCreateRequest struct {
 }
 
 type ShortLinkCreateResponse struct {
-	Success   bool   `json:"success"`
 	OriginUrl string `json:"origin_url"`
 }
 
 type ShortLinkDeleteRequest struct {
 	ShortUri  string `json:"shortUri"`
 	OriginUrl string `json:"origin_url"`
-}
-
-type ShortLinkDeleteResponse struct {
-	Success bool `json:"success"`
 }
 
 type ShortLinkPageData struct {
@@ -166,18 +145,10 @@ type ShortLinkUpdateRequest struct {
 	TodayUip  int64  `json:"todayUip"`
 }
 
-type ShortLinkUpdateResponse struct {
-	Success bool `json:"success"`
-}
-
 type UpdateGroupRequest struct {
 	Gid      string `json:"gid"`
 	Name     string `json:"name"`
 	Username string `json:"username"`
-}
-
-type UpdateGroupResponse struct {
-	Success bool `json:"success"`
 }
 
 type UpsertUserInfoRequest struct {
@@ -186,8 +157,4 @@ type UpsertUserInfoRequest struct {
 	RealName string `json:"realName"`
 	Phone    string `json:"phone"`
 	Email    string `json:"email"`
-}
-
-type UpsertUserInfoResponse struct {
-	Success bool `json:"success"`
 }

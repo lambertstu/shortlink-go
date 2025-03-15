@@ -23,7 +23,7 @@ func NewIsUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IsUse
 	}
 }
 
-func (l *IsUserLoginLogic) IsUserLogin(req *types.IsUserLoginRequest) (resp *types.IsUserLoginResponse, err error) {
+func (l *IsUserLoginLogic) IsUserLogin(req *types.IsUserLoginRequest) (resp *types.NilResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

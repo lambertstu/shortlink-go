@@ -23,7 +23,7 @@ func NewUpdateGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Updat
 	}
 }
 
-func (l *UpdateGroupLogic) UpdateGroup(req *types.UpdateGroupRequest) (resp *types.UpdateGroupResponse, err error) {
+func (l *UpdateGroupLogic) UpdateGroup(req *types.UpdateGroupRequest) (resp *types.NilResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

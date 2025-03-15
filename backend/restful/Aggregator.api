@@ -9,9 +9,6 @@ type (
 		Phone    string `json:"phone"`
 		Email    string `json:"email"`
 	}
-	RegisterResponse {
-		Success bool `json:"success"`
-	}
 	LoginRequest {
 		Username string `json:"username"`
 		Password string `json:"password"`
@@ -23,11 +20,8 @@ type (
 		Token    string `json:"token"`
 		Username string `json:"username"`
 	}
-	LogoutResponse {
-		Success bool `json:"success"`
-	}
 	GetUserRequest {
-		Username string `json:"username"`
+		Username string `form:"username"`
 	}
 	GetUserResponse {
 		Username string `json:"username"`
@@ -38,15 +32,9 @@ type (
 	IsExistUserRequest {
 		Username string `json:"username"`
 	}
-	IsExistUserResponse {
-		Success bool `json:"success"`
-	}
 	IsUserLoginRequest {
 		Token    string `json:"token"`
 		Username string `json:"username"`
-	}
-	IsUserLoginResponse {
-		Success bool `json:"success"`
 	}
 	UpsertUserInfoRequest {
 		Username string `json:"username"`
@@ -55,14 +43,8 @@ type (
 		Phone    string `json:"phone"`
 		Email    string `json:"email"`
 	}
-	UpsertUserInfoResponse {
-		Success bool `json:"success"`
-	}
 	DeleteUserRequest {
 		Username string `json:"username"`
-	}
-	DeleteUserResponse {
-		Success bool `json:"success"`
 	}
 	// Group 服务相关请求和响应类型
 	CreateGroupRequest {
@@ -73,22 +55,15 @@ type (
 		Gid      string `json:"gid"`
 		Name     string `json:"name"`
 		Username string `json:"username"`
-		Success  bool   `json:"success"`
 	}
 	UpdateGroupRequest {
 		Gid      string `json:"gid"`
 		Name     string `json:"name"`
 		Username string `json:"username"`
 	}
-	UpdateGroupResponse {
-		Success bool `json:"success"`
-	}
 	DeleteGroupRequest {
 		Gid      string `json:"gid"`
 		Username string `json:"username"`
-	}
-	DeleteGroupResponse {
-		Success bool `json:"success"`
 	}
 	GetGroupRequest {
 		Gid string `json:"gid"`
@@ -105,7 +80,6 @@ type (
 		Describe  string `json:"describe"`
 	}
 	ShortLinkCreateResponse {
-		Success   bool   `json:"success"`
 		OriginUrl string `json:"origin_url"`
 	}
 	ShortLinkUpdateRequest {
@@ -121,9 +95,6 @@ type (
 		TodayPv   int64  `json:"todayPv"`
 		TodayUv   int64  `json:"todayUv"`
 		TodayUip  int64  `json:"todayUip"`
-	}
-	ShortLinkUpdateResponse {
-		Success bool `json:"success"`
 	}
 	ShortLinkPageRequest {
 		Gid      string `json:"gid"`
@@ -157,8 +128,12 @@ type (
 		ShortUri  string `json:"shortUri"`
 		OriginUrl string `json:"origin_url"`
 	}
-	ShortLinkDeleteResponse {
-		Success bool `json:"success"`
+	Response {
+		Code    string `json:"code"`
+		Message string `json:"message"`
+	}
+	NilResponse {
+		Nil string `json:"code"`
 	}
 )
 
@@ -168,37 +143,37 @@ type (
 )
 service shortlink-api {
 	@handler Register
-	post /user/register (RegisterRequest) returns (RegisterResponse)
+	post /user/register (RegisterRequest) returns (NilResponse)
 
 	@handler Login
 	post /user/login (LoginRequest) returns (LoginResponse)
 
 	@handler Logout
-	post /user/logout (LogoutRequest) returns (LogoutResponse)
+	post /user/logout (LogoutRequest) returns (NilResponse)
 
 	@handler GetUserByUsername
 	get /user/info (GetUserRequest) returns (GetUserResponse)
 
 	@handler IsExistUser
-	get /user/exist (IsExistUserRequest) returns (IsExistUserResponse)
+	get /user/exist (IsExistUserRequest) returns (NilResponse)
 
 	@handler IsUserLogin
-	get /user/login-status (IsUserLoginRequest) returns (IsUserLoginResponse)
+	get /user/login-status (IsUserLoginRequest) returns (NilResponse)
 
 	@handler UpsertUserInfo
-	post /user/upsert (UpsertUserInfoRequest) returns (UpsertUserInfoResponse)
+	post /user/upsert (UpsertUserInfoRequest) returns (NilResponse)
 
 	@handler DeleteUser
-	post /user/delete (DeleteUserRequest) returns (DeleteUserResponse)
+	post /user/delete (DeleteUserRequest) returns (NilResponse)
 
 	@handler CreateGroup
 	post /group/create (CreateGroupRequest) returns (CreateGroupResponse)
 
 	@handler UpdateGroup
-	post /group/update (UpdateGroupRequest) returns (UpdateGroupResponse)
+	post /group/update (UpdateGroupRequest) returns (NilResponse)
 
 	@handler DeleteGroup
-	post /group/delete (DeleteGroupRequest) returns (DeleteGroupResponse)
+	post /group/delete (DeleteGroupRequest) returns (NilResponse)
 
 	@handler GetGroupByGid
 	get /group/info (GetGroupRequest) returns (GetGroupResponse)
@@ -213,12 +188,12 @@ service shortlink-api {
 	post /shortlink/create (ShortLinkCreateRequest) returns (ShortLinkCreateResponse)
 
 	@handler UpdateShortLink
-	post /shortlink/update (ShortLinkUpdateRequest) returns (ShortLinkUpdateResponse)
+	post /shortlink/update (ShortLinkUpdateRequest) returns (NilResponse)
 
 	@handler PageShortLink
 	get /shortlink/page (ShortLinkPageRequest) returns (ShortLinkPageResponse)
 
 	@handler DeleteShortLink
-	post /shortlink/delete (ShortLinkDeleteRequest) returns (ShortLinkDeleteResponse)
+	post /shortlink/delete (ShortLinkDeleteRequest) returns (NilResponse)
 }
 

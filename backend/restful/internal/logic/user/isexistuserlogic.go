@@ -23,7 +23,7 @@ func NewIsExistUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IsExi
 	}
 }
 
-func (l *IsExistUserLogic) IsExistUser(req *types.IsExistUserRequest) (resp *types.IsExistUserResponse, err error) {
+func (l *IsExistUserLogic) IsExistUser(req *types.IsExistUserRequest) (resp *types.NilResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

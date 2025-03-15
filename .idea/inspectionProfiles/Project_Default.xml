@@ -4,6 +4,7 @@
     <inspection_tool class="GoDfaErrorMayBeNotNil" enabled="true" level="WARNING" enabled_by_default="true">
       <methods>
         <method importPath="user/mongo/user" receiver="UserModel" name="UpdateUserInfo" />
+        <method importPath="github.com/lambertstu/shortlink-user-rpc/client/user" receiver="User" name="GetUserByUsername" />
       </methods>
     </inspection_tool>
   </profile>

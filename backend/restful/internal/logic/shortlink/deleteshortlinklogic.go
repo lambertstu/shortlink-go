@@ -23,7 +23,7 @@ func NewDeleteShortLinkLogic(ctx context.Context, svcCtx *svc.ServiceContext) *D
 	}
 }
 
-func (l *DeleteShortLinkLogic) DeleteShortLink(req *types.ShortLinkDeleteRequest) (resp *types.ShortLinkDeleteResponse, err error) {
+func (l *DeleteShortLinkLogic) DeleteShortLink(req *types.ShortLinkDeleteRequest) (resp *types.NilResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

@@ -23,7 +23,7 @@ func NewUpsertUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Up
 	}
 }
 
-func (l *UpsertUserInfoLogic) UpsertUserInfo(req *types.UpsertUserInfoRequest) (resp *types.UpsertUserInfoResponse, err error) {
+func (l *UpsertUserInfoLogic) UpsertUserInfo(req *types.UpsertUserInfoRequest) (resp *types.NilResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

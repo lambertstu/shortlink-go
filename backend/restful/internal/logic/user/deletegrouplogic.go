@@ -23,7 +23,7 @@ func NewDeleteGroupLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delet
 	}
 }
 
-func (l *DeleteGroupLogic) DeleteGroup(req *types.DeleteGroupRequest) (resp *types.DeleteGroupResponse, err error) {
+func (l *DeleteGroupLogic) DeleteGroup(req *types.DeleteGroupRequest) (resp *types.NilResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

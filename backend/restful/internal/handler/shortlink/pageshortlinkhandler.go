@@ -4,6 +4,7 @@ import (
 	"github.com/lambertstu/shortlink-go/restful/internal/logic/shortlink"
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
+	"github.com/lambertstu/shortlink-go/restful/pkg/result"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 )
@@ -17,10 +18,6 @@ func PageShortLinkHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 		l := shortlink.NewPageShortLinkLogic(r.Context(), svcCtx)
 		resp, err := l.PageShortLink(&req)
-		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
-		}
+		result.Response(w, resp, err)
 	}
 }

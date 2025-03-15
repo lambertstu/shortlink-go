@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"github.com/lambertstu/shortlink-user-rpc/client/user"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
@@ -24,7 +25,18 @@ func NewGetUserByUsernameLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *GetUserByUsernameLogic) GetUserByUsername(req *types.GetUserRequest) (resp *types.GetUserResponse, err error) {
-	// todo: add your logic here and delete this line
+	userInfo, err := l.svcCtx.UserRpcService.GetUserByUsername(l.ctx, &user.GetUserRequest{
+		Username: req.Username,
+	})
 
-	return
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.GetUserResponse{
+		Username: userInfo.Username,
+		RealName: userInfo.RealName,
+		Phone:    userInfo.Phone,
+		Email:    userInfo.Email,
+	}, nil
 }
