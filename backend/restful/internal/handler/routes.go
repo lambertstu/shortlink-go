@@ -32,17 +32,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: shortlink.PageShortLinkHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
-				Path:    "/shortlink/restore/:shortUri",
-				Handler: shortlink.RestoreUrlHandler(serverCtx),
-			},
-			{
 				Method:  http.MethodPost,
 				Path:    "/shortlink/update",
 				Handler: shortlink.UpdateShortLinkHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/:shortUri",
+				Handler: shortlink.RestoreUrlHandler(serverCtx),
+			},
+		},
 	)
 
 	server.AddRoutes(

@@ -198,8 +198,13 @@ service shortlink-api {
 
 	@handler DeleteShortLink
 	post /shortlink/delete (ShortLinkDeleteRequest) returns (NilResponse)
+}
 
+@server (
+	group: shortlink
+)
+service shortlink-api {
 	@handler RestoreUrl
-	get /shortlink/restore/:shortUri (ShortLinkRestoreRequest) returns (ShortLinkRestoreResponse)
+	get /:shortUri (ShortLinkRestoreRequest) returns (ShortLinkRestoreResponse)
 }
 
