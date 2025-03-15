@@ -107,6 +107,7 @@ type ShortLinkPageData struct {
 	EnableStatus int32  `json:"enable_status"`
 	CreateTime   int64  `json:"create_time"`
 	Describe     string `json:"describe"`
+	ClickNum     string `json:"click_num"`
 	Favicon      string `json:"favicon"`
 	TotalPv      int32  `json:"total_pv"`
 	TodayPv      int32  `json:"today_pv"`
