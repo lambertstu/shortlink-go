@@ -15,6 +15,11 @@ func SuccessWithMsg[T any](w http.ResponseWriter, data T) {
 	httpx.WriteJson(w, http.StatusOK, httpResp)
 }
 
+func Failure(w http.ResponseWriter, message string) {
+	httpResp := NewResult[any]().SetCode(FAIL_CODE).SetMessage(message)
+	httpx.WriteJson(w, http.StatusInternalServerError, httpResp)
+}
+
 func FailureWithErr[T any](w http.ResponseWriter, data T, err error) {
 	httpResp := NewResult[any]().SetCode(FAIL_CODE).SetMessage(err.Error()).SetData(data)
 	httpx.WriteJson(w, http.StatusInternalServerError, httpResp)

@@ -129,9 +129,11 @@ type (
 		ShortUri  string `form:"shortUri"`
 		OriginUrl string `form:"origin_url"`
 	}
-	Response {
-		Code    string `json:"code"`
-		Message string `json:"message"`
+	ShortLinkRestoreRequest {
+		ShortUri string `path:"shortUri"`
+	}
+	ShortLinkRestoreResponse {
+		OriginUrl string `json:"originUrl"`
 	}
 	NilResponse {
 		Nil string `json:"code"`
@@ -196,5 +198,8 @@ service shortlink-api {
 
 	@handler DeleteShortLink
 	post /shortlink/delete (ShortLinkDeleteRequest) returns (NilResponse)
+
+	@handler RestoreUrl
+	get /shortlink/restore/:shortUri (ShortLinkRestoreRequest) returns (ShortLinkRestoreResponse)
 }
 

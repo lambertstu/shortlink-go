@@ -79,11 +79,6 @@ type RegisterRequest struct {
 	Email    string `form:"email"`
 }
 
-type Response struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
-}
-
 type ShortLinkCreateRequest struct {
 	OriginUrl string `form:"origin_url"`
 	Gid       string `form:"gid"`
@@ -129,6 +124,14 @@ type ShortLinkPageResponse struct {
 	Page    int64               `json:"page"`
 	MaxPage int64               `json:"maxPage"`
 	Total   int64               `json:"total"`
+}
+
+type ShortLinkRestoreRequest struct {
+	ShortUri string `path:"shortUri"`
+}
+
+type ShortLinkRestoreResponse struct {
+	OriginUrl string `json:"originUrl"`
 }
 
 type ShortLinkUpdateRequest struct {

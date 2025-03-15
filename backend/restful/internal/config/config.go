@@ -7,7 +7,8 @@ import (
 
 type Config struct {
 	rest.RestConf
-	UserRpcConf  zrpc.RpcClientConf
-	GroupRpcConf zrpc.RpcClientConf
-	CoreRpcConf  zrpc.RpcClientConf
+	UserRpcConf       zrpc.RpcClientConf
+	GroupRpcConf      zrpc.RpcClientConf
+	CoreRpcConf       zrpc.RpcClientConf
+	ShortLinkModelUrl string
 }
