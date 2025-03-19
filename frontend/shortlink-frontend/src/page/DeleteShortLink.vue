@@ -27,14 +27,21 @@ export default defineComponent({
     const message = ref("");
 
     const deleteLink = async () => {
+      if (!shortUri.value || !originUrl.value) {
+        message.value = "短链接和原始链接不能为空！";
+        return;
+      }
+
       try {
-        await deleteShortLink({
+        const response = await deleteShortLink({
           shortUri: shortUri.value,
           origin_url: originUrl.value,
         });
-        message.value = "短链接删除成功！";
-      } catch (error) {
-        message.value = "删除失败：" + error;
+        message.value = "短链接删除成功：" + JSON.stringify(response.data);
+      } catch (error: any) {
+        console.error("删除失败:", error);
+        message.value =
+          "删除失败：" + (error.response?.data?.message || "未知错误");
       }
     };
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import qs from "qs";
 
 const API_BASE_URL = "http://localhost:8888/v1/shortlink"; // 你的后端地址
 
@@ -27,10 +28,16 @@ export function updateShortLink(data: {
   todayUv: number;
   todayUip: number;
 }) {
-  return axios.post(`${API_BASE_URL}/update`, data);
+  return axios.post(`${API_BASE_URL}/update`, qs.stringify(data), {
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  });
 }
 
 // 删除短链接
 export function deleteShortLink(data: { shortUri: string; origin_url: string }) {
-  return axios.post(`${API_BASE_URL}/delete`, data);
+  return axios.post(
+    `${API_BASE_URL}/delete`,
+    qs.stringify(data), // 🚀 转换成 `application/x-www-form-urlencoded` 格式
+    { headers: { "Content-Type": "application/x-www-form-urlencoded" } } // 🚀 头部匹配
+  );
 }
