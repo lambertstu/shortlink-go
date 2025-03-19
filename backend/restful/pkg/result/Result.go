@@ -35,3 +35,7 @@ func (r *Result[T]) SetData(data T) *Result[T] {
 	r.Data = data
 	return r
 }
+
+func (r *Result[T]) SetSuccess() {
+	r.Success = true
+}

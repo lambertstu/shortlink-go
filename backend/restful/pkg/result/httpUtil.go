@@ -7,11 +7,13 @@ import (
 
 func Success(w http.ResponseWriter) {
 	httpResp := NewResult[any]().SetCode(SUCCESS_CODE)
+	httpResp.SetSuccess()
 	httpx.WriteJson(w, http.StatusOK, httpResp)
 }
 
 func SuccessWithMsg[T any](w http.ResponseWriter, data T) {
 	httpResp := NewResult[T]().SetCode(SUCCESS_CODE).SetData(data)
+	httpResp.SetSuccess()
 	httpx.WriteJson(w, http.StatusOK, httpResp)
 }
 
