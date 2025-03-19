@@ -5,6 +5,7 @@
       <methods>
         <method importPath="user/mongo/user" receiver="UserModel" name="UpdateUserInfo" />
         <method importPath="github.com/lambertstu/shortlink-user-rpc/client/user" receiver="User" name="GetUserByUsername" />
+        <method importPath="github.com/lambertstu/shortlink-user-rpc/client/user" receiver="User" name="Login" />
       </methods>
     </inspection_tool>
   </profile>
