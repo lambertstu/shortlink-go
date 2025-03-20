@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { fetchShortLinks } from "@/api/shortlink/shortlinkApi";
+import { fetchShortLinks } from "@/api/shortlink/shortlinkApi.ts";
 
 export default defineComponent({
   name: "ShortLink",

@@ -58,7 +58,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { updateShortLink } from "@/api/shortlink/shortlinkApi";
+import { updateShortLink } from "@/api/shortlink/shortlinkApi.ts";
 
 export default defineComponent({
   name: "UpdateShortLink",

@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { deleteShortLink } from "@/api/shortlink/shortlinkApi";
+import { deleteShortLink } from "@/api/shortlink/shortlinkApi.ts";
 
 export default defineComponent({
   name: "DeleteShortLink",

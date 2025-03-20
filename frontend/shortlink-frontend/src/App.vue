@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ShortLink from "@/page/ShortLink.vue";
+import ShortLink from "@/page/shortlink/ShortLink.vue";
 </script>
 
 <template>
