@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { checkUserExist } from "@/api/user/userApi";
+import { checkUserExist } from "@/api/user/userApi.ts";
 
 const username = ref("");
 const exists = ref<boolean | null>(null);

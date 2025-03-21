@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { loginUser } from "@/api/user/userApi";
+import { loginUser } from "@/api/user/userApi.ts";
 
 const form = ref({ username: "", password: "" });
 const message = ref("");

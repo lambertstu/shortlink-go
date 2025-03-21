@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { deleteUser } from "@/api/user/userApi";
+import { deleteUser } from "@/api/user/userApi.ts";
 
 const username = ref("");
 const message = ref("");

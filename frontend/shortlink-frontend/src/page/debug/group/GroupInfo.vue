@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { getGroupInfo } from "@/api/group/groupApi";
+import { getGroupInfo } from "@/api/group/groupApi.ts";
 import { useRoute } from "vue-router";
 
 const groupInfo = ref(null);

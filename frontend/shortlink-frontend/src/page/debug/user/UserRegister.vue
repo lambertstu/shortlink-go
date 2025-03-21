@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { registerUser } from "@/api/user/userApi";
+import { registerUser } from "@/api/user/userApi.ts";
 
 const form = ref({ email: "", password: "", phone: "", realName: "", username: "" });
 const message = ref("");

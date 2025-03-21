@@ -1,40 +1,43 @@
 import {createRouter, createWebHistory} from "vue-router";
-import ShortLink from "@/page/shortlink/ShortLink.vue";
-import CreateShortLink from "@/page/shortlink/CreateShortLink.vue";
-import UpdateShortLink from "@/page/shortlink/UpdateShortLink.vue";
-import DeleteShortLink from "@/page/shortlink/DeleteShortLink.vue";
-import UserRegister from "@/page/user/UserRegister.vue";
-import UserLogin from "@/page/user/UserLogin.vue";
-import UserLogout from "@/page/user/UserLogout.vue";
-import UserExist from "@/page/user/UserExist.vue";
-import UserLoginStatus from "@/page/user/UserLoginStatus.vue";
-import UserInfo from "@/page/user/UserInfo.vue";
-import UserUpsert from "@/page/user/UserUpsert.vue";
-import UserDelete from "@/page/user/UserDelete.vue";
-import CreateGroup from "@/page/group/CreateGroup.vue";
-import UpdateGroup from "@/page/group/UpdateGroup.vue";
-import DeleteGroup from "@/page/group/DeleteGroup.vue";
-import GroupInfo from "@/page/group/GroupInfo.vue";
+import ShortLink from "@/page/debug/shortlink/ShortLink.vue";
+import CreateShortLink from "@/page/debug/shortlink/CreateShortLink.vue";
+import UpdateShortLink from "@/page/debug/shortlink/UpdateShortLink.vue";
+import DeleteShortLink from "@/page/debug/shortlink/DeleteShortLink.vue";
+import UserRegister from "@/page/debug/user/UserRegister.vue";
+import UserLogin from "@/page/debug/user/UserLogin.vue";
+import UserLogout from "@/page/debug/user/UserLogout.vue";
+import UserExist from "@/page/debug/user/UserExist.vue";
+import UserLoginStatus from "@/page/debug/user/UserLoginStatus.vue";
+import UserInfo from "@/page/debug/user/UserInfo.vue";
+import UserUpsert from "@/page/debug/user/UserUpsert.vue";
+import UserDelete from "@/page/debug/user/UserDelete.vue";
+import CreateGroup from "@/page/debug/group/CreateGroup.vue";
+import UpdateGroup from "@/page/debug/group/UpdateGroup.vue";
+import DeleteGroup from "@/page/debug/group/DeleteGroup.vue";
+import GroupInfo from "@/page/debug/group/GroupInfo.vue";
 
-
+import LoginPage from "@/page/LoginPage.vue";
 const routes = [
-  {path: "/", redirect: "/shortlink"},
-  {path: "/shortlink/page", component: ShortLink},
-  {path: "/shortlink/create", component: CreateShortLink},
-  {path: "/shortlink/update", component: UpdateShortLink},
-  {path: "/shortlink/delete", component: DeleteShortLink},
-  {path: "/user/register", component: UserRegister},
-  {path: "/user/login", component: UserLogin},
-  {path: "/user/logout", component: UserLogout},
-  {path: "/user/exist", component: UserExist},
-  {path: "/user/loginStatus", component: UserLoginStatus},
-  {path: "/user/info", component: UserInfo},
-  {path: "/user/upsert", component: UserUpsert},
-  {path: "/user/delete", component: UserDelete},
-  {path: "/group/create", component: CreateGroup},
-  {path: "/group/update", component: UpdateGroup},
-  {path: "/group/delete", component: DeleteGroup},
-  {path: "/group/info", component: GroupInfo},
+  {path: "/", redirect: "/login"},
+  {path: "/login", component: LoginPage},
+  {path: "/debug/shortlink/page", component: ShortLink},
+  {path: "/debug/shortlink/create", component: CreateShortLink},
+  {path: "/debug/shortlink/update", component: UpdateShortLink},
+  {path: "/debug/shortlink/delete", component: DeleteShortLink},
+  {path: "/debug/user/register", component: UserRegister},
+  {path: "/debug/user/login", component: UserLogin},
+  {path: "/debug/user/logout", component: UserLogout},
+  {path: "/debug/user/exist", component: UserExist},
+  {path: "/debug/user/loginStatus", component: UserLoginStatus},
+  {path: "/debug/user/info", component: UserInfo},
+  {path: "/debug/user/upsert", component: UserUpsert},
+  {path: "/debug/user/delete", component: UserDelete},
+  {path: "/debug/group/create", component: CreateGroup},
+  {path: "/debug/group/update", component: UpdateGroup},
+  {path: "/debug/group/delete", component: DeleteGroup},
+  {path: "/debug/group/info", component: GroupInfo},
+
+
 ];
 
 const router = createRouter({

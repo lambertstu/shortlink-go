@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { logoutUser } from "@/api/user/userApi";
+import { logoutUser } from "@/api/user/userApi.ts";
 
 const form = ref({ token: "", username: "" });
 const message = ref("");

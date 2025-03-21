@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { createGroup } from "@/api/group/groupApi";
+import { createGroup } from "@/api/group/groupApi.ts";
 import { useRouter } from "vue-router";
 
 const groupData = ref({

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getUserInfo } from "@/api/user/userApi";
+import { getUserInfo } from "@/api/user/userApi.ts";
 
 const username = ref("");
 const userInfo = ref(null);
