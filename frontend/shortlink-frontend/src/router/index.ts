@@ -15,11 +15,13 @@ import CreateGroup from "@/page/debug/group/CreateGroup.vue";
 import UpdateGroup from "@/page/debug/group/UpdateGroup.vue";
 import DeleteGroup from "@/page/debug/group/DeleteGroup.vue";
 import GroupInfo from "@/page/debug/group/GroupInfo.vue";
-
 import LoginPage from "@/page/LoginPage.vue";
+import ShortlinkPage from "@/page/ShortlinkPage.vue";
+
 const routes = [
   {path: "/", redirect: "/login"},
   {path: "/login", component: LoginPage},
+  {path: "/shortlink", component: ShortlinkPage},
   {path: "/debug/shortlink/page", component: ShortLink},
   {path: "/debug/shortlink/create", component: CreateShortLink},
   {path: "/debug/shortlink/update", component: UpdateShortLink},
