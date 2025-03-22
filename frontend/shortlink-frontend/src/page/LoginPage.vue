@@ -6,7 +6,7 @@ import LoginComponent from "@/components/LoginComponent.vue";
   <div class="container">
     <div class="centered-box">
       <div class="left-section">
-        <!-- 预留放置UI图片 -->
+        <img src="@/assets/login.png" alt="Login Image" class="login-image">
       </div>
       <div class="right-section">
         <LoginComponent />
@@ -29,7 +29,7 @@ import LoginComponent from "@/components/LoginComponent.vue";
 
 .centered-box {
   display: flex;
-  width: 80vw;
+  width: 65vw;
   height: 80vh;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -47,5 +47,11 @@ import LoginComponent from "@/components/LoginComponent.vue";
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.login-image {
+  max-width: 75%;
+  height: auto;
+  margin-left: 70px;
 }
 </style>
