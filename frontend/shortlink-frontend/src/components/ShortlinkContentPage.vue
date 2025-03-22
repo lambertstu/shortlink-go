@@ -1,39 +1,48 @@
 <template>
   <a-table :columns="columns" :data-source="data">
-    <template #headerCell="{ column }">
-      <template v-if="column.key === 'name'">
-        <span>
-          <smile-outlined />
-          Name
-        </span>
-      </template>
-    </template>
-
     <template #bodyCell="{ column, record }">
-      <template v-if="column.key === 'name'">
-        <a>
-          {{ record.name }}
-        </a>
+      <template v-if="column.key === 'info'">
+        <div style="display: flex; align-items: center;">
+          <link-outlined style="margin-right: 8px;" />
+          <div>
+            <div>{{ record.info }}</div>
+            <div style="color: #666; font-size: 12px;">{{ record.date }}</div>
+          </div>
+        </div>
       </template>
-      <template v-else-if="column.key === 'tags'">
-        <span>
-          <a-tag
-            v-for="tag in record.tags"
-            :key="tag"
-            :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'"
-          >
-            {{ tag.toUpperCase() }}
-          </a-tag>
-        </span>
+      <template v-else-if="column.key === 'url'">
+        <div>
+          <a :href="record.url1" target="_blank">{{ record.url1 }}</a>
+          <br />
+          <a :href="record.url2" target="_blank" style="color: #666; font-size: 12px;">{{ record.url2 }}</a>
+        </div>
+      </template>
+      <template v-else-if="column.key === 'visits'">
+        <div>
+          <div>今日 {{ record.visitsToday }}</div>
+          <div style="color: #666;">累计 {{ record.visitsTotal }}</div>
+        </div>
+      </template>
+      <template v-else-if="column.key === 'visitors'">
+        <div>
+          <div> {{ record.visitorsToday }}</div>
+          <div style="color: #666; font-size: 12px;"> {{ record.visitorsTotal }}</div>
+        </div>
+      </template>
+      <template v-else-if="column.key === 'ip'">
+        <div>
+          <div> {{ record.ipToday }}</div>
+          <div style="color: #666; font-size: 12px;"> {{ record.ipTotal }}</div>
+        </div>
       </template>
       <template v-else-if="column.key === 'action'">
         <span>
-          <a>Invite 一 {{ record.name }}</a>
+          <a>数据</a>
           <a-divider type="vertical" />
-          <a>Delete</a>
+          <a>编辑</a>
           <a-divider type="vertical" />
           <a class="ant-dropdown-link">
-            More actions
+            更多
             <down-outlined />
           </a>
         </span>
@@ -41,31 +50,38 @@
     </template>
   </a-table>
 </template>
+
 <script lang="ts" setup>
-import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
+import { DownOutlined, LinkOutlined } from '@ant-design/icons-vue';
+
 const columns = [
   {
-    name: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: '短链信息',
+    dataIndex: 'info',
+    key: 'info',
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
+    title: '短链网址',
+    dataIndex: 'url',
+    key: 'url',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    title: '访问次数',
+    dataIndex: 'visits',
+    key: 'visits',
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
+    title: '访问人数',
+    dataIndex: 'visitors',
+    key: 'visitors',
   },
   {
-    title: 'Action',
+    title: 'IP数',
+    dataIndex: 'ip',
+    key: 'ip',
+  },
+  {
+    title: '操作',
     key: 'action',
   },
 ];
@@ -73,25 +89,16 @@ const columns = [
 const data = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
+    info: 'test demo',
+    date: '2025-03-11 11:50:13',
+    url1: 'https://sourl.cn/yAxsSn',
+    url2: 'https://www.google.com/search?q...',
+    visitsToday: 0,
+    visitsTotal: 6,
+    visitorsToday: 0,
+    visitorsTotal: 5,
+    ipToday: 0,
+    ipTotal: 5,
   },
 ];
 </script>
-

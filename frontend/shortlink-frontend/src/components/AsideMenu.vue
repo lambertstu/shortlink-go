@@ -1,73 +1,63 @@
 <template>
   <div>
+    <div class="menu_content">
+      <div class="title">
+        短链分组
+      </div>
+
+      <a-button class="createGroup" type="link" :size="size">
+        <PlusSquareOutlined />
+      </a-button>
+    </div>
     <a-menu
+      class = "groupMenu"
       style="width: 256px"
       :default-selected-keys="['1']"
       :open-keys.sync="openKeys"
       mode="inline"
       @click="handleClick"
     >
-      <a-sub-menu key="sub1" @titleClick="titleClick">
-        <span slot="title"><a-icon type="mail" /><span>Navigation One</span></span>
-        <a-menu-item-group key="g1">
-          <template slot="title"> <a-icon type="qq" /><span>Item 1</span> </template>
-          <a-menu-item key="1">
-            Option 1
-          </a-menu-item>
-          <a-menu-item key="2">
-            Option 2
-          </a-menu-item>
-        </a-menu-item-group>
-        <a-menu-item-group key="g2" title="Item 2">
-          <a-menu-item key="3">
-            Option 3
-          </a-menu-item>
-          <a-menu-item key="4">
-            Option 4
-          </a-menu-item>
-        </a-menu-item-group>
-      </a-sub-menu>
-      <a-sub-menu key="sub2" @titleClick="titleClick">
-        <span slot="title"><a-icon type="appstore" /><span>Navigation abc</span></span>
-        <a-menu-item key="5">
-          Option 5
-        </a-menu-item>
-        <a-menu-item key="6">
-          Option 6
-        </a-menu-item>
-        <a-sub-menu key="sub3" title="Submenu">
-          <a-menu-item key="7">
-            Option 7
-          </a-menu-item>
-          <a-menu-item key="8">
-            Option 8
-          </a-menu-item>
-        </a-sub-menu>
-      </a-sub-menu>
-
+      <a-menu-item key="1">
+        默认分组
+      </a-menu-item>
+      <a-menu-item key="2">
+        分组1
+      </a-menu-item>
+      <a-menu-item key="3">
+        分组2
+      </a-menu-item>
     </a-menu>
   </div>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      current: ['mail'],
-      openKeys: ['sub1'],
-    };
-  },
-  watch: {
-    openKeys(val) {
-      console.log('openKeys', val);
-    },
-  },
-  methods: {
-    handleClick(e) {
-      console.log('click', e);
-    },
-    titleClick(e) {
-      console.log('titleClick', e);
-    },
-  },
-};
+<script lang="ts" setup>
+import {PlusSquareOutlined} from "@ant-design/icons-vue";
 </script>
+
+<style>
+.menu_content {
+  display: flex;
+  align-items: center; /* 让子元素在垂直方向上居中对齐 */
+  margin-top: 15px;
+}
+
+.title {
+  margin-left: 20px;
+  font-size: 18px; /* 根据需要调整字体大小 */
+  line-height: 1; /* 让文本与按钮保持一致高度 */
+  display: flex;
+  align-items: center; /* 确保文字垂直居中 */
+}
+
+.createGroup {
+  margin-left: auto;
+  font-size: 24px; /* 让按钮里的内容更大 */
+  padding: 10px 20px; /* 调整按钮的整体大小 */
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
+}
+
+.groupMenu{
+  margin-top: 10px;
+}
+</style>

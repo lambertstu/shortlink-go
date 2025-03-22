@@ -7,59 +7,7 @@ import ShortlinkContentPage from "@/components/ShortlinkContentPage.vue";
 import UserInfoCardComponent from "@/components/UserInfoCardComponent.vue";
 const searchText = ref('');
 
-const columns = [
-  {
-    title: '短信名称',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: '短信网址',
-    dataIndex: 'url',
-    key: 'url',
-  },
-  {
-    title: '访问次数',
-    dataIndex: 'visits',
-    key: 'visits',
-  },
-  {
-    title: '访问人数',
-    dataIndex: 'visitors',
-    key: 'visitors',
-  },
-  {
-    title: 'IP数',
-    dataIndex: 'ips',
-    key: 'ips',
-  },
-  {
-    title: '操作',
-    key: 'action',
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    name: 'best demo',
-    url: 'https://bearl.cn/yAxaSdn',
-    visits: 0,
-    visitors: 0,
-    ips: 0,
-  },
-  {
-    key: '2',
-    name: '2025-03-11 15:01:13',
-    url: 'https://www.google.com/search?q=ME5N8D9k&_',
-    visits: 3,
-    visitors: 2,
-    ips: 2,
-  },
-];
-
-
-</script>
+  </script>
 
 <template>
   <div class="layout">
@@ -71,21 +19,17 @@ const data = [
     </header>
     <div class="content">
       <aside class="sidebar">
-        <div class="menu_content">
-          <div>
-            项目/ 我的项目
-          </div>
-
-          <div>
-            +
-          </div>
-        </div>
-
         <AsideMenu />
-
       </aside>
       <main class="main">
-        <Input v-model:value="searchText" placeholder="请输入 http:// 或 https:// 开头的链接或应用路径链接" />
+        <a-input-search
+          class="shortlinkCreatorInput"
+          v-model:value="value"
+          placeholder="请输入 http:// 或 https:// 开头的链接或应用路径链接"
+          enter-button="创建短链"
+          size="large"
+          @search="onSearch"
+        />
         <ShortlinkContentPage />
       </main>
     </div>
@@ -121,9 +65,12 @@ const data = [
   height: 40px;
 }
 
-.menu_content{
-  display: flex;
+.shortlinkCreatorInput{
+  max-width: 1000px; /* 控制输入框最大宽度，防止太长 */
+  margin-left: 40px;
+  margin-bottom: 10px;
 }
+
 
 .header {
   display: flex;
@@ -153,4 +100,5 @@ const data = [
 .top-menu{
   margin-bottom: -15px;
 }
+
 </style>
