@@ -1,5 +1,19 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import LoginComponent from "@/components/LoginComponent.vue";
+import RegisterComponent from "@/components/RegisterComponent.vue";
+
+const isRegistering = ref(false);
+const formData = ref<{ username: string; password: string } | null>(null);
+
+const switchToRegister = () => {
+  isRegistering.value = true;
+};
+
+const switchToLogin = (data: { username: string; password: string }) => {
+  isRegistering.value = false;
+  formData.value = data;
+};
 </script>
 
 <template>
@@ -9,7 +23,11 @@ import LoginComponent from "@/components/LoginComponent.vue";
         <img src="@/assets/login.png" alt="Login Image" class="login-image">
       </div>
       <div class="right-section">
-        <LoginComponent />
+        <LoginComponent v-if="!isRegistering"
+                        :username="formData?.username"
+                        :password="formData?.password"
+                        @register="switchToRegister" />
+        <RegisterComponent v-else @login="switchToLogin" />
       </div>
     </div>
   </div>
@@ -22,9 +40,7 @@ import LoginComponent from "@/components/LoginComponent.vue";
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background: #3494E6;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #EC6EAD, #3494E6);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #EC6EAD, #3494E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #ec6ead, #3494e6);
 }
 
 .centered-box {
@@ -54,8 +70,8 @@ import LoginComponent from "@/components/LoginComponent.vue";
 }
 
 .login-image {
-  width: 70%; /* 占据 left-section 的 80% */
+  width: 70%;
   height: auto;
-  object-fit: contain; /* 保持图片比例 */
+  object-fit: contain;
 }
 </style>

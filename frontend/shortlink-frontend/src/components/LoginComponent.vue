@@ -1,3 +1,55 @@
+<script lang="ts" setup>
+import { reactive, computed, toRefs } from 'vue';
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { useRouter } from 'vue-router';
+import { loginUser } from '@/api/user/userApi';
+
+interface FormState {
+  username: string;
+  password: string;
+  remember: boolean;
+}
+
+// 接收外部传入的用户名和密码
+const props = defineProps<{
+  username: string | null;
+  password: string | null;
+}>();
+
+const formState = reactive<FormState>({
+  username: props.username || '',
+  password: props.password || '',
+  remember: true,
+});
+
+const router = useRouter();
+
+const onFinish = async (values: any) => {
+  try {
+    const response = await loginUser({
+      username: values.username,
+      password: values.password,
+    });
+    console.log('登录成功:', response.data);
+
+    localStorage.setItem('username', values.username);
+    localStorage.setItem('token', response.data.data.token);
+
+    router.push('/shortlink');
+  } catch (error) {
+    console.error('登录失败:', error.response?.data?.message || error.message);
+  }
+};
+
+const onFinishFailed = (errorInfo: any) => {
+  console.log('表单验证失败:', errorInfo);
+};
+
+const disabled = computed(() => {
+  return !(formState.username && formState.password);
+});
+</script>
+
 <template>
   <div class="login-container">
     <div class="welcome-message">
@@ -48,58 +100,11 @@
           Log in
         </a-button>
         Or
-        <a href="">register now!</a>
+        <a href="javascript:void(0);" @click="$emit('register')">register now!</a>
       </a-form-item>
     </a-form>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { reactive, computed } from 'vue';
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
-import { useRouter } from 'vue-router'; // 引入 useRouter
-import { loginUser } from '@/api/user/userApi'; // 导入登录接口
-
-interface FormState {
-  username: string;
-  password: string;
-  remember: boolean;
-}
-
-const formState = reactive<FormState>({
-  username: '',
-  password: '',
-  remember: true,
-});
-
-const router = useRouter(); // 获取路由实例
-
-const onFinish = async (values: any) => {
-  try {
-    const response = await loginUser({
-      username: values.username,
-      password: values.password,
-    });
-    console.log('登录成功:', response.data);
-
-    // 存储 username 到 localStorage
-    localStorage.setItem('username', values.username);
-
-    // 登录成功后跳转到 /shortlink 路径
-    router.push('/shortlink');
-  } catch (error) {
-    console.error('登录失败:', error.response?.data?.message || error.message);
-  }
-};
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('表单验证失败:', errorInfo);
-};
-
-const disabled = computed(() => {
-  return !(formState.username && formState.password);
-});
-</script>
 
 <style scoped>
 .login-container {
