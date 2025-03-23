@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Menu, MenuItem, SubMenu, Table, Input } from 'ant-design-vue';
+import {  Input } from 'ant-design-vue';
 import AsideMenu from "@/components/AsideMenu.vue";
 import ShortlinkMenuComponent from "@/components/ShortlinkMenuComponent.vue";
 import ShortlinkContentPage from "@/components/ShortlinkContentPage.vue";

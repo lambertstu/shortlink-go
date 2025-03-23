@@ -1,12 +1,10 @@
 <template>
   <div class="login-container">
-    <!-- 提示词部分 -->
     <div class="welcome-message">
       <h1>Hello Again!</h1>
       <p>Welcome back, you've been missed!</p>
     </div>
 
-    <!-- 登录表单部分 -->
     <a-form
       :model="formState"
       name="normal_login"
@@ -59,6 +57,8 @@
 <script lang="ts" setup>
 import { reactive, computed } from 'vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { useRouter } from 'vue-router'; // 引入 useRouter
+import { loginUser } from '@/api/user/userApi'; // 导入登录接口
 
 interface FormState {
   username: string;
@@ -72,12 +72,28 @@ const formState = reactive<FormState>({
   remember: true,
 });
 
-const onFinish = (values: any) => {
-  console.log('Success:', values);
+const router = useRouter(); // 获取路由实例
+
+const onFinish = async (values: any) => {
+  try {
+    const response = await loginUser({
+      username: values.username,
+      password: values.password,
+    });
+    console.log('登录成功:', response.data);
+
+    // 存储 username 到 localStorage
+    localStorage.setItem('username', values.username);
+
+    // 登录成功后跳转到 /shortlink 路径
+    router.push('/shortlink');
+  } catch (error) {
+    console.error('登录失败:', error.response?.data?.message || error.message);
+  }
 };
 
 const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
+  console.log('表单验证失败:', errorInfo);
 };
 
 const disabled = computed(() => {

@@ -39,7 +39,11 @@ import LoginComponent from "@/components/LoginComponent.vue";
 
 .left-section {
   flex: 5;
-  /* 预留放置UI图片 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .right-section {
@@ -50,8 +54,8 @@ import LoginComponent from "@/components/LoginComponent.vue";
 }
 
 .login-image {
-  max-width: 75%;
+  width: 70%; /* 占据 left-section 的 80% */
   height: auto;
-  margin-left: 70px;
+  object-fit: contain; /* 保持图片比例 */
 }
 </style>
