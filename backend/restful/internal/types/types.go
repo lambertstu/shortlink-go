@@ -24,13 +24,11 @@ type DeleteUserRequest struct {
 }
 
 type GetGroupRequest struct {
-	Gid string `form:"gid"`
+	Username string `form:"username"`
 }
 
 type GetGroupResponse struct {
-	Gid      string `json:"gid"`
-	Name     string `json:"name"`
-	Username string `json:"username"`
+	Data []GroupData `json:"data"`
 }
 
 type GetUserRequest struct {
@@ -42,6 +40,12 @@ type GetUserResponse struct {
 	RealName string `json:"realName"`
 	Phone    string `json:"phone"`
 	Email    string `json:"email"`
+}
+
+type GroupData struct {
+	Gid      string `json:"gid"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
 }
 
 type IsExistUserRequest struct {

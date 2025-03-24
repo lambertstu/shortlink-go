@@ -65,7 +65,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodGet,
 				Path:    "/group/info",
-				Handler: user.GetGroupByGidHandler(serverCtx),
+				Handler: user.GetGroupByUserNameHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,

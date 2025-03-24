@@ -66,9 +66,12 @@ type (
 		Username string `form:"username"`
 	}
 	GetGroupRequest {
-		Gid string `form:"gid"`
+		Username string `form:"username"`
 	}
 	GetGroupResponse {
+		Data []GroupData `json:"data"`
+	}
+	GroupData {
 		Gid      string `json:"gid"`
 		Name     string `json:"name"`
 		Username string `json:"username"`
@@ -178,7 +181,7 @@ service shortlink-api {
 	@handler DeleteGroup
 	post /group/delete (DeleteGroupRequest) returns (NilResponse)
 
-	@handler GetGroupByGid
+	@handler GetGroupByUserName
 	get /group/info (GetGroupRequest) returns (GetGroupResponse)
 }
 

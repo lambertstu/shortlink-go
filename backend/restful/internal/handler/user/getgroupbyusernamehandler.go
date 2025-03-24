@@ -9,15 +9,15 @@ import (
 	"net/http"
 )
 
-func GetGroupByGidHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func GetGroupByUserNameHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.GetGroupRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
-		l := user.NewGetGroupByGidLogic(r.Context(), svcCtx)
-		resp, err := l.GetGroupByGid(&req)
+		l := user.NewGetGroupByUserNameLogic(r.Context(), svcCtx)
+		resp, err := l.GetGroupByUserName(&req)
 		result.Response(w, resp, err)
 	}
 }
