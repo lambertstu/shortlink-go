@@ -5,7 +5,7 @@
         短链分组
       </div>
 
-      <a-button class="createGroup" type="link" :size="size">
+      <a-button class="createGroup" type="link" >
         <PlusSquareOutlined />
       </a-button>
     </div>
@@ -13,9 +13,7 @@
       class = "groupMenu"
       style="width: 256px"
       :default-selected-keys="['1']"
-      :open-keys.sync="openKeys"
       mode="inline"
-      @click="handleClick"
     >
       <a-menu-item key="1">
         默认分组
@@ -31,6 +29,30 @@
 </template>
 <script lang="ts" setup>
 import {PlusSquareOutlined} from "@ant-design/icons-vue";
+import { ref, onMounted } from "vue";
+import { getGroupInfo } from "@/api/group/groupApi";
+
+interface GroupData {
+  gid: string;
+  name: string;
+  username: string;
+}
+
+const groupList = ref<GroupData[]>([]);
+
+onMounted(async () => {
+  try {
+    const username = localStorage.getItem('username');
+    if (username) {
+      const response = await getGroupInfo(username);
+      if (response.data.success) {
+        groupList.value = response.data.data.data;
+      }
+    }
+  } catch (error) {
+    console.error("获取群组信息失败:", error);
+  }
+});
 </script>
 
 <style>

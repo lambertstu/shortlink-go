@@ -53,6 +53,38 @@
 
 <script lang="ts" setup>
 import { DownOutlined, LinkOutlined } from '@ant-design/icons-vue';
+import {fetchShortLinks} from "@/api/shortlink/shortlinkApi.ts";
+import {onMounted} from "vue";
+import {getGroupInfo} from "@/api/group/groupApi.ts";
+
+onMounted(async () => {
+  try {
+    const username = localStorage.getItem('username');
+    if (username) {
+      const response = await getGroupInfo(username);
+      if (response.data.success) {
+        groupList.value = response.data.data.data;
+      }
+    }
+  } catch (error) {
+    console.error("获取群组信息失败:", error);
+  }
+});
+const data = [
+  {
+    key: '1',
+    info: 'test demo',
+    date: '2025-03-11 11:50:13',
+    url1: 'https://sourl.cn/yAxsSn',
+    url2: 'https://www.google.com/search?q...',
+    visitsToday: 0,
+    visitsTotal: 6,
+    visitorsToday: 0,
+    visitorsTotal: 5,
+    ipToday: 0,
+    ipTotal: 5,
+  },
+];
 
 const columns = [
   {
@@ -83,22 +115,6 @@ const columns = [
   {
     title: '操作',
     key: 'action',
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    info: 'test demo',
-    date: '2025-03-11 11:50:13',
-    url1: 'https://sourl.cn/yAxsSn',
-    url2: 'https://www.google.com/search?q...',
-    visitsToday: 0,
-    visitsTotal: 6,
-    visitorsToday: 0,
-    visitorsTotal: 5,
-    ipToday: 0,
-    ipTotal: 5,
   },
 ];
 </script>

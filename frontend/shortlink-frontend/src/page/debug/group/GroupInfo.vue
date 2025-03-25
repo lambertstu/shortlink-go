@@ -1,32 +1,55 @@
 <template>
   <div>
     <h2>群组信息</h2>
-    <div v-if="groupInfo">
-      <p><strong>群组 ID:</strong> {{ groupInfo.gid }}</p>
-      <p><strong>群组名称:</strong> {{ groupInfo.name }}</p>
-      <p><strong>用户名:</strong> {{ groupInfo.username }}</p>
+    <div v-if="groupList.length > 0">
+      <div v-for="group in groupList" :key="group.gid" class="group-item">
+        <p><strong>群组 ID:</strong> {{ group.gid }}</p>
+        <p><strong>群组名称:</strong> {{ group.name }}</p>
+        <p><strong>用户名:</strong> {{ group.username }}</p>
+      </div>
     </div>
     <div v-else>
-      <p>加载群组信息中...</p>
+      <p>暂无群组信息</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { getGroupInfo } from "@/api/group/groupApi.ts";
-import { useRoute } from "vue-router";
+import { getGroupInfo } from "@/api/group/groupApi";
 
-const groupInfo = ref(null);
-const route = useRoute();
+interface GroupData {
+  gid: string;
+  name: string;
+  username: string;
+}
+
+const groupList = ref<GroupData[]>([]);
 
 onMounted(async () => {
   try {
-    const gid = route.query.gid as string;
-    const response = await getGroupInfo(gid);
-    groupInfo.value = response.data;
+    const username = localStorage.getItem('username');
+    if (username) {
+      const response = await getGroupInfo(username);
+      if (response.data.success) {
+        groupList.value = response.data.data.data;
+      }
+    }
   } catch (error) {
     console.error("获取群组信息失败:", error);
   }
 });
 </script>
+
+<style scoped>
+.group-item {
+  border: 1px solid #eee;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+.group-item p {
+  margin: 5px 0;
+}
+</style>

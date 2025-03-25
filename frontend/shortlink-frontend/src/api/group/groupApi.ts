@@ -25,8 +25,8 @@ export function deleteGroup(data: { gid: string; username: string }) {
 }
 
 // 获取群组信息
-export function getGroupInfo(gid: string) {
+export function getGroupInfo(username: string) {
   return axios.get(`${API_BASE_URL}/info`, {
-    params: { gid },
+    params: { username },
   });
 }

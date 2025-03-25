@@ -79,8 +79,8 @@ const handleSubmit = async () => {
     } else {
       message.error('修改失败: ' + response.data.message);
     }
-  } catch (error) {
-    message.error('请求失败: ' + error.message);
+  } catch (error: any) {
+    message.error('请求失败: ' + (error?.message || '未知错误'));
   }
 };
 

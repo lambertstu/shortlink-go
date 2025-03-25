@@ -38,10 +38,10 @@ type (
 	}
 	UpsertUserInfoRequest {
 		Username string `form:"username"`
-		Password string `form:"password"`
-		RealName string `form:"realName"`
-		Phone    string `form:"phone"`
-		Email    string `form:"email"`
+		Password string `form:"password,optional"` // 添加 optional 关键字
+		RealName string `form:"realName,optional"` // 添加 optional 关键字
+		Phone    string `form:"phone,optional"` // 添加 optional 关键字
+		Email    string `form:"email,optional"` // 添加 optional 关键字
 	}
 	DeleteUserRequest {
 		Username string `form:"username"`

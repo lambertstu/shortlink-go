@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import { reactive, computed, toRefs } from 'vue';
+import { reactive, computed, toRefs, ref } from 'vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import { loginUser } from '@/api/user/userApi';
+import ForgotPasswordComponent from './ForgotPasswordComponent.vue';
+import { message } from 'ant-design-vue';
 
 interface FormState {
   username: string;
@@ -23,6 +25,7 @@ const formState = reactive<FormState>({
 });
 
 const router = useRouter();
+const showForgotPassword = ref(false);
 
 const onFinish = async (values: any) => {
   try {
@@ -36,7 +39,7 @@ const onFinish = async (values: any) => {
     localStorage.setItem('token', response.data.data.token);
 
     router.push('/shortlink');
-  } catch (error) {
+  } catch (error: any) {
     console.error('登录失败:', error.response?.data?.message || error.message);
   }
 };
@@ -48,61 +51,80 @@ const onFinishFailed = (errorInfo: any) => {
 const disabled = computed(() => {
   return !(formState.username && formState.password);
 });
+
+const handleForgotPassword = () => {
+  if (formState.username) {
+    showForgotPassword.value = true;
+  } else {
+    message.error('请先输入用户名');
+  }
+};
+
+const handleBackToLogin = () => {
+  showForgotPassword.value = false;
+};
 </script>
 
 <template>
   <div class="login-container">
-    <div class="welcome-message">
-      <h1>Hello Again!</h1>
-      <p>Welcome back, you've been missed!</p>
-    </div>
+    <div v-if="!showForgotPassword">
+      <div class="welcome-message">
+        <h1>Hello Again!</h1>
+        <p>Welcome back, you've been missed!</p>
+      </div>
 
-    <a-form
-      :model="formState"
-      name="normal_login"
-      class="login-form"
-      @finish="onFinish"
-      @finishFailed="onFinishFailed"
-    >
-      <a-form-item
-        label="Username"
-        name="username"
-        :rules="[{ required: true, message: 'Please input your username!' }]"
+      <a-form
+        :model="formState"
+        name="normal_login"
+        class="login-form"
+        @finish="onFinish"
+        @finishFailed="onFinishFailed"
       >
-        <a-input v-model:value="formState.username">
-          <template #prefix>
-            <UserOutlined class="site-form-item-icon" />
-          </template>
-        </a-input>
-      </a-form-item>
-
-      <a-form-item
-        label="Password"
-        name="password"
-        :rules="[{ required: true, message: 'Please input your password!' }]"
-      >
-        <a-input-password v-model:value="formState.password">
-          <template #prefix>
-            <LockOutlined class="site-form-item-icon" />
-          </template>
-        </a-input-password>
-      </a-form-item>
-
-      <a-form-item>
-        <a-form-item name="remember" no-style>
-          <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+        <a-form-item
+          label="Username"
+          name="username"
+          :rules="[{ required: true, message: 'Please input your username!' }]"
+        >
+          <a-input v-model:value="formState.username">
+            <template #prefix>
+              <UserOutlined class="site-form-item-icon" />
+            </template>
+          </a-input>
         </a-form-item>
-        <a class="login-form-forgot" href="">Forgot password</a>
-      </a-form-item>
 
-      <a-form-item>
-        <a-button :disabled="disabled" type="primary" html-type="submit" class="login-form-button">
-          Log in
-        </a-button>
-        Or
-        <a href="javascript:void(0);" @click="$emit('register')">register now!</a>
-      </a-form-item>
-    </a-form>
+        <a-form-item
+          label="Password"
+          name="password"
+          :rules="[{ required: true, message: 'Please input your password!' }]"
+        >
+          <a-input-password v-model:value="formState.password">
+            <template #prefix>
+              <LockOutlined class="site-form-item-icon" />
+            </template>
+          </a-input-password>
+        </a-form-item>
+
+        <a-form-item>
+          <a-form-item name="remember" no-style>
+            <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+          </a-form-item>
+          <a class="login-form-forgot" href="javascript:void(0);" @click="handleForgotPassword">Forgot password</a>
+        </a-form-item>
+
+        <a-form-item>
+          <a-button :disabled="disabled" type="primary" html-type="submit" class="login-form-button">
+            Log in
+          </a-button>
+          Or
+          <a href="javascript:void(0);" @click="$emit('register')">register now!</a>
+        </a-form-item>
+      </a-form>
+    </div>
+    <ForgotPasswordComponent
+      v-else
+      :username="formState.username"
+      @back-to-login="handleBackToLogin"
+    />
   </div>
 </template>
 

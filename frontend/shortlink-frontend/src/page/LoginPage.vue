@@ -24,8 +24,8 @@ const switchToLogin = (data: { username: string; password: string }) => {
       </div>
       <div class="right-section">
         <LoginComponent v-if="!isRegistering"
-                        :username="formData?.username"
-                        :password="formData?.password"
+                        :username="formData?.username ?? null"
+                        :password="formData?.password ?? null"
                         @register="switchToRegister" />
         <RegisterComponent v-else @login="switchToLogin" />
       </div>

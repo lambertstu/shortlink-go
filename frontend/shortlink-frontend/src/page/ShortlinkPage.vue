@@ -24,11 +24,9 @@ const searchText = ref('');
       <main class="main">
         <a-input-search
           class="shortlinkCreatorInput"
-          v-model:value="value"
           placeholder="请输入 http:// 或 https:// 开头的链接或应用路径链接"
           enter-button="创建短链"
           size="large"
-          @search="onSearch"
         />
         <ShortlinkContentPage />
       </main>
