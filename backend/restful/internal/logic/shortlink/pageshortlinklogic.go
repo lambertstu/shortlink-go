@@ -41,7 +41,6 @@ func (l *PageShortLinkLogic) PageShortLink(req *types.ShortLinkPageRequest) (res
 			OriginUrl:    v.OriginUrl,
 			Gid:          v.Gid,
 			EnableStatus: v.EnableStatus,
-			CreateTime:   v.CreateTime,
 			Describe:     v.Describe,
 			Favicon:      v.Favicon,
 			TotalPv:      v.TotalPv,
@@ -51,6 +50,8 @@ func (l *PageShortLinkLogic) PageShortLink(req *types.ShortLinkPageRequest) (res
 			TotalUip:     v.TotalUip,
 			TodayUip:     v.TodayUip,
 			ClickNum:     v.ClickNum,
+			CreateAt:     v.CreateTime,
+			UpdateAt:     v.UpdateTime,
 		})
 	}
 

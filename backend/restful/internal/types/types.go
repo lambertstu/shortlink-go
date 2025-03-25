@@ -104,7 +104,6 @@ type ShortLinkPageData struct {
 	OriginUrl    string `json:"origin_url"`
 	Gid          string `json:"gid"`
 	EnableStatus int32  `json:"enable_status"`
-	CreateTime   int64  `json:"create_time"`
 	Describe     string `json:"describe"`
 	ClickNum     string `json:"click_num"`
 	Favicon      string `json:"favicon"`
@@ -114,6 +113,8 @@ type ShortLinkPageData struct {
 	TodayUv      int32  `json:"today_uv"`
 	TotalUip     int32  `json:"total_uip"`
 	TodayUip     int32  `json:"today_uip"`
+	CreateAt     string `json:"create_at"`
+	UpdateAt     string `json:"update_at"`
 }
 
 type ShortLinkPageRequest struct {
@@ -161,8 +162,8 @@ type UpdateGroupRequest struct {
 
 type UpsertUserInfoRequest struct {
 	Username string `form:"username"`
-	Password string `form:"password"`
-	RealName string `form:"realName"`
-	Phone    string `form:"phone"`
-	Email    string `form:"email"`
+	Password string `form:"password,optional"` // 添加 optional 关键字
+	RealName string `form:"realName,optional"` // 添加 optional 关键字
+	Phone    string `form:"phone,optional"`    // 添加 optional 关键字
+	Email    string `form:"email,optional"`    // 添加 optional 关键字
 }

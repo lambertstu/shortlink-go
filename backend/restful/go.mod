@@ -3,7 +3,7 @@ module github.com/lambertstu/shortlink-go/restful
 go 1.23.4
 
 require (
-	github.com/lambertstu/shortlink-core-rpc v0.1.1
+	github.com/lambertstu/shortlink-core-rpc v0.1.2
 	github.com/lambertstu/shortlink-user-rpc v0.1.1
 	github.com/zeromicro/go-zero v1.8.1
 )

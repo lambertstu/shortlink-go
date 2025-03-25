@@ -88,6 +88,8 @@ github.com/lambertstu/shortlink-core-rpc v0.1.0 h1:EbMvTvnLXRRpL+z0LodTv759i+uM3
 github.com/lambertstu/shortlink-core-rpc v0.1.0/go.mod h1:wrHZbMpP4gOwFf/vN1j69imdj0qm6kxRXZYIiLYXx7A=
 github.com/lambertstu/shortlink-core-rpc v0.1.1 h1:GqlD87IMgqKIR6PhTc3+4NawzNatv5x5fB7Hzpknppg=
 github.com/lambertstu/shortlink-core-rpc v0.1.1/go.mod h1:wrHZbMpP4gOwFf/vN1j69imdj0qm6kxRXZYIiLYXx7A=
+github.com/lambertstu/shortlink-core-rpc v0.1.2 h1:YN+el/q4tJK9v6hsm/GZRZ+elU+M5bN+dUFuGBm9exM=
+github.com/lambertstu/shortlink-core-rpc v0.1.2/go.mod h1:wrHZbMpP4gOwFf/vN1j69imdj0qm6kxRXZYIiLYXx7A=
 github.com/lambertstu/shortlink-user-rpc v0.1.0 h1:XTyteZ09F71QdrCxyNNsF1lRpQLnHoT54eaQtOfPwMA=
 github.com/lambertstu/shortlink-user-rpc v0.1.0/go.mod h1:RHxs9B2TbAUu5daDlSgpNzBdfSYmfe0Qir0z/1IgQq4=
 github.com/lambertstu/shortlink-user-rpc v0.1.1 h1:M9UVdt6EH9O1rnLHB+1BLsOsNruN3MQ86Quo+wf5Esk=
