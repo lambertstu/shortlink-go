@@ -1,6 +1,6 @@
 Name: shortlink-api
 Host: 0.0.0.0
-Port: 8888
+Port: 8001
 ShortLinkModelUrl: mongodb://127.0.0.1:27019
 
 UserRpcConf:

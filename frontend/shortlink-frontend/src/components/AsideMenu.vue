@@ -12,6 +12,7 @@
     <a-menu
       class="groupMenu"
       style="width: 256px"
+      :selected-keys="[selectedGroup?.gid]"
       :default-selected-keys="[selectedGroup?.gid]"
       mode="inline"
     >
@@ -103,6 +104,9 @@ const editInput = ref<HTMLElement | null>(null);
 const isDragging = ref(false);
 const draggingGroup = ref<GroupData | null>(null);
 
+// Add emit declaration
+const emit = defineEmits(['group-selected']);
+
 // 获取分组信息并初始化
 const initializeGroups = async () => {
   try {
@@ -115,7 +119,10 @@ const initializeGroups = async () => {
           await createDefaultGroup(username);
         } else {
           groupList.value = response.data.data.data;
-          selectedGroup.value = groupList.value[0]; // 选定第一个分组
+          // 选定第一个分组并触发相应的事件
+          selectedGroup.value = groupList.value[0];
+          // 触发 group-selected 事件，将选中的分组传递给父组件
+          emit('group-selected', selectedGroup.value);
           await fetchShortLinksForGroup(selectedGroup.value.gid);
         }
       }
@@ -150,21 +157,17 @@ const createDefaultGroup = async (username: string) => {
 // 获取短链接信息
 const fetchShortLinksForGroup = async (gid: string) => {
   try {
-    const response = await fetchShortLinks(gid, 1, 10, 1); // 假设分页参数为 page=1, size=10, orderTag=1
+    // Make sure to pass an object with all required parameters
+    const response = await fetchShortLinks({
+      gid: gid,
+      page: 1,
+      size: 10,
+      orderTag: 1
+    });
+    
     if (response.data.success) {
-      shortLinks.value = response.data.data.list.map(link => ({
-        key: link.short_uri,
-        info: link.describe,
-        date: link.update_at,
-        url1: link.full_short_url,
-        url2: link.origin_url,
-        visitsToday: link.today_pv,
-        visitsTotal: link.total_pv,
-        visitorsToday: link.today_uv,
-        visitorsTotal: link.total_uv,
-        ipToday: link.today_uip,
-        ipTotal: link.total_uip,
-      }));
+      // Process data if needed
+      console.log("Fetched shortlinks:", response.data);
     } else {
       message.error(response.data.message || '获取短链接失败');
     }
@@ -177,7 +180,15 @@ const fetchShortLinksForGroup = async (gid: string) => {
 // 处理分组点击
 const handleGroupClick = async (group: GroupData) => {
   selectedGroup.value = group;
-  await fetchShortLinksForGroup(group.gid);
+  // Emit the selected group to parent component
+  emit('group-selected', group);
+  // You might not need this call anymore since ShortlinkContentPage will handle it
+  // But keep it for now if you still need it in AsideMenu
+  try {
+    await fetchShortLinksForGroup(group.gid);
+  } catch (error) {
+    console.error("获取短链接失败:", error);
+  }
 };
 
 // 显示模态框
@@ -431,11 +442,17 @@ onMounted(() => {
 
 /* 拖拽时的样式 */
 .group-item {
-  cursor: move;
+  /* 移除默认的 cursor: move; */
   user-select: none;
 }
 
 [draggable="true"] {
+  /* 只在实际拖动时显示移动光标，平时保持默认光标 */
+  cursor: default;
+}
+
+/* 当实际开始拖动时应用移动光标 */
+[draggable="true"]:active {
   cursor: move;
 }
 </style>

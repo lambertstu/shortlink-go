@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import {  Input } from 'ant-design-vue';
+import { Input } from 'ant-design-vue';
 import AsideMenu from "@/components/AsideMenu.vue";
 import ShortlinkMenuComponent from "@/components/ShortlinkMenuComponent.vue";
 import ShortlinkContentPage from "@/components/ShortlinkContentPage.vue";
 import UserInfoCardComponent from "@/components/UserInfoCardComponent.vue";
-const searchText = ref('');
 
-  </script>
+const searchText = ref('');
+const selectedGroup = ref<any>(null);
+
+const handleGroupSelected = (group: any) => {
+  selectedGroup.value = group;
+};
+</script>
 
 <template>
   <div class="layout">
@@ -19,7 +24,7 @@ const searchText = ref('');
     </header>
     <div class="content">
       <aside class="sidebar">
-        <AsideMenu />
+        <AsideMenu @group-selected="handleGroupSelected" />
       </aside>
       <main class="main">
         <a-input-search
@@ -28,7 +33,7 @@ const searchText = ref('');
           enter-button="创建短链"
           size="large"
         />
-        <ShortlinkContentPage />
+        <ShortlinkContentPage :selectedGroup="selectedGroup" />
       </main>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 
-const API_BASE_URL = "http://localhost:8888/v1/shortlink"; // 你的后端地址
+const API_BASE_URL = "http://localhost:8001/v1/shortlink"; // 你的后端地址
 
 // 查询短链接列表
 export function fetchShortLinks(params: { gid: string; page: number; size: number; orderTag: number }) {
