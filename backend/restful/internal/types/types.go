@@ -113,7 +113,6 @@ type ShortLinkPageData struct {
 	TodayUv      int32  `json:"today_uv"`
 	TotalUip     int32  `json:"total_uip"`
 	TodayUip     int32  `json:"today_uip"`
-	CreateAt     string `json:"create_at"`
 	UpdateAt     string `json:"update_at"`
 }
 

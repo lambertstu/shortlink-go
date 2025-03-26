@@ -49,13 +49,25 @@
       </template>
     </template>
   </a-table>
+  <a-modal
+    v-model:open="modalVisible"
+    title="创建分组"
+    @ok="handleCreateGroup"
+    @cancel="modalVisible = false"
+    :confirmLoading="confirmLoading"
+  >
+    <a-input v-model:value="groupName" placeholder="请输入分组名称" />
+  </a-modal>
 </template>
 
 <script lang="ts" setup>
 import { DownOutlined, LinkOutlined } from '@ant-design/icons-vue';
 import {fetchShortLinks} from "@/api/shortlink/shortlinkApi.ts";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import {getGroupInfo} from "@/api/group/groupApi.ts";
+import { message } from 'ant-design-vue';
+
+const groupList = ref([]);
 
 onMounted(async () => {
   try {
@@ -70,6 +82,33 @@ onMounted(async () => {
     console.error("获取群组信息失败:", error);
   }
 });
+
+const fetchShortLinksForGroup = async (gid: string) => {
+  try {
+    const response = await fetchShortLinks(gid, 1, 10, 1);
+    if (response.data.success) {
+      shortLinks.value = response.data.data.list.map(link => ({
+        key: link.short_uri,
+        info: link.describe,
+        date: link.update_at,
+        url1: link.full_short_url,
+        url2: link.origin_url,
+        visitsToday: link.today_pv,
+        visitsTotal: link.total_pv,
+        visitorsToday: link.today_uv,
+        visitorsTotal: link.total_uv,
+        ipToday: link.today_uip,
+        ipTotal: link.total_uip,
+      }));
+    } else {
+      message.error(response.data.message || '获取短链接失败');
+    }
+  } catch (error) {
+    console.error("获取短链接失败:", error);
+    message.error('获取短链接失败');
+  }
+};
+
 const data = [
   {
     key: '1',

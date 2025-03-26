@@ -50,7 +50,6 @@ func (l *PageShortLinkLogic) PageShortLink(req *types.ShortLinkPageRequest) (res
 			TotalUip:     v.TotalUip,
 			TodayUip:     v.TodayUip,
 			ClickNum:     v.ClickNum,
-			CreateAt:     v.CreateTime,
 			UpdateAt:     v.UpdateTime,
 		})
 	}
