@@ -24,7 +24,7 @@
         </template>
         <template v-else-if="column.key === 'url'">
           <div>
-            <a :href="record.url1" target="_blank">{{ record.url1 }}</a>
+            <a :href="getFullUrl(record.url1)" target="_blank">{{ record.url1 }}</a>
             <br />
             <a :href="record.url2" target="_blank" style="color: #666; font-size: 12px;">{{ record.url2 }}</a>
           </div>
@@ -82,6 +82,17 @@ const props = defineProps({
     default: null
   }
 });
+
+// 添加处理URL的方法
+const getFullUrl = (url: string) => {
+  if (!url) return '';
+  // 检查URL是否已经包含http或https前缀
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  // 添加http前缀
+  return `http://${url}`;
+};
 
 const data = ref([]);
 const loading = ref(false);
