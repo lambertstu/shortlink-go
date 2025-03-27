@@ -19,3 +19,18 @@ CoreRpcConf:
   Middlewares:
     Breaker: false
 
+ListenerConf:
+  Username: guest      # RabbitMQ用户名
+  Password: guest      # RabbitMQ密码
+  Host: localhost      # RabbitMQ主机地址
+  Port: 5673           # RabbitMQ端口号
+  ListenerQueues:      # 监听的队列列表
+    -
+      Name: shortlink.v1.information.queue  # 队列名称，监听器将从该队列接收消息
+
+SenderConf:
+  Username: guest      # RabbitMQ用户名
+  Password: guest      # RabbitMQ密码
+  Host: localhost      # RabbitMQ主机地址
+  Port: 5673           # RabbitMQ端口号
+  ListenerQueues:      # 监听的队列列表

@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/service"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/config"
 	"github.com/lambertstu/shortlink-go/restful/internal/handler"
@@ -25,6 +26,12 @@ func main() {
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
+
+	// rabbitmq配置初始化
+	serviceGroup := service.NewServiceGroup()
+	serviceGroup.Add(ctx.RabbitmqListener)
+	defer serviceGroup.Stop()
+	serviceGroup.Start()
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
