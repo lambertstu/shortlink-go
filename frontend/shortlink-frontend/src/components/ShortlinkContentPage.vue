@@ -24,7 +24,7 @@
         </template>
         <template v-else-if="column.key === 'url'">
           <div>
-            <a :href="getFullUrl(record.url1)" target="_blank">{{ record.url1 }}</a>
+            <a :href="getFullUrl(record.url1)" target="_blank" @click="handleLinkClick(record)">{{ record.url1 }}</a>
             <br />
             <a :href="record.url2" target="_blank" style="color: #666; font-size: 12px;">{{ record.url2 }}</a>
           </div>
@@ -98,6 +98,14 @@ const data = ref([]);
 const loading = ref(false);
 const noShortlinks = ref(false);
 
+// 处理链接点击事件
+const handleLinkClick = (record: any) => {
+  // 延迟 1 秒后刷新数据，以便后端有时间更新访问统计
+  setTimeout(() => {
+    fetchShortLinksForSelectedGroup();
+  }, 1000);
+};
+
 // Watch for changes to selectedGroup prop
 watch(() => props.selectedGroup, async (newGroup) => {
   if (newGroup) {
@@ -153,6 +161,11 @@ const fetchShortLinksForSelectedGroup = async () => {
     loading.value = false;
   }
 };
+
+// 暴露方法给父组件使用
+defineExpose({
+  fetchShortLinksForSelectedGroup
+});
 
 const columns = [
   {

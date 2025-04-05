@@ -3,13 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/zeromicro/go-zero/core/service"
 
 	"github.com/lambertstu/shortlink-go/restful/internal/config"
 	"github.com/lambertstu/shortlink-go/restful/internal/handler"
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/rest"
 )
 
@@ -31,7 +31,9 @@ func main() {
 	serviceGroup := service.NewServiceGroup()
 	serviceGroup.Add(ctx.RabbitmqListener)
 	defer serviceGroup.Stop()
-	serviceGroup.Start()
+
+	// 使用 goroutine 启动 RabbitMQ 监听器
+	go serviceGroup.Start()
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()

@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	shortlink "github.com/lambertstu/shortlink-go/restful/internal/handler/shortlink"
+	test "github.com/lambertstu/shortlink-go/restful/internal/handler/test"
 	user "github.com/lambertstu/shortlink-go/restful/internal/handler/user"
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 
@@ -48,6 +49,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: shortlink.RestoreUrlHandler(serverCtx),
 			},
 		},
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/rabbitmq/send",
+				Handler: test.TestRabbitMQHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/v1"),
 	)
 
 	server.AddRoutes(

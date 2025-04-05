@@ -141,6 +141,15 @@ type (
 	NilResponse {
 		Nil string `json:"code"`
 	}
+	// 新增 RabbitMQ 测试相关请求和响应类型
+	RabbitMQTestRequest {
+		Message string `form:"message"`
+		Queue   string `form:"queue,optional"` // 可选参数，默认队列名
+	}
+	RabbitMQTestResponse {
+		Status  string `json:"status"`
+		Message string `json:"message"`
+	}
 )
 
 @server (
@@ -209,5 +218,14 @@ service shortlink-api {
 service shortlink-api {
 	@handler RestoreUrl
 	get /:shortUri (ShortLinkRestoreRequest) returns (ShortLinkRestoreResponse)
+}
+
+@server (
+	prefix: /v1
+	group:  test
+)
+service shortlink-api {
+	@handler TestRabbitMQ
+	post /rabbitmq/send (RabbitMQTestRequest) returns (RabbitMQTestResponse)
 }
 

@@ -10,7 +10,13 @@ export function fetchShortLinks(params: { gid: string; page: number; size: numbe
 
 // 创建短链接
 export function createShortLink(data: { origin_url: string; gid: string; describe: string }) {
-  return axios.post(`${API_BASE_URL}/create`, data);
+  return axios.post(
+    `${API_BASE_URL}/create`, 
+    qs.stringify(data), 
+    {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    }
+  );
 }
 
 // 更新短链接

@@ -1,7 +1,7 @@
 package svc
 
 import (
-	"github.com/lambertstu/shortlink-core-rpc/mongo/shortlink"
+	model "github.com/lambertstu/shortlink-core-rpc/mongo/shortlink"
 	"github.com/lambertstu/shortlink-core-rpc/shortlinkclient"
 	"github.com/lambertstu/shortlink-go/restful/internal/config"
 	"github.com/lambertstu/shortlink-go/restful/internal/logic/mq"
@@ -20,16 +20,26 @@ type ServiceContext struct {
 	ShortLinkModel   model.ShortlinkModel
 	RabbitmqListener queue.MessageQueue
 	RabbitmqSender   rabbitmq.Sender
+	MQManager        *mq.MQManager
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
+	coreRpcService := shortlinkclient.NewShortlink(zrpc.MustNewClient(c.CoreRpcConf))
+
+	mqManager := mq.NewMQManager(coreRpcService)
+	mqManager.RegisterHandler(mq.NewTestMessageHandler())
+	mqManager.RegisterHandler(mq.NewShortLinkClickHandler(coreRpcService))
+
+	mqHandler := mq.NewHandler(mqManager)
+
 	return &ServiceContext{
 		Config:           c,
 		UserRpcService:   user.NewUser(zrpc.MustNewClient(c.UserRpcConf)),
 		GroupRpcService:  group.NewGroup(zrpc.MustNewClient(c.GroupRpcConf)),
-		CoreRpcService:   shortlinkclient.NewShortlink(zrpc.MustNewClient(c.CoreRpcConf)),
+		CoreRpcService:   coreRpcService,
 		ShortLinkModel:   model.NewShortlinkModel(c.ShortLinkModelUrl, model.DB, model.Collection),
-		RabbitmqListener: rabbitmq.MustNewListener(c.ListenerConf, mq.Handler{}),
+		RabbitmqListener: rabbitmq.MustNewListener(c.ListenerConf, mqHandler),
 		RabbitmqSender:   rabbitmq.MustNewSender(c.SenderConf),
+		MQManager:        mqManager,
 	}
 }

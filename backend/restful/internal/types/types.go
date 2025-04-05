@@ -75,6 +75,16 @@ type NilResponse struct {
 	Nil string `json:"code"`
 }
 
+type RabbitMQTestRequest struct {
+	Message string `form:"message"`
+	Queue   string `form:"queue,optional"` // 可选参数，默认队列名
+}
+
+type RabbitMQTestResponse struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}
+
 type RegisterRequest struct {
 	Username string `form:"username"`
 	Password string `form:"password"`
