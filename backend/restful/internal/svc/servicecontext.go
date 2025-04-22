@@ -18,6 +18,7 @@ const (
 	bloomKey            = "redis-bloom:shortlink-restore"
 	bloomBit            = 64
 	ShortlinkRestoreKey = "shortlink-restore:"
+	lockKey             = "redis-distributed-lock"
 )
 
 type ServiceContext struct {
@@ -32,6 +33,7 @@ type ServiceContext struct {
 	Redis               *redis.Redis
 	BloomFilter         *bloom.Filter
 	ShortlinkRestoreKey string
+	RedisLock           *redis.RedisLock
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -45,6 +47,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	rds, filter := getRedisInstance(c)
 
+	lock := getRedisLock(rds)
+
 	return &ServiceContext{
 		Config:              c,
 		UserRpcService:      user.NewUser(zrpc.MustNewClient(c.UserRpcConf)),
@@ -57,6 +61,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Redis:               rds,
 		BloomFilter:         filter,
 		ShortlinkRestoreKey: ShortlinkRestoreKey,
+		RedisLock:           lock,
 	}
 }
 
@@ -64,4 +69,10 @@ func getRedisInstance(c config.Config) (*redis.Redis, *bloom.Filter) {
 	rds := redis.MustNewRedis(c.RedisConf.RedisConf)
 	filter := bloom.New(rds, bloomKey, bloomBit)
 	return rds, filter
+}
+
+func getRedisLock(rds *redis.Redis) *redis.RedisLock {
+	lock := redis.NewRedisLock(rds, lockKey)
+	lock.SetExpire(10)
+	return lock
 }
