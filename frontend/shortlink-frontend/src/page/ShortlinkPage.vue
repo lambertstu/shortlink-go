@@ -45,7 +45,7 @@ const showCreateDrawer = () => {
     message.warning('请输入需要转换的链接');
     return;
   }
-  
+
   // 如果当前有选中的分组，默认设置为该分组
   if (selectedGroup.value) {
     selectedGroupForLink.value = selectedGroup.value.gid;
@@ -56,7 +56,7 @@ const showCreateDrawer = () => {
     message.warning('没有可用的分组');
     return;
   }
-  
+
   drawerVisible.value = true;
 };
 
@@ -65,21 +65,21 @@ const handleCreateShortlink = async () => {
     message.warning('请选择一个分组');
     return;
   }
-  
+
   if (!newShortlinkUrl.value) {
     message.warning('请输入需要转换的链接');
     return;
   }
-  
+
   createLoading.value = true;
-  
+
   try {
     const response = await createShortLink({
       origin_url: newShortlinkUrl.value,
       gid: selectedGroupForLink.value,
       describe: newShortlinkDesc.value || newShortlinkUrl.value // 如果没有输入描述，默认使用URL
     });
-    
+
     if (response.data && response.data.success) {
       message.success('短链接创建成功');
       // 清空输入框
@@ -111,7 +111,7 @@ onMounted(() => {
 <template>
   <div class="layout">
     <header class="header">
-      <img data-v-0c642287="" class="logo" src="https://cdn.xiaomark.com/portal/main/new-sl-logo.png">
+      <img data-v-0c642287="" class="logo" src="@/assets/img.png">
       <shortlink-menu-component class="top-menu"/>
       <Input class="shortlink_search" v-model:value="searchText" placeholder="请输入关键词进行搜索" />
       <UserInfoCardComponent class="userInfo"/>
@@ -132,7 +132,7 @@ onMounted(() => {
         <ShortlinkContentPage :selectedGroup="selectedGroup" ref="shortlinkContentPage" />
       </main>
     </div>
-    
+
     <!-- 创建短链接的抽屉组件 -->
     <a-drawer
       title="创建短链接"
@@ -144,20 +144,20 @@ onMounted(() => {
       <div class="drawer-content">
         <div class="form-item">
           <div class="form-label">目标链接</div>
-          <a-input 
-            v-model:value="newShortlinkUrl" 
-            placeholder="请输入目标链接" 
+          <a-input
+            v-model:value="newShortlinkUrl"
+            placeholder="请输入目标链接"
           />
         </div>
-        
+
         <div class="form-item">
           <div class="form-label">短链描述</div>
-          <a-input 
-            v-model:value="newShortlinkDesc" 
-            placeholder="请输入短链描述" 
+          <a-input
+            v-model:value="newShortlinkDesc"
+            placeholder="请输入短链描述"
           />
         </div>
-        
+
         <div class="form-item">
           <div class="form-label">所属分组</div>
           <a-select
@@ -165,20 +165,20 @@ onMounted(() => {
             style="width: 100%"
             placeholder="请选择分组"
           >
-            <a-select-option 
-              v-for="group in groupList" 
-              :key="group.gid" 
+            <a-select-option
+              v-for="group in groupList"
+              :key="group.gid"
               :value="group.gid"
             >
               {{ group.name }}
             </a-select-option>
           </a-select>
         </div>
-        
-        <a-button 
-          type="primary" 
-          block 
-          :loading="createLoading" 
+
+        <a-button
+          type="primary"
+          block
+          :loading="createLoading"
           @click="handleCreateShortlink"
           style="margin-top: 20px;"
         >
@@ -193,7 +193,7 @@ onMounted(() => {
 
 <style scoped>
 .logo{
-  width: 80px; /* 设置图标宽度 */
+  width: 100px; /* 设置图标宽度 */
   height: 40px; /* 设置图标高度 */
   float: left; /* 将图标浮动到左边 */
   margin-left: 30px; /* 图标与文本之间的间距 */

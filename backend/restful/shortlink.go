@@ -21,6 +21,10 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
+	c.RestConf.Middlewares.Breaker = false
+	c.Timeout = 0 // 禁用超时
+
+	// 创建服务器，仅使用必要的设置
 	server := rest.MustNewServer(c.RestConf, rest.WithCors("*"))
 	defer server.Stop()
 

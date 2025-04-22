@@ -3,6 +3,26 @@ Host: 0.0.0.0
 Port: 8001
 ShortLinkModelUrl: mongodb://127.0.0.1:27019
 
+# 设置更长的超时时间
+Timeout: 300000
+
+# 修改REST断路器配置
+Rest:
+  Timeout: 300000
+  MaxConns: 10000
+  MaxQps: 10000
+  Middlewares:
+    Breaker: false
+
+# 完全禁用断路器
+Breaker:
+  Enable: false
+  Timeout: 300000
+  # 高阈值，实际等于禁用
+  Window: 3600
+  Threshold: 0.99
+  HalfOpenMaxRequests: 10000
+
 UserRpcConf:
   Target: 127.0.0.1:8080
   Timeout: 60000
