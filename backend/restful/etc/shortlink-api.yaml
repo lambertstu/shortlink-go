@@ -54,3 +54,8 @@ SenderConf:
   Host: localhost      # RabbitMQ主机地址
   Port: 5673           # RabbitMQ端口号
   ListenerQueues:      # 监听的队列列表
+
+RedisConf:
+  Key: user.redis
+  Host: 127.0.0.1:6379
+  MongoUrl: mongodb://localhost:27019

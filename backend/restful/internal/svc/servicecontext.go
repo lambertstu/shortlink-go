@@ -8,8 +8,15 @@ import (
 	"github.com/lambertstu/shortlink-go/restful/pkg/rabbitmq"
 	"github.com/lambertstu/shortlink-user-rpc/client/group"
 	"github.com/lambertstu/shortlink-user-rpc/client/user"
+	"github.com/zeromicro/go-zero/core/bloom"
 	"github.com/zeromicro/go-zero/core/queue"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
+)
+
+const (
+	bloomKey = "redis-bloom:shortlink-restore"
+	bloomBit = 64
 )
 
 type ServiceContext struct {
@@ -21,6 +28,8 @@ type ServiceContext struct {
 	RabbitmqListener queue.MessageQueue
 	RabbitmqSender   rabbitmq.Sender
 	MQManager        *mq.MQManager
+	Redis            *redis.Redis
+	BloomFilter      *bloom.Filter
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -32,6 +41,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 	mqHandler := mq.NewHandler(mqManager)
 
+	rds, filter := getRedisInstance(c)
+
 	return &ServiceContext{
 		Config:           c,
 		UserRpcService:   user.NewUser(zrpc.MustNewClient(c.UserRpcConf)),
@@ -41,5 +52,13 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		RabbitmqListener: rabbitmq.MustNewListener(c.ListenerConf, mqHandler),
 		RabbitmqSender:   rabbitmq.MustNewSender(c.SenderConf),
 		MQManager:        mqManager,
+		Redis:            rds,
+		BloomFilter:      filter,
 	}
+}
+
+func getRedisInstance(c config.Config) (*redis.Redis, *bloom.Filter) {
+	rds := redis.MustNewRedis(c.RedisConf.RedisConf)
+	filter := bloom.New(rds, bloomKey, bloomBit)
+	return rds, filter
 }
