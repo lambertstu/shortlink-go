@@ -15,21 +15,23 @@ import (
 )
 
 const (
-	bloomKey = "redis-bloom:shortlink-restore"
-	bloomBit = 64
+	bloomKey            = "redis-bloom:shortlink-restore"
+	bloomBit            = 64
+	ShortlinkRestoreKey = "shortlink-restore:"
 )
 
 type ServiceContext struct {
-	Config           config.Config
-	UserRpcService   user.User
-	GroupRpcService  group.Group
-	CoreRpcService   shortlinkclient.Shortlink
-	ShortLinkModel   model.ShortlinkModel
-	RabbitmqListener queue.MessageQueue
-	RabbitmqSender   rabbitmq.Sender
-	MQManager        *mq.MQManager
-	Redis            *redis.Redis
-	BloomFilter      *bloom.Filter
+	Config              config.Config
+	UserRpcService      user.User
+	GroupRpcService     group.Group
+	CoreRpcService      shortlinkclient.Shortlink
+	ShortLinkModel      model.ShortlinkModel
+	RabbitmqListener    queue.MessageQueue
+	RabbitmqSender      rabbitmq.Sender
+	MQManager           *mq.MQManager
+	Redis               *redis.Redis
+	BloomFilter         *bloom.Filter
+	ShortlinkRestoreKey string
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -44,16 +46,17 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	rds, filter := getRedisInstance(c)
 
 	return &ServiceContext{
-		Config:           c,
-		UserRpcService:   user.NewUser(zrpc.MustNewClient(c.UserRpcConf)),
-		GroupRpcService:  group.NewGroup(zrpc.MustNewClient(c.GroupRpcConf)),
-		CoreRpcService:   coreRpcService,
-		ShortLinkModel:   model.NewShortlinkModel(c.ShortLinkModelUrl, model.DB, model.Collection),
-		RabbitmqListener: rabbitmq.MustNewListener(c.ListenerConf, mqHandler),
-		RabbitmqSender:   rabbitmq.MustNewSender(c.SenderConf),
-		MQManager:        mqManager,
-		Redis:            rds,
-		BloomFilter:      filter,
+		Config:              c,
+		UserRpcService:      user.NewUser(zrpc.MustNewClient(c.UserRpcConf)),
+		GroupRpcService:     group.NewGroup(zrpc.MustNewClient(c.GroupRpcConf)),
+		CoreRpcService:      coreRpcService,
+		ShortLinkModel:      model.NewShortlinkModel(c.ShortLinkModelUrl, model.DB, model.Collection),
+		RabbitmqListener:    rabbitmq.MustNewListener(c.ListenerConf, mqHandler),
+		RabbitmqSender:      rabbitmq.MustNewSender(c.SenderConf),
+		MQManager:           mqManager,
+		Redis:               rds,
+		BloomFilter:         filter,
+		ShortlinkRestoreKey: ShortlinkRestoreKey,
 	}
 }
 

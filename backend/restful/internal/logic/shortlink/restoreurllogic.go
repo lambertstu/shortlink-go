@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"strconv"
 	"time"
 
+	model "github.com/lambertstu/shortlink-core-rpc/mongo/shortlink"
 	"github.com/lambertstu/shortlink-go/restful/internal/svc"
 	"github.com/lambertstu/shortlink-go/restful/internal/types"
 
@@ -32,6 +34,14 @@ type ShortLinkClickData struct {
 	ClickNum string `json:"clickNum"` // 点击数
 }
 
+// 缓存过期时间设置
+const (
+	// 短链接缓存有效期 - 24小时
+	shortLinkCacheExpiry = 24 * 60 * 60
+	// 不存在的短链接缓存有效期 - 5分钟（避免缓存穿透）
+	notExistCacheExpiry = 5 * 60
+)
+
 type RestoreUrlLogic struct {
 	logx.Logger
 	ctx    context.Context
@@ -47,10 +57,56 @@ func NewRestoreUrlLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Restor
 }
 
 func (l *RestoreUrlLogic) RestoreUrl(req *types.ShortLinkRestoreRequest) (resp *types.ShortLinkRestoreResponse, err error) {
-	shortlinkInfo, err := l.svcCtx.ShortLinkModel.FindOneByShortUrl(l.ctx, req.ShortUri)
-	if err != nil {
-		l.Logger.Error(err)
-		return nil, errors.New("短链接查询失败")
+	cacheKey := fmt.Sprintf("%s%s", l.svcCtx.ShortlinkRestoreKey, req.ShortUri)
+
+	// 首先检查Redis缓存
+	var shortlinkInfo *model.Shortlink
+	var cacheHit bool
+
+	jsonData, err := l.svcCtx.Redis.Get(cacheKey)
+	if err == nil && jsonData != "" {
+		// 缓存命中，解析JSON数据
+		l.Logger.Infof("缓存命中: %s", cacheKey)
+		cacheHit = true
+
+		if jsonData == "NOT_EXIST" {
+			l.Logger.Info("缓存显示此短链接不存在")
+			return nil, errors.New("短链接不存在")
+		}
+
+		var cachedLink model.Shortlink
+		err = json.Unmarshal([]byte(jsonData), &cachedLink)
+		if err != nil {
+			l.Logger.Errorf("解析缓存数据失败: %v", err)
+		} else {
+			shortlinkInfo = &cachedLink
+		}
+	}
+
+	if !cacheHit || shortlinkInfo == nil {
+		l.Logger.Infof("缓存未命中，查询数据库: %s", req.ShortUri)
+		var dbErr error
+		shortlinkInfo, dbErr = l.svcCtx.ShortLinkModel.FindOneByShortUrl(l.ctx, req.ShortUri)
+
+		if dbErr != nil {
+			l.Logger.Errorf("查询数据库失败: %v", dbErr)
+
+			if dbErr.Error() == "mongo: no documents in result" {
+				_ = l.svcCtx.Redis.SetexCtx(l.ctx, cacheKey, "NOT_EXIST", notExistCacheExpiry)
+				l.Logger.Infof("已缓存不存在的短链接: %s, 有效期: %d秒", req.ShortUri, notExistCacheExpiry)
+				return nil, errors.New("短链接不存在")
+			}
+
+			return nil, errors.New("短链接查询失败")
+		}
+
+		linkJson, _ := json.Marshal(shortlinkInfo)
+		err = l.svcCtx.Redis.SetexCtx(l.ctx, cacheKey, string(linkJson), shortLinkCacheExpiry)
+		if err != nil {
+			l.Logger.Errorf("缓存短链接数据失败: %v", err)
+		} else {
+			l.Logger.Infof("已缓存短链接数据: %s, 有效期: %d秒", req.ShortUri, shortLinkCacheExpiry)
+		}
 	}
 
 	// 构建点击数据

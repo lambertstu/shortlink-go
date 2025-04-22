@@ -56,6 +56,5 @@ SenderConf:
   ListenerQueues:      # 监听的队列列表
 
 RedisConf:
-  Key: user.redis
   Host: 127.0.0.1:6379
-  MongoUrl: mongodb://localhost:27019
+  Key: user.redis
